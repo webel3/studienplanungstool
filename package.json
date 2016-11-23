@@ -1,7 +1,7 @@
 {
   "name": "studienplanungstool",
   "version": "1.0.0",
-  "description": "application prototype; outcome of bachelor thesis",
+  "description": "application prototype; utcome of bachelor thesis",
   "author": "Engel Kaspar, Weber Lukas",
   "license": "MIT",
   "scripts": {
@@ -10,13 +10,14 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "awesome-typescript-loader": "2.2.4",
     "bootstrap": "^3.3.7",
-    "vue": "^2.0.7",
-    "vue-resource": "^1.0.3",
-    "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.9",
     "raw-loader": "0.5.1",
     "typescript": "2.0.3",
-    "awesome-typescript-loader": "2.2.4"
+    "vue": "^2.0.7",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.0.3",
+    "webpack": "^2.1.0-beta.25",
+    "webpack-dev-server": "^2.1.0-beta.9"
   }
 }

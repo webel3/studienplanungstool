@@ -5,7 +5,7 @@ var path = require('path');
 module.exports = {
 
   // the entry point for the bundle
-  entry: './app.js',
+  entry: './main.js',
 
   // options for the output file of the bundling process.
   output: {
@@ -31,7 +31,7 @@ module.exports = {
     loaders: [
       {
         test: /\.ts$/,
-        use: ['awesome-typescript']
+        use: ['awesome-typescript-loader']
       },
       {
         test: /\.html$/,

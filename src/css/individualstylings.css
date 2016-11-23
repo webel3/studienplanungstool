@@ -1,0 +1,6 @@
+
+/* TODO: remove - use only to see that routing mechanism works */
+.router-link-active {
+    color: crimson !important;
+    background-color: #ccc !important;
+}

@@ -5,36 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>studienplanungstool</title>
 
-    <!-- CSS -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="individualstylings.css">
+
+    <!-- TODO: als SASS schreiben, dann von Webpack rendern lassen -->
+    <link rel="stylesheet" href="src/css/individualstylings.css">
   </head>
   <body>
 
-  <!-- navigation bar -->
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Meine Ergebnisse</a></li>
-        <li><a href="#">Normstudienplan</a></li>
-        <li><a href="#">Module auswählen</a></li>
-        <li><a href="#">Studium planen</a></li>
-        <li><a href="#">Mein Stundenplan</a></li>
-      </ul>
-    </div>
-  </nav>
-
-
-  <!-- play with vue instances and components -->
+  <!-- whole page-specific content goes inside here -->
   <div class="container" id="app">
-    <p>{{ message }}</p>
-    <gugus message="Merke: Components können nur innerhalb einer 'Vue' Instanz verwendet werden! Hier sind wir z.B. auf die id '#app' gebunden."></gugus>
 
-    <button v-on:click="showPackageJson">zeig das 'package.json' file</button>
+    <nav class="navbar navbar-default">
+      <ul class="nav navbar-nav">
+        <li><router-link to="/results">Meine Ergebnisse</router-link></li>
+        <li><router-link to="/studyplan">Normstudienplan</router-link></li>
+        <li><router-link to="/modules">Module auswählen</router-link></li>
+        <li><router-link to="/planning">Studium planen</router-link></li>
+        <li><router-link to="/timetable">Mein Stundenplan</router-link></li>
+      </ul>
+    </nav>
+
+    <!-- vue-router displays partial content through this special tag -->
+    <router-view></router-view>
+
   </div>
 
-
-  <script src="dist/bundle.js"></script>
+  <!-- include javascript file, bundled by webpack -->
+  <script src="target/bundle.js"></script>
   </body>
 
 </html>
