@@ -1,0 +1,10 @@
+<div class="container">
+    <h3>Meine persönlichen Ergebnisse</h3>
+
+    <!--
+      If we only would write 'headers=headers', the vue would pass the string value 'headers'
+      inside the dynamic-table component. For that the table passes the data itself, we have
+      to use the 'v-bind' directive in front of the attribute name.
+    -->
+    <dynamic-table v-bind:headers="headers" v-bind:rows="rows"></dynamic-table>
+</div>

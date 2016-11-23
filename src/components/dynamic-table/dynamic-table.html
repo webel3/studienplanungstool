@@ -1,0 +1,16 @@
+<div>
+    <p>START -- von hier an stammt das Markup aus der 'dynamic-table' Komponente, wobei der Tabelleninhalt als Parameter übergeben wird.</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th v-for="head in headers">{{ head }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="row in rows">
+                <td v-for="item in row">{{ item }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>END -- hier endet das 'dynamic-table' Markup.</p>
+</div>

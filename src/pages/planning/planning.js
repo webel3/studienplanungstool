@@ -1,8 +1,8 @@
 let PlanningComponent = {
-    template: require('./planning-markup.html'),
+    template: require('./planning.html'),
     data: () => {
         return {
-            message: "planning-component.js"
+            message: "planning.js"
         }
     }
 };

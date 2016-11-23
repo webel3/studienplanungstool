@@ -16,15 +16,7 @@
   <!-- whole page-specific content goes inside here -->
   <div class="container" id="app">
 
-    <nav class="navbar navbar-default">
-      <ul class="nav navbar-nav">
-        <li><router-link to="/results">Meine Ergebnisse</router-link></li>
-        <li><router-link to="/studyplan">Normstudienplan</router-link></li>
-        <li><router-link to="/modules">Module auswählen</router-link></li>
-        <li><router-link to="/planning">Studium planen</router-link></li>
-        <li><router-link to="/timetable">Mein Stundenplan</router-link></li>
-      </ul>
-    </nav>
+    <navigation-bar></navigation-bar>
 
     <!-- vue-router displays partial content through this special tag -->
     <router-view></router-view>

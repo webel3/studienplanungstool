@@ -1,8 +1,8 @@
 let StandardStudyPlanComponent = {
-    template: require('./studyplan-markup.html'),
+    template: require('./studyplan.html'),
     data: () => {
         return {
-            message: "studyplan-component.js"
+            message: "studyplan.js"
         }
     }
 };

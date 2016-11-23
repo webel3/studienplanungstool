@@ -1,8 +1,8 @@
 let TimetableComponent = {
-    template: require('./timetable-markup.html'),
+    template: require('./timetable.html'),
     data: () => {
         return {
-            message: "timetable-component.js"
+            message: "timetable.js"
         }
     }
 };

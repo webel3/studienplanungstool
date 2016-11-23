@@ -1,21 +1,13 @@
 import Vue from 'vue';
-import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 
-import ResultsComponent from './src/components/results/results-component';
-import StandardStudyPlanComponent from './src/components/studyplan/studyplan-component';
-import ModulesComponent from './src/components/modules/modules-component';
-import PlanningComponent from './src/components/planning/planning-component';
-import TimetableComponent from './src/components/timetable/timetable-component';
+import Results from './src/pages/results/results';
+import StudyPlan from './src/pages/studyplan/studyplan';
+import Modules from './src/pages/modules/modules';
+import Planning from './src/pages/planning/planning';
+import Timetable from './src/pages/timetable/timetable';
 
-/*
- * Tell Vue that we want to use the 'vue-resource' plugin
- * which provides services for making web requests.
- *
- * documentation:
- * https://github.com/pagekit/vue-resource
- */
-Vue.use(VueResource);
+import NavigationBar from './src/components/navigation-bar/navigation-bar';
 
 /*
  * Use vue-router to let the framework switch between different content.
@@ -27,19 +19,28 @@ Vue.use(VueResource);
  */
 Vue.use(VueRouter);
 
-// define available routes of the application.
+// define available routes of the application (and also a fallback route).
 let router = new VueRouter({
     routes : [
-        { path: '/results', component: ResultsComponent },
-        { path: '/studyplan', component: StandardStudyPlanComponent },
-        { path: '/modules', component: ModulesComponent },
-        { path: '/planning', component: PlanningComponent },
-        { path: '/timetable', component: TimetableComponent },
+        { path: '/results', component: Results },
+        { path: '/studyplan', component: StudyPlan },
+        { path: '/modules', component: Modules },
+        { path: '/planning', component: Planning },
+        { path: '/timetable', component: Timetable },
         { path: '*', redirect: '/results'}
     ],
     history: true
 });
 
-// create a new Vue instance and start the application.
-let app = new Vue({ router });
+
+
+// create a new Vue instance that serves as our application.
+let app = new Vue({
+    router: router,
+    components: {
+        NavigationBar
+    }
+});
+
+// bind the application to the id 'app'.
 app.$mount('#app');
