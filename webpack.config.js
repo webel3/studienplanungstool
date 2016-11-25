@@ -1,16 +1,18 @@
 var webpack = require("webpack");
 var path = require('path');
+// var autoprefixer = require('autoprefixer');
 
 // @see: https://webpack.github.io/docs/configuration.html
 module.exports = {
 
   // the entry point for the bundle
-  entry: './main.js',
+  entry: './src/main.js',
 
   // options for the output file of the bundling process.
   output: {
-    path: __dirname + '/target',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    path: path.join(__dirname, '/target'),
+    publicPath: '/target/'
   },
 
   // array of extensions that should be used to resolve modules
@@ -18,14 +20,11 @@ module.exports = {
     modules: [
       'node_modules', path.resolve(__dirname, 'src')
     ],
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.css', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.js'
     }
   },
-
-  // a source-map is emitted
-  devtool: 'source-map',
 
   module: {
     loaders: [
@@ -34,7 +33,7 @@ module.exports = {
         use: ['awesome-typescript-loader']
       },
       {
-        test: /\.html$/,
+        test: /\.(html|css)$/,
         use: 'raw-loader'
       }
     ]
@@ -43,20 +42,13 @@ module.exports = {
   plugins: [
     new webpack.ProgressPlugin(),
     new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false
-    })
-  ],
-
-  // @see: https://webpack.github.io/docs/webpack-dev-server.html
-  devServer: {
-    inline: true,
-    hot: true,
-    proxy: {
-      '/rest': {
-        target: 'url-to-dreamfactory-rest-services',
-        secure: false
+      options: {
+        postcss: [
+          // autoprefixer({
+          //   browsers: ['last 2 version']
+          // })
+        ]
       }
-    }
-  }
+    })
+  ]
 };

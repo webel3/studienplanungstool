@@ -10,6 +10,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^6.5.3",
     "awesome-typescript-loader": "2.2.4",
     "bootstrap": "^3.3.7",
     "raw-loader": "0.5.1",

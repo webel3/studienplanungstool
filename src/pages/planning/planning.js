@@ -1,4 +1,4 @@
-let PlanningComponent = {
+let Planning = {
     template: require('./planning.html'),
     data: () => {
         return {
@@ -7,4 +7,4 @@ let PlanningComponent = {
     }
 };
 
-export default PlanningComponent;
+export default Planning;

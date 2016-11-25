@@ -1,4 +1,4 @@
-let StandardStudyPlanComponent = {
+let StandardStudyPlan = {
     template: require('./studyplan.html'),
     data: () => {
         return {
@@ -7,4 +7,4 @@ let StandardStudyPlanComponent = {
     }
 };
 
-export default StandardStudyPlanComponent;
+export default StandardStudyPlan;

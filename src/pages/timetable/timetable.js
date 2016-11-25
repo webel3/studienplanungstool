@@ -1,4 +1,4 @@
-let TimetableComponent = {
+let Timetable = {
     template: require('./timetable.html'),
     data: () => {
         return {
@@ -7,4 +7,4 @@ let TimetableComponent = {
     }
 };
 
-export default TimetableComponent;
+export default Timetable;

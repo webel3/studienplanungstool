@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Results from './src/pages/results/results';
-import StudyPlan from './src/pages/studyplan/studyplan';
-import Modules from './src/pages/modules/modules';
-import Planning from './src/pages/planning/planning';
-import Timetable from './src/pages/timetable/timetable';
+import Results from './pages/results/results';
+import StudyPlan from './pages/studyplan/studyplan';
+import Modules from './pages/modules/modules';
+import Planning from './pages/planning/planning';
+import Timetable from './pages/timetable/timetable';
 
-import NavigationBar from './src/components/navigation-bar/navigation-bar';
+import NavigationBar from './components/navigation-bar/navigation-bar';
 
 /*
  * Use vue-router to let the framework switch between different content.

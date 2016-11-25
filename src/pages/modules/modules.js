@@ -10,7 +10,7 @@ import VueResource from 'vue-resource';
  */
 Vue.use(VueResource);
 
-let ModulesComponent = {
+let Modules = {
     template: require('./modules.html'),
     data: () => {
         return {
@@ -28,4 +28,4 @@ let ModulesComponent = {
     }
 };
 
-export default ModulesComponent;
+export default Modules;
