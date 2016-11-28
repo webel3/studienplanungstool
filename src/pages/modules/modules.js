@@ -13,9 +13,7 @@ Vue.use(VueResource);
 let Modules = {
     template: require('./modules.html'),
     data: () => {
-        return {
-            message: 'modules.js'
-        }
+        return {}
     },
     methods: {
         doSthFancy: function () {

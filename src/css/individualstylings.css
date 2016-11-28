@@ -4,3 +4,24 @@
     color: crimson !important;
     background-color: #ccc !important;
 }
+
+
+
+
+
+
+
+
+@media (min-width: 992px) {
+  .col-md-11 {
+    width: 9.0909%;
+  }
+  .col-md-11-doubled {
+    width: 18.1818%;
+    float: left;
+  }
+}
+
+.row [class^=col-] {
+  padding: 10px 0 15px 5px;
+}
