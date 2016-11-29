@@ -9,6 +9,11 @@ import Timetable from './pages/timetable/timetable';
 
 import NavigationBar from './components/navigation-bar/navigation-bar';
 
+
+import 'bootstrap/dist/css/bootstrap.css';
+
+
+
 /*
  * Use vue-router to let the framework switch between different content.
  * This brings the advantage that no page reloads are done when switching content.

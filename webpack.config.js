@@ -1,6 +1,5 @@
 var webpack = require("webpack");
 var path = require('path');
-// var autoprefixer = require('autoprefixer');
 
 // @see: https://webpack.github.io/docs/configuration.html
 module.exports = {
@@ -11,8 +10,8 @@ module.exports = {
   // options for the output file of the bundling process.
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, '/target'),
-    publicPath: '/target/'
+    path: path.join(__dirname, 'target'),
+    publicPath: 'target/'
   },
 
   // array of extensions that should be used to resolve modules
@@ -40,15 +39,6 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.ProgressPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        postcss: [
-          // autoprefixer({
-          //   browsers: ['last 2 version']
-          // })
-        ]
-      }
-    })
+    new webpack.ProgressPlugin()
   ]
 };

@@ -1,42 +1,30 @@
 <div class="container-fluid">
     <h3>Meine Studienplanung</h3>
 
-  <div class="row row-header">
-    <div class="col col-md-11-doubled">Modulangebot</div>
-    <div class="col col-md-11">1. Semester</div>
-    <div class="col col-md-11">2. Semester</div>
-    <div class="col col-md-11">3. Semester</div>
-    <div class="col col-md-11">4. Semester</div>
-    <div class="col col-md-11">5. Semester</div>
-    <div class="col col-md-11">6. Semester</div>
-    <div class="col col-md-11">7. Semester</div>
-    <div class="col col-md-11">8. Semester</div>
-    <div class="col col-md-11">9. Semester</div>
+  <div class="row">
+    <div :class="cssColumnClass">Modulangebot</div>
+    <div v-for="nr in nrOfSem" :class="cssColumnClass">{{ nr }}. Semester</div>
   </div>
 
   <div class="row">
-    <div class="col col-md-11-doubled">
-      <ul>
-        <li>Analysis</li>
-        <li>Lineare Algebra</li>
-        <li>Konzepte und Methoden der Programmierung</li>
-        <li>Betriebswirtschaftslehre 1</li>
-        <li>Mobile Computing II</li>
+
+    <div :class="cssColumnClass">
+      <ul class="list-group" id="module-proposals" v-sortable="getModuleProposalConfig">
+        <li class="list-group-item" :data-module-id="module.id" v-for="module in moduleProposals">
+          <b>{{ module.id }}</b><span class="glyphicon glyphicon-move float-right handle" aria-hidden="true"/>
+          <br/>{{ module.name }}&nbsp;
+        </li>
       </ul>
     </div>
-    <div class="col col-md-11">eins</div>
-    <div class="col col-md-11">zwei</div>
-    <div class="col col-md-11">drei</div>
-    <div class="col col-md-11">vier</div>
-    <div class="col col-md-11">fünf</div>
-    <div class="col col-md-11">sechs</div>
-    <div class="col col-md-11">sieben</div>
-    <div class="col col-md-11">acht</div>
-    <div class="col col-md-11">neun</div>
+
+    <!-- list of selected modules for next semester -->
+    <div :class="cssColumnClass">
+      <ul class="list-group" id="next-sem" v-sortable="getNextSemConfig">
+        <li class="list-group-item list-group-item--placeholder" v-show="!hasModulesNextSem">Placeholder</li>
+      </ul>
+    </div>
+
   </div>
 
-  <div class="clearfix" />
-
-  <p>bla.</p>
 
 </div>

@@ -6,13 +6,38 @@
 }
 
 
+.handle {
+  cursor: move;
+}
 
+.float-right {
+  float: right;
+}
+.float-right:after {
+  clear: both;
+}
+
+.list-group-item {
+  word-wrap: break-word;
+}
+
+.list-group-item--placeholder {
+  background-color: #eee;
+}
 
 
 
 
 
 @media (min-width: 992px) {
+  .col-md-7 {
+    width: 14.2857%;
+  }
+
+  .col-md-10 {
+    width: 10%;
+  }
+
   .col-md-11 {
     width: 9.0909%;
   }
