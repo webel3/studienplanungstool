@@ -1,26 +1,29 @@
 <div class="container-fluid">
     <h3>Meine Studienplanung</h3>
 
+  <!-- header section -->
   <div class="row">
     <div :class="cssColumnClass">Modulangebot</div>
     <div v-for="nr in nrOfSem" :class="cssColumnClass">{{ nr }}. Semester</div>
   </div>
 
+  <!-- module proposals -->
   <div class="row">
-
     <div :class="cssColumnClass">
-      <ul class="list-group" id="module-proposals" v-sortable="getModuleProposalConfig">
+      <ul class="list-group" id="module-proposals" v-sortable="baseConfig">
         <li class="list-group-item" :data-module-id="module.id" v-for="module in moduleProposals">
-          <b>{{ module.id }}</b><span class="glyphicon glyphicon-move float-right handle" aria-hidden="true"/>
-          <br/>{{ module.name }}&nbsp;
+          <b>{{ module.id }}</b>
+          <span class="glyphicon glyphicon-move float-right handle" aria-hidden="true"/>
+          <br/>{{ module.name }}
         </li>
       </ul>
     </div>
 
-    <!-- list of selected modules for next semester -->
-    <div :class="cssColumnClass">
-      <ul class="list-group" id="next-sem" v-sortable="getNextSemConfig">
-        <li class="list-group-item list-group-item--placeholder" v-show="!hasModulesNextSem">Placeholder</li>
+    <!-- semester plannings -->
+    <div :class="cssColumnClass" v-for="(semester, index) in semesters">
+      <ul class="list-group" :data-sem-id="(index + 1)" v-sortable="sortableConfigSemesters">
+        <li class="list-group-item list-group-item--placeholder"
+            v-show="!semester.modules.length > 0" v-bind:name="workaround">Placeholder</li>
       </ul>
     </div>
 

@@ -27,10 +27,10 @@ Vue.use(VueSortable);
 
 let proposals = [
     {
-        id: 'BZG-0001',
+        id: 'BZG-3001',
         name: 'Lineare Algebra'
     }, {
-        id: 'BZG-0002',
+        id: 'BZG-3002',
         name: 'Diskrete Mathematik'
     }, {
         id: 'BTI-7001',
@@ -39,11 +39,41 @@ let proposals = [
         id: 'BTI-7002',
         name: 'Statistik und Wahrscheinlichkeitsrechnung'
     }, {
-        id: 'ABC-9001',
+        id: 'XYZ-8001',
         name: 'Relationale Algebra'
     }, {
-        id: 'ABC-9002',
+        id: 'XYZ-8002',
         name: 'Berechenbarkeit und Komplexität'
+    }, {
+        id: 'ABC-0001',
+        name: 'eins'
+    }, {
+        id: 'ABC-0002',
+        name: 'zwei'
+    }, {
+        id: 'ABC-0003',
+        name: 'drei'
+    }, {
+        id: 'ABC-0004',
+        name: 'vier'
+    }, {
+        id: 'ABC-0005',
+        name: 'fünf'
+    }, {
+        id: 'ABC-0006',
+        name: 'sechs'
+    }, {
+        id: 'ABC-0007',
+        name: 'sieben'
+    }, {
+        id: 'ABC-0008',
+        name: 'acht'
+    }, {
+        id: 'ABC-0009',
+        name: 'neun'
+    }, {
+        id: 'ABC-0010',
+        name: 'zehn'
     }
 ];
 
@@ -52,14 +82,30 @@ let Planning = {
     template: require('./planning.html'),
     data: function() {
         return {
-            nrOfSem: 6,
+            nrOfSem: 0,
+            semesters: [],
             moduleProposals: proposals,
-            modulesNextSem: [],
-            modulesAfterNextSem: [],
             baseConfig: {
-                group: 'modulelist',
+                group: 'semesterlist',
                 handle: '.handle'
-            }
+            },
+            workaround: "ugly workaround to get 'v-show' updating correctly by using a two-way data binding"
+        }
+    },
+    created: function() {
+      this.nrOfSem = 9;  // TODO: vom Backend laden.
+      for (let i = 0; i < this.nrOfSem; i++) {
+        this.semesters[i] = {
+          modules: []
+        };
+      }
+    },
+    methods: {
+        extractSemester: function(elem) {
+            return elem.attributes['data-sem-id'].value;
+        },
+        extractModuleId: function(elem) {
+            return elem.attributes['data-module-id'].value
         }
     },
     computed: {
@@ -67,23 +113,25 @@ let Planning = {
             return "col-md-" + (this.nrOfSem + 1);
         },
 
-        hasModulesNextSem: function() {
-            return this.modulesNextSem.length > 0;
-        },
-
-        getModuleProposalConfig: function() {
-            return this.baseConfig;
-        },
-
-        getNextSemConfig: function() {
+        sortableConfigSemesters: function() {
             let _self = this;
 
             return Object.assign({
                 onAdd: function(event) {
-                    _self.modulesNextSem.push(event.item.attributes['data-module-id'].value);
+                    let semester = _self.extractSemester(event.to);
+                    let moduleId = _self.extractModuleId(event.item);
+                    _self.semesters[semester - 1].modules.push(moduleId);
+                    _self.workaround = _self.workaround.split('').reverse().join('');
                 },
                 onRemove: function(event) {
-                    _self.modulesNextSem.pop(event.item.attributes['data-module-id'].value);
+                    let semester = _self.extractSemester(event.to);
+                    let moduleId = _self.extractModuleId(event.item);
+
+                    let index = _self.semesters[semester -1].modules.indexOf(moduleId);
+                    if (index > -1) {
+                        _self.semesters[semester -1].modules.splice(index, 1);
+                    }
+                    _self.workaround = _self.workaround.split('').reverse().join('');
                 }
             }, this.baseConfig);
         }
