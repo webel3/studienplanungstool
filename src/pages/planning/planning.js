@@ -25,66 +25,14 @@ Vue.use(VueSortable);
  *  merged into the official vue-sortable repository (and published via version update).
  */
 
-let proposals = [
-    {
-        id: 'BZG-3001',
-        name: 'Lineare Algebra'
-    }, {
-        id: 'BZG-3002',
-        name: 'Diskrete Mathematik'
-    }, {
-        id: 'BTI-7001',
-        name: 'Analysis'
-    }, {
-        id: 'BTI-7002',
-        name: 'Statistik und Wahrscheinlichkeitsrechnung'
-    }, {
-        id: 'XYZ-8001',
-        name: 'Relationale Algebra'
-    }, {
-        id: 'XYZ-8002',
-        name: 'Berechenbarkeit und Komplexität'
-    }, {
-        id: 'ABC-0001',
-        name: 'eins'
-    }, {
-        id: 'ABC-0002',
-        name: 'zwei'
-    }, {
-        id: 'ABC-0003',
-        name: 'drei'
-    }, {
-        id: 'ABC-0004',
-        name: 'vier'
-    }, {
-        id: 'ABC-0005',
-        name: 'fünf'
-    }, {
-        id: 'ABC-0006',
-        name: 'sechs'
-    }, {
-        id: 'ABC-0007',
-        name: 'sieben'
-    }, {
-        id: 'ABC-0008',
-        name: 'acht'
-    }, {
-        id: 'ABC-0009',
-        name: 'neun'
-    }, {
-        id: 'ABC-0010',
-        name: 'zehn'
-    }
-];
-
-
 let Planning = {
     template: require('./planning.html'),
     data: function() {
         return {
+            mockData: '',
             nrOfSem: 0,
             semesters: [],
-            moduleProposals: proposals,
+            moduleProposals: null,
             baseConfig: {
                 group: 'semesterlist',
                 handle: '.handle'
@@ -93,7 +41,20 @@ let Planning = {
         }
     },
     created: function() {
-      this.nrOfSem = 9;  // TODO: vom Backend laden.
+      this.$http.get('/src/pages/planning/planning-mock.json').then((response) => {
+          /*
+           * TODO: data / methods / gui etc. korrekt bauen auf Basis der Mockdaten.
+           */
+          this.mockData = response.body;
+          this.moduleProposals = response.body.moduleProposals;
+          this.nrOfSem = response.body.totalSemesters;
+
+          window.console.log(this['nrOfSem']); // that would work too --> use mapping function?
+
+      }, (response) => {
+          window.console.log(response);
+      });
+
       for (let i = 0; i < this.nrOfSem; i++) {
         this.semesters[i] = {
           modules: []

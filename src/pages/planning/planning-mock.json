@@ -1,0 +1,76 @@
+{
+  "currentSemester": 4,
+  "totalSemesters": 9,
+  "passedModules": [
+    {
+      "id": "BZG1151",
+      "name": "Diskrete Mathematik",
+      "ects": 6,
+      "grade": "B",
+      "semester": 1
+    }, {
+      "id": "BTI7051",
+      "name": "Einführung in die Programmierung",
+      "ects": 4,
+      "grade": "B",
+      "semester": 1
+    }, {
+      "id": "BTI7021",
+      "name": "Betriebswirtschaftslehre 1",
+      "ects": 4,
+      "grade": "C",
+      "semester": 2
+    }, {
+      "id": "BTI7055",
+      "name": "Konzepte und Methoden der Programmierung",
+      "ects": 6,
+      "grade": "A",
+      "semester": 2
+    }, {
+      "id": "BZG1153",
+      "name": "Analysis",
+      "ects": 6,
+      "grade": "D",
+      "semester": 3
+    }, {
+      "id": "BZG2251",
+      "name": "Naturwissenschaft und Technik 1",
+      "ects": 4,
+      "grade": "D",
+      "semester": 3
+    }
+  ],
+  "moduleProposals": [
+    {
+      "id": "ABC-0001",
+      "name": "eins"
+    }, {
+      "id": "ABC-0002",
+      "name": "zwei"
+    }, {
+      "id": "ABC-0003",
+      "name": "drei"
+    }, {
+      "id": "ABC-0004",
+      "name": "vier"
+    }, {
+      "id": "ABC-0005",
+      "name": "fünf"
+    }, {
+      "id": "ABC-0006",
+      "name": "sechs"
+    }, {
+      "id": "ABC-0007",
+      "name": "sieben"
+    }, {
+      "id": "ABC-0008",
+      "name": "acht"
+    }, {
+      "id": "ABC-0009",
+      "name": "neun"
+    }, {
+      "id": "ABC-0010",
+      "name": "zehn"
+    }
+  ]
+}
