@@ -23,7 +23,7 @@
     <div :class="cssColumnClass" v-for="(semester, index) in semesters">
       <ul class="list-group" :data-sem-id="(index + 1)" v-sortable="sortableConfigSemesters">
         <li class="list-group-item list-group-item--placeholder"
-            v-show="!semester.modules.length > 0" v-bind:name="workaround">Placeholder</li>
+            v-show="!semester.modules.length > 0">Placeholder</li>
       </ul>
     </div>
 

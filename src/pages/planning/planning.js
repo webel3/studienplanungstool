@@ -36,8 +36,7 @@ let Planning = {
             baseConfig: {
                 group: 'semesterlist',
                 handle: '.handle'
-            },
-            workaround: "ugly workaround to get 'v-show' updating correctly by using a two-way data binding"
+            }
         }
     },
     created: function() {
@@ -48,18 +47,17 @@ let Planning = {
           this.mockData = response.body;
           this.moduleProposals = response.body.moduleProposals;
           this.nrOfSem = response.body.totalSemesters;
+          //window.console.log(this['nrOfSem']); // that would work too --> use mapping function?
 
-          window.console.log(this['nrOfSem']); // that would work too --> use mapping function?
+          for (let i = 0; i < this.nrOfSem; i++) {
+              this.semesters.push({
+                  modules: []
+              });
+          }
 
       }, (response) => {
           window.console.log(response);
       });
-
-      for (let i = 0; i < this.nrOfSem; i++) {
-        this.semesters[i] = {
-          modules: []
-        };
-      }
     },
     methods: {
         extractSemester: function(elem) {
@@ -82,7 +80,6 @@ let Planning = {
                     let semester = _self.extractSemester(event.to);
                     let moduleId = _self.extractModuleId(event.item);
                     _self.semesters[semester - 1].modules.push(moduleId);
-                    _self.workaround = _self.workaround.split('').reverse().join('');
                 },
                 onRemove: function(event) {
                     let semester = _self.extractSemester(event.to);
@@ -92,7 +89,6 @@ let Planning = {
                     if (index > -1) {
                         _self.semesters[semester -1].modules.splice(index, 1);
                     }
-                    _self.workaround = _self.workaround.split('').reverse().join('');
                 }
             }, this.baseConfig);
         }
