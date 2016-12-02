@@ -3,30 +3,58 @@
 
   <!-- header section -->
   <div class="row">
-    <div :class="cssColumnClass">Modulangebot</div>
-    <div v-for="nr in nrOfSem" :class="cssColumnClass">{{ nr }}. Semester</div>
+    <div :class="'col-md-' + cssColumnSize">Modulangebot</div>
+    <div v-for="nr in totalSemesters" :class="'col-md-' + cssColumnSize">{{ nr }}. Semester</div>
   </div>
 
-  <!-- module proposals -->
   <div class="row">
-    <div :class="cssColumnClass">
-      <ul class="list-group" id="module-proposals" v-sortable="baseConfig">
-        <li class="list-group-item" :data-module-id="module.id" v-for="module in moduleProposals">
+
+    <!-- proposals column -->
+    <div :class="'col-md-' + cssColumnSize">
+      <ul class="list-group" id="module-proposals" v-sortable="getConfig()" :data-type="types.PROPOSALS">
+        <li v-for="module in modules.proposals" :data-module-id="module.id" class="list-group-item">
           <b>{{ module.id }}</b>
-          <span class="glyphicon glyphicon-move float-right handle" aria-hidden="true"/>
+          <span class="glyphicon glyphicon-move float-right handle" aria-hidden="true" />
           <br/>{{ module.name }}
         </li>
       </ul>
     </div>
 
-    <!-- semester plannings -->
-    <div :class="cssColumnClass" v-for="(semester, index) in semesters">
-      <ul class="list-group" :data-sem-id="(index + 1)" v-sortable="sortableConfigSemesters">
-        <li class="list-group-item list-group-item--placeholder"
-            v-show="!semester.modules.length > 0">Placeholder</li>
+    <!-- semester columns with each their modules -->
+    <div :class="'col-md-' + cssColumnSize" v-for="semNr in totalSemesters">
+      <ul class="list-group" :data-semester="semNr" :data-type="types.PLANNINGS" v-sortable="semNr > currentSemester ? getConfig() : ''">
+
+          <!-- completed modules -->
+          <li v-for="module in filterBySemester('completions', semNr)"
+              class="list-group-item list-group-item--completed">
+              {{ module.id }}<br/>{{ module.name }}
+          </li>
+
+          <!-- booked modules -->
+          <li v-for="module in filterBySemester('bookings', semNr)"
+              class="list-group-item list-group-item--booked">
+              {{ module.id }}<br/>{{ module.name }}
+          </li>
+
+          <!-- planned modules -->
+          <li v-for="module in filterBySemester('plannings', semNr)" :data-module-id="module.id"
+              class="list-group-item list-group-item--planned">
+            <b>{{ module.id }}</b>
+            <span class="glyphicon glyphicon-move float-right handle" aria-hidden="true" />
+            <br/>{{ module.name }}
+          </li>
+
+          <!-- placeholder for empty planning slots -->
+          <li v-show="semNr > currentSemester && filterBySemester('plannings', semNr) < 1"
+              class="list-group-item list-group-item--placeholder">{ Platzhalter }</li>
       </ul>
     </div>
 
+  </div>
+
+
+  <div class="row">
+       TODO: summierte ECTS-Punkte pro Column anzeigen.
   </div>
 
 

@@ -1,7 +1,7 @@
 {
   "currentSemester": 4,
   "totalSemesters": 9,
-  "passedModules": [
+  "moduleCompletions": [
     {
       "id": "BZG1151",
       "name": "Diskrete Mathematik",
@@ -38,6 +38,30 @@
       "ects": 4,
       "grade": "D",
       "semester": 3
+    }
+  ],
+  "moduleBookings": [
+    {
+      "id": "BTI7081",
+      "name": "Software Engineering and Design",
+      "ects": 8,
+      "semester": 4
+    }, {
+      "id": "BZG3413",
+      "name": "English 3 advanced",
+      "ects": 2,
+      "semester": 4
+    }
+  ],
+  "modulePlannings": [
+    {
+      "id": "XYZ-0001",
+      "name": "x-eins",
+      "semester": 7
+    }, {
+      "id": "XYZ-0002",
+      "name": "x-zwei",
+      "semester": 7
     }
   ],
   "moduleProposals": [

@@ -5,11 +5,12 @@
     background-color: #ccc !important;
 }
 
-
+/* show the hand-icon when hovering that class (which is used for module drag-and-drop) */
 .handle {
   cursor: move;
 }
 
+/* floating class with clear-fix afterwards */
 .float-right {
   float: right;
 }
@@ -17,18 +18,31 @@
   clear: both;
 }
 
+/* this class is used for modules on the 'planning' page.
+ * because space is very rare, we have to break long wordings.
+ */
 .list-group-item {
   word-wrap: break-word;
 }
 
+/* stylings for the different types of modules */
+.list-group-item--completed {
+  background-color: lightgreen;
+}
+.list-group-item--booked {
+  background-color: tan;
+}
+.list-group-item--planned {
+  background-color: lightskyblue;
+}
 .list-group-item--placeholder {
-  background-color: #eee;
+  background-color: #f7f7f7;
 }
 
 
 
 
-
+/* additional column-size definitions for the existing grid system */
 @media (min-width: 992px) {
   .col-md-7 {
     width: 14.2857%;
@@ -47,6 +61,7 @@
   }
 }
 
+/* give a row some more padding to look pretty nice */
 .row [class^=col-] {
   padding: 10px 0 15px 5px;
 }

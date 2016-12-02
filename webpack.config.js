@@ -14,6 +14,8 @@ module.exports = {
     publicPath: 'target/'
   },
 
+  devtool: 'inline-source-map',
+
   // array of extensions that should be used to resolve modules
   resolve: {
     modules: [
