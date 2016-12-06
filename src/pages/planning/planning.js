@@ -41,180 +41,231 @@ Vue.use(VueResource);
  *
  *  This means that the patch mentioned above is no further necessary. Anyway, I'll delete that hint
  *  after finishing the 'planning' page to not loosing some maybe-relevant information.
+ *
+ *
+ *  How to deal with Vue event bus:
+ *      https://www.sitepoint.com/up-and-running-vue-js-2-0/
  */
 
 let Planning = {
-    template: require('./planning.html'),
+  template: require('./planning.html'),
 
-    data: function() {
-        return {
-            currentSemester: 0,
-            totalSemesters: 0,
-            modules: {
-              completions: [],
-              bookings: [],
-              plannings: [],
-              proposals: []
-            },
-            baseConfig: {
-                group: 'semesterlist',
-                handle: '.handle'
-            },
-            types: {
-                PROPOSALS: "proposals",
-                PLANNINGS: "plannings"
-            },
+  data: function() {
+    return {
+      currentSemester: 0,
+      totalSemesters: 0,
+      modules: {
+        proposals: [],
+        completions: [],
+        bookings: [],
+        plannings: []
+      },
+      baseConfig: {
+        handle: '.dnd-handler',
+        draggable: '.list-group-item',
+        animation: 150
+      },
+      types: {
+        PROPOSALS: 'proposals',
+        COMPLETIONS: 'completions',
+        BOOKINGS: 'bookings',
+        PLANNINGS: 'plannings'
+      },
 
-            list1:[
-                {
-                    "id": "ABC-0001",
-                    "name": "eins"
-                }, {
-                    "id": "ABC-0002",
-                    "name": "zwei"
-                }, {
-                    "id": "ABC-0003",
-                    "name": "drei"
-                }, {
-                    "id": "ABC-0004",
-                    "name": "vier"
-                }
-            ],
-            list2:[
-                {
-                    "id": "BZG1151",
-                    "name": "Diskrete Mathematik",
-                    "ects": 6,
-                    "grade": "B",
-                    "semester": 1
-                }, {
-                    "id": "BTI7051",
-                    "name": "Einführung in die Programmierung",
-                    "ects": 4,
-                    "grade": "B",
-                    "semester": 1
-                }, {
-                    "id": "BTI7021",
-                    "name": "Betriebswirtschaftslehre 1",
-                    "ects": 4,
-                    "grade": "C",
-                    "semester": 2
-                }
-            ]
+      list1: [
+        {
+          "id": "ABC-0001",
+          "name": "eins"
+        }, {
+          "id": "ABC-0002",
+          "name": "zwei"
+        }, {
+          "id": "ABC-0003",
+          "name": "drei"
+        }, {
+          "id": "ABC-0004",
+          "name": "vier"
         }
-    },
-
-    created: function() {
-
-        console.log(this.list1);
-        console.log(this.list2);
-
-      this.$http.get('/src/pages/planning/planning-mock.json').then((response) => {
-          this.currentSemester = response.body.currentSemester;
-          this.totalSemesters = response.body.totalSemesters;
-
-          response.body.moduleCompletions.forEach(m => this.modules.completions.push(m));
-          response.body.moduleBookings.forEach(m => this.modules.bookings.push(m));
-          response.body.modulePlannings.forEach(m => this.modules.plannings.push(m));
-          response.body.moduleProposals.forEach(m => this.modules.proposals.push(m));
-
-          window.console.log("**** Initial Planning State:");
-          this.modules.plannings.forEach(m => window.console.log("" + m.id));
-      }, (response) => {
-          window.console.log(response);
-      });
-    },
-
-
-
-    // methods: {
-    //     inspectTransaction: function(event) {
-    //       let info = {
-    //           moduleId: event.item.attributes['data-module-id'].value,
-    //           origin: {
-    //               type: event.from.attributes['data-type'].value,
-    //               semester: event.from.attributes['data-semester'] ? event.from.attributes['data-semester'].value : null
-    //           },
-    //           target: {
-    //               type: event.item.parentElement.attributes['data-type'].value,
-    //               semester: event.item.parentElement.attributes['data-semester'] ?
-    //                   event.item.parentElement.attributes['data-semester'].value : null
-    //           }
-    //       };
-    //       return info;
-    //     },
-    //
-    //     getConfig: function () {
-    //         let _self = this;
-    //
-    //         // mal hier schauen: https://github.com/RubaXa/Sortable/issues/546
-    //
-    //         return Object.assign({
-    //             onAdd: function(event) {
-    //                 let info = _self.inspectTransaction(event);
-    //                 let item = _self.modules[info.origin.type].filter(m => m.id === info.moduleId)[0];
-    //
-    //                 window.console.log("... adding item with id: " + item.id + " to: " + info.target.type);
-    //                 window.console.log("Updated target State: ");
-    //
-    //                 // let modules = [];
-    //                 // for (let i = 0; i < _self.modules[info.target.type].length; i++) {
-    //                 //     modules[i] = _self.modules[info.target.type][i];
-    //                 // }
-    //                 // modules[_self.modules[info.target.type].length] = item;
-    //                 //
-    //                 // _self.modules[info.target.type] = modules;
-    //
-    //                 _self.modules[info.target.type].push(item);
-    //
-    //                 _self.modules[info.target.type].forEach(m => {
-    //                     window.console.log("" + m.id);
-    //                 });
-    //             },
-    //             onRemove: function(event) {
-    //                 let info = _self.inspectTransaction(event);
-    //                 let item = _self.modules[info.origin.type].filter(m => m.id === info.moduleId)[0];
-    //
-    //                 window.console.log("... removing item with id: " + item.id + " from: " + info.origin.type);
-    //                 window.console.log("Updated origin State: ");
-    //
-    //                 // let modules = [];
-    //                 // for (let i = 0; i < _self.modules[info.origin.type].length; i++) {
-    //                 //     if (_self.modules[info.origin.type][i].id !== item.id) {
-    //                 //         modules[i] = _self.modules[info.origin.type][i];
-    //                 //     }
-    //                 // }
-    //                 // _self.modules[info.origin.type] = modules;
-    //
-    //                 let index = _self.modules[info.origin.type].indexOf(item);
-    //                 if (index > -1) {
-    //                     _self.modules[info.origin.type].splice(index, 1);
-    //                 }
-    //
-    //                 _self.modules[info.origin.type].forEach(m => {
-    //                     window.console.log("" + m.id);
-    //                 });
-    //             }
-    //         }, this.baseConfig);
-    //     },
-    //
-    //     filterBySemester: function(property, semNr) {
-    //         return this.modules[property].filter(item => {
-    //             return item.semester === semNr;
-    //         });
-    //     }
-    // },
-
-    computed: {
-        cssColumnSize: function() {
-            if (this.totalSemesters == 9) {
-                return 10;
-            }
-            return 7;
+      ],
+      list2: [
+        {
+          "id": "BZG1151",
+          "name": "Diskrete Mathematik",
+          "ects": 6,
+          "grade": "B",
+          "semester": 1
+        }, {
+          "id": "BTI7051",
+          "name": "Einführung in die Programmierung",
+          "ects": 4,
+          "grade": "B",
+          "semester": 1
+        }, {
+          "id": "BTI7021",
+          "name": "Betriebswirtschaftslehre 1",
+          "ects": 4,
+          "grade": "C",
+          "semester": 2
         }
+      ]
+    }
+  },
+
+  created: function() {
+    this.$http.get('/src/pages/planning/planning-mock.json').then((response) => {
+      this.currentSemester = response.body.currentSemester;
+      this.totalSemesters = response.body.totalSemesters;
+
+      response.body.moduleProposals.forEach(m => this.modules.proposals.push(m));
+      response.body.moduleCompletions.forEach(m => this.modules.completions.push(m));
+      response.body.moduleBookings.forEach(m => this.modules.bookings.push(m));
+      response.body.modulePlannings.forEach(m => this.modules.plannings.push(m));
+
+      window.console.log("**** Initial Planning State:");
+      this.modules.plannings.forEach(m => window.console.log("" + m.id));
+    }, (response) => {
+      window.console.log(response);
+    });
+  },
+
+  mounted: function() {
+    this.$el.addEventListener('add', function(event) {
+      console.log("------------------- 'add' event:");
+      console.log(event);
+    });
+
+    this.$el.addEventListener('update', function(event) {
+      console.log("------------------- 'update' event:");
+      console.log(event);
+    });
+
+    this.$el.addEventListener('remove', function(event) {
+      console.log("------------------- 'remove' event:");
+      console.log(event);
+    });
+  },
+
+  computed: {
+    cssColumnSize: function() {
+      if (this.totalSemesters == 9) {
+        return 10;
+      }
+      return 7;
     },
 
-    components: { draggable }
+    proposalConfig: function() {
+      return Object.assign({
+        group: {
+          name: this.types.PROPOSALS,
+          put: [this.types.PLANNINGS]
+        },
+      }, this.baseConfig);
+    },
+
+    planningConfig: function() {
+      return Object.assign({
+        group: {
+          name: this.types.PLANNINGS,
+          put: [this.types.PLANNINGS, this.types.PROPOSALS]
+        }
+      }, this.baseConfig);
+    }
+
+  },
+
+  methods: {
+    analyzeTransaction: function(event) {
+      /*
+       * TODO:
+       *  'event.item' kan nicht verwendet werden, da es auf das Element zeigt, welches NACH der Re-indexierung diesen Listenplatz einnimmt!
+       *    --> anhand des 'event.newIndex' muss das [add/move/remove] -'te item aus dem target herausgefischt werden
+       */
+      return {
+
+      };
+    }
+  },
+
+  components: {draggable}
+
+
+  // methods: {
+  //     inspectTransaction: function(event) {
+  //       let info = {
+  //           moduleId: event.item.attributes['data-module-id'].value,
+  //           origin: {
+  //               type: event.from.attributes['data-type'].value,
+  //               semester: event.from.attributes['data-semester'] ? event.from.attributes['data-semester'].value : null
+  //           },
+  //           target: {
+  //               type: event.item.parentElement.attributes['data-type'].value,
+  //               semester: event.item.parentElement.attributes['data-semester'] ?
+  //                   event.item.parentElement.attributes['data-semester'].value : null
+  //           }
+  //       };
+  //       return info;
+  //     },
+  //
+  //     getConfig: function () {
+  //         let _self = this;
+  //
+  //         // mal hier schauen: https://github.com/RubaXa/Sortable/issues/546
+  //
+  //         return Object.assign({
+  //             onAdd: function(event) {
+  //                 let info = _self.inspectTransaction(event);
+  //                 let item = _self.modules[info.origin.type].filter(m => m.id === info.moduleId)[0];
+  //
+  //                 window.console.log("... adding item with id: " + item.id + " to: " + info.target.type);
+  //                 window.console.log("Updated target State: ");
+  //
+  //                 // let modules = [];
+  //                 // for (let i = 0; i < _self.modules[info.target.type].length; i++) {
+  //                 //     modules[i] = _self.modules[info.target.type][i];
+  //                 // }
+  //                 // modules[_self.modules[info.target.type].length] = item;
+  //                 //
+  //                 // _self.modules[info.target.type] = modules;
+  //
+  //                 _self.modules[info.target.type].push(item);
+  //
+  //                 _self.modules[info.target.type].forEach(m => {
+  //                     window.console.log("" + m.id);
+  //                 });
+  //             },
+  //             onRemove: function(event) {
+  //                 let info = _self.inspectTransaction(event);
+  //                 let item = _self.modules[info.origin.type].filter(m => m.id === info.moduleId)[0];
+  //
+  //                 window.console.log("... removing item with id: " + item.id + " from: " + info.origin.type);
+  //                 window.console.log("Updated origin State: ");
+  //
+  //                 // let modules = [];
+  //                 // for (let i = 0; i < _self.modules[info.origin.type].length; i++) {
+  //                 //     if (_self.modules[info.origin.type][i].id !== item.id) {
+  //                 //         modules[i] = _self.modules[info.origin.type][i];
+  //                 //     }
+  //                 // }
+  //                 // _self.modules[info.origin.type] = modules;
+  //
+  //                 let index = _self.modules[info.origin.type].indexOf(item);
+  //                 if (index > -1) {
+  //                     _self.modules[info.origin.type].splice(index, 1);
+  //                 }
+  //
+  //                 _self.modules[info.origin.type].forEach(m => {
+  //                     window.console.log("" + m.id);
+  //                 });
+  //             }
+  //         }, this.baseConfig);
+  //     },
+  //
+  //     filterBySemester: function(property, semNr) {
+  //         return this.modules[property].filter(item => {
+  //             return item.semester === semNr;
+  //         });
+  //     }
+  // }
 
 };
 

@@ -6,9 +6,17 @@
 }
 
 /* show the hand-icon when hovering that class (which is used for module drag-and-drop) */
-.handle {
+.dnd-handler {
   cursor: move;
 }
+
+/* add some styling to the default css classes that are used by the vue.draggable plugin */
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: crimson !important;
+}
+
+
 
 /* floating class with clear-fix afterwards */
 .float-right {
