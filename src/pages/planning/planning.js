@@ -1,20 +1,19 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
-
 import draggable from 'vuedraggable';
-//import VueSortable from 'vue-sortable';
+
+import FilterBy from '../../components/filters/filter-by/filter-by';
+import FindBy from '../../components/filters/find-by/find-by';
 
 /*
  * Tell Vue that we want to use some plugins:
  *   - 'vue-resource' provides http services
- *   - 'vue-sortable' provides drag-and-drop functionality
  *
  * documentations:
- *   - https://github.com/pagekit/vue-resource
- *   - http://sagalbot.github.io/vue-sortable/
+ *   - https://github.com/pagekit/vue-resource    <-- doesn't update view-model
+ *   - http://sagalbot.github.io/vue-sortable     <-- updates view-model correctly.
  */
 Vue.use(VueResource);
-// Vue.use(VueSortable);
 
 /*
  * ------------ BE AWARE ------------
@@ -39,7 +38,7 @@ Vue.use(VueResource);
  *
  *      https://github.com/RubaXa/Sortable#options
  *
- *  This means that the patch mentioned above is no further necessary. Anyway, I'll delete that hint
+ *  This means that the patch mentioned above is not further necessary. Anyway, I'll delete that hint
  *  after finishing the 'planning' page to not loosing some maybe-relevant information.
  *
  *
@@ -70,44 +69,7 @@ let Planning = {
         COMPLETIONS: 'completions',
         BOOKINGS: 'bookings',
         PLANNINGS: 'plannings'
-      },
-
-      list1: [
-        {
-          "id": "ABC-0001",
-          "name": "eins"
-        }, {
-          "id": "ABC-0002",
-          "name": "zwei"
-        }, {
-          "id": "ABC-0003",
-          "name": "drei"
-        }, {
-          "id": "ABC-0004",
-          "name": "vier"
-        }
-      ],
-      list2: [
-        {
-          "id": "BZG1151",
-          "name": "Diskrete Mathematik",
-          "ects": 6,
-          "grade": "B",
-          "semester": 1
-        }, {
-          "id": "BTI7051",
-          "name": "Einführung in die Programmierung",
-          "ects": 4,
-          "grade": "B",
-          "semester": 1
-        }, {
-          "id": "BTI7021",
-          "name": "Betriebswirtschaftslehre 1",
-          "ects": 4,
-          "grade": "C",
-          "semester": 2
-        }
-      ]
+      }
     }
   },
 
@@ -129,21 +91,22 @@ let Planning = {
   },
 
   mounted: function() {
+    let _self = this;
+
     this.$el.addEventListener('add', function(event) {
-      console.log("------------------- 'add' event:");
+      console.log("------------------- 'add' event called.");
       console.log(event);
-    });
 
-    this.$el.addEventListener('update', function(event) {
-      console.log("------------------- 'update' event:");
-      console.log(event);
-    });
+      let origin = event.from.attributes['data-module-type'].value;
+      //let target = event.target.attributes['data-module-type'].value;
+      let moduleId = event.item.attributes['data-module-id'].value;
+      let semester = event.target.attributes['data-semester'].value;
 
-    this.$el.addEventListener('remove', function(event) {
-      console.log("------------------- 'remove' event:");
-      console.log(event);
+      let itemArray = _self.modules[origin].filter(m => m.id === moduleId);
+      itemArray[0].semester = semester;
     });
   },
+
 
   computed: {
     cssColumnSize: function() {
@@ -174,99 +137,11 @@ let Planning = {
   },
 
   methods: {
-    analyzeTransaction: function(event) {
-      /*
-       * TODO:
-       *  'event.item' kan nicht verwendet werden, da es auf das Element zeigt, welches NACH der Re-indexierung diesen Listenplatz einnimmt!
-       *    --> anhand des 'event.newIndex' muss das [add/move/remove] -'te item aus dem target herausgefischt werden
-       */
-      return {
-
-      };
-    }
+    filterBy: FilterBy,
+    findBy: FindBy,
   },
 
-  components: {draggable}
-
-
-  // methods: {
-  //     inspectTransaction: function(event) {
-  //       let info = {
-  //           moduleId: event.item.attributes['data-module-id'].value,
-  //           origin: {
-  //               type: event.from.attributes['data-type'].value,
-  //               semester: event.from.attributes['data-semester'] ? event.from.attributes['data-semester'].value : null
-  //           },
-  //           target: {
-  //               type: event.item.parentElement.attributes['data-type'].value,
-  //               semester: event.item.parentElement.attributes['data-semester'] ?
-  //                   event.item.parentElement.attributes['data-semester'].value : null
-  //           }
-  //       };
-  //       return info;
-  //     },
-  //
-  //     getConfig: function () {
-  //         let _self = this;
-  //
-  //         // mal hier schauen: https://github.com/RubaXa/Sortable/issues/546
-  //
-  //         return Object.assign({
-  //             onAdd: function(event) {
-  //                 let info = _self.inspectTransaction(event);
-  //                 let item = _self.modules[info.origin.type].filter(m => m.id === info.moduleId)[0];
-  //
-  //                 window.console.log("... adding item with id: " + item.id + " to: " + info.target.type);
-  //                 window.console.log("Updated target State: ");
-  //
-  //                 // let modules = [];
-  //                 // for (let i = 0; i < _self.modules[info.target.type].length; i++) {
-  //                 //     modules[i] = _self.modules[info.target.type][i];
-  //                 // }
-  //                 // modules[_self.modules[info.target.type].length] = item;
-  //                 //
-  //                 // _self.modules[info.target.type] = modules;
-  //
-  //                 _self.modules[info.target.type].push(item);
-  //
-  //                 _self.modules[info.target.type].forEach(m => {
-  //                     window.console.log("" + m.id);
-  //                 });
-  //             },
-  //             onRemove: function(event) {
-  //                 let info = _self.inspectTransaction(event);
-  //                 let item = _self.modules[info.origin.type].filter(m => m.id === info.moduleId)[0];
-  //
-  //                 window.console.log("... removing item with id: " + item.id + " from: " + info.origin.type);
-  //                 window.console.log("Updated origin State: ");
-  //
-  //                 // let modules = [];
-  //                 // for (let i = 0; i < _self.modules[info.origin.type].length; i++) {
-  //                 //     if (_self.modules[info.origin.type][i].id !== item.id) {
-  //                 //         modules[i] = _self.modules[info.origin.type][i];
-  //                 //     }
-  //                 // }
-  //                 // _self.modules[info.origin.type] = modules;
-  //
-  //                 let index = _self.modules[info.origin.type].indexOf(item);
-  //                 if (index > -1) {
-  //                     _self.modules[info.origin.type].splice(index, 1);
-  //                 }
-  //
-  //                 _self.modules[info.origin.type].forEach(m => {
-  //                     window.console.log("" + m.id);
-  //                 });
-  //             }
-  //         }, this.baseConfig);
-  //     },
-  //
-  //     filterBySemester: function(property, semNr) {
-  //         return this.modules[property].filter(item => {
-  //             return item.semester === semNr;
-  //         });
-  //     }
-  // }
-
+  components: { draggable, FilterBy, FindBy }
 };
 
 export default Planning;

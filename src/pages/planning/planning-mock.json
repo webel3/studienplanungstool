@@ -1,6 +1,39 @@
 {
   "currentSemester": 4,
   "totalSemesters": 9,
+  "moduleProposals": [
+    {
+      "id": "ABC-0001",
+      "name": "eins"
+    }, {
+      "id": "ABC-0002",
+      "name": "zwei"
+    }, {
+      "id": "ABC-0003",
+      "name": "drei"
+    }, {
+      "id": "ABC-0004",
+      "name": "vier"
+    }, {
+      "id": "ABC-0005",
+      "name": "fünf"
+    }, {
+      "id": "ABC-0006",
+      "name": "sechs"
+    }, {
+      "id": "ABC-0007",
+      "name": "sieben"
+    }, {
+      "id": "ABC-0008",
+      "name": "acht"
+    }, {
+      "id": "ABC-0009",
+      "name": "neun"
+    }, {
+      "id": "ABC-0010",
+      "name": "zehn"
+    }
+  ],
   "moduleCompletions": [
     {
       "id": "BZG1151",
@@ -51,6 +84,11 @@
       "name": "English 3 advanced",
       "ects": 2,
       "semester": 4
+    }, {
+      "id": "BZGxxxx",
+      "name": "Digitale Fotografie 2",
+      "ects": 2,
+      "semester": 5
     }
   ],
   "modulePlannings": [
@@ -61,40 +99,7 @@
     }, {
       "id": "XYZ-0002",
       "name": "x-zwei",
-      "semester": 7
-    }
-  ],
-  "moduleProposals": [
-    {
-      "id": "ABC-0001",
-      "name": "eins"
-    }, {
-      "id": "ABC-0002",
-      "name": "zwei"
-    }, {
-      "id": "ABC-0003",
-      "name": "drei"
-    }, {
-      "id": "ABC-0004",
-      "name": "vier"
-    }, {
-      "id": "ABC-0005",
-      "name": "fünf"
-    }, {
-      "id": "ABC-0006",
-      "name": "sechs"
-    }, {
-      "id": "ABC-0007",
-      "name": "sieben"
-    }, {
-      "id": "ABC-0008",
-      "name": "acht"
-    }, {
-      "id": "ABC-0009",
-      "name": "neun"
-    }, {
-      "id": "ABC-0010",
-      "name": "zehn"
+      "semester": 8
     }
   ]
 }

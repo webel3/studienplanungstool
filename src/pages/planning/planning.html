@@ -2,45 +2,6 @@
     <h3>Meine Studienplanung</h3>
 
 
-    <!-- hide that element // only show it for development reasons -->
-    <div style="display:none">
-        <h2>draggable list 1</h2>
-        <ul>
-            <draggable  :list="modules.proposals" :options="proposalConfig">
-                <!-- ORIGINAL CODE
-                <div v-for="element in list1" @remove="handleRemove" v-on:update="handleRemove">
-                    {{element.id}} - {{element.name}} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
-                </div>-->
-
-                <li v-for="item in modules.proposals" class="list-group-item" :data-module-id="item.id">
-                    {{ item.id }} - {{ item.name }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
-                </li>
-                <li v-show="modules.proposals.length < 1" class="list-group-item">placeholder</li>
-            </draggable>
-        </ul>
-
-
-        <h2>draggable list 2</h2>
-        <ul>
-            <draggable  :list="modules.plannings" :options="planningConfig">
-                <li v-for="item in modules.plannings" class="list-group-item" :data-module-id="item.id">
-                    {{ item.id }} - {{ item.name }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
-                </li>
-                <li v-show="modules.plannings.length < 1" class="list-group-item">placeholder</li>
-            </draggable>
-        </ul>
-
-        <!-- CONTROLLER - ELEMENT ( check the correct data lists ) -->
-        <div>
-            <h2>List 1 v-for</h2>
-                <div v-for="element in list1">{{element.id}} - {{element.name}}</div>
-            <h2>List 2 v-for</h2>
-                <div v-for="element in list2">{{element.id}} - {{element.name}}</div>
-        </div>
-    </div>
-
-
-
     <div class="row">
 
         <!-- column headers -->
@@ -50,8 +11,9 @@
         <!-- module proposals (stand-alone column) -->
         <div :class="'col-md-' + cssColumnSize">
 
-            <ul class="list-group" :data-semester="types.PROPOSALS">
-                <draggable  :list="modules.proposals" :options="proposalConfig">
+            <ul class="list-group">
+                <draggable  :list="modules.proposals" :options="proposalConfig"
+                            :data-module-type="types.PROPOSALS" :data-semester="0">
                     <li v-for="item in modules.proposals" class="list-group-item" :data-module-id="item.id">
                         {{ item.id }} - {{ item.name }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
                     </li>
@@ -66,33 +28,39 @@
 
             <!-- Completed modules if the semester is in the past.
                     NOTE: they are not draggable -->
-            <ul class="list-group" ng-if="semester < currentSemester">
-                <li v-for="item in modules.completions" class="list-group-item list-group-item--completed">
-                    {{ item.id }} ({{ item.ects }})<br/>{{ item.name }}
-                </li>
-            </ul>
+            <div v-if="semester < currentSemester && findBy(modules.completions, semester, 'semester')">
+                <ul class="list-group">
+                    <li v-for="item in findBy(modules.completions, semester, 'semester')" class="list-group-item list-group-item--completed">
+                        {{ item.id }} ({{ item.ects }})<br/>{{ item.name }}
+                    </li>
+                </ul>
+            </div>
 
             <!-- Booked modules for the current semester (and the following-next semester if there are bookings ).
                     NOTE: they are not draggable -->
-            <!-- TODO: die Expression 'semester === (currentSemester + 1)' um 'AndHasModules' erweitern -->
-            <ul class="list-group" ng-if="semester === currentSemester || semester === (currentSemester + 1) ">
-                <li v-for="item in modules.bookings" class="list-group-item list-group-item--booked">
-                    {{ item.id }} ({{ item.ects }})<br/>{{ item.name }}
-                </li>
-            </ul>
+            <div v-if="findBy(modules.bookings, semester, 'semester') && (semester === currentSemester || semester === (currentSemester + 1))">
+                <ul class="list-group">
+                    <li v-for="item in findBy(modules.bookings, semester, 'semester')" class="list-group-item list-group-item--booked">
+                        {{ item.id }} ({{ item.ects }})<br/>{{ item.name }}
+                    </li>
+                </ul>
+            </div>
 
             <!-- each semester in the future can be planned -->
-            <ul class="list-group" :data-semester="types.PLANNINGS">
-                <draggable  :list="modules.plannings" :options="planningConfig">
-                    <li v-for="item in modules.plannings" :data-module-id="item.id"
-                            class="list-group-item list-group-item--planned">
-                        {{ item.id }} - {{ item.name }}&nbsp;
+            <div v-if="semester > currentSemester">
+                <ul class="list-group">
+                    <draggable  :list="modules.plannings" :options="planningConfig"
+                                :data-module-type="types.PLANNINGS" :data-semester="semester">
+                        <li v-for="item in findBy(modules.plannings, semester, 'semester')" :data-module-id="item.id"
+                                class="list-group-item list-group-item--planned">
+                            {{ item.id }} - {{ item.name }}&nbsp;
                             <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
-                    </li>
-                    <li v-show="modules.plannings.length < 1"
-                        class="list-group-item list-group-item--placeholder">placeholder</li>
-                </draggable>
-            </ul>
+                        </li>
+                        <li v-show="findBy(modules.plannings, semester, 'semester').length < 1"
+                            class="list-group-item list-group-item--placeholder">placeholder</li>
+                    </draggable>
+                </ul>
+            </div>
 
         </div>
 
@@ -103,59 +71,5 @@
     <div class="row">
         TODO: summierte ECTS-Punkte pro Column anzeigen.
     </div>
-
-
-
-  <!--&lt;!&ndash; header section &ndash;&gt;-->
-  <!--<div class="row">-->
-    <!--<div :class="'col-md-' + cssColumnSize">Modulangebot</div>-->
-    <!--<div v-for="nr in totalSemesters" :class="'col-md-' + cssColumnSize">{{ nr }}. Semester</div>-->
-  <!--</div>-->
-
-  <!--<div class="row">-->
-
-    <!--&lt;!&ndash; proposals column &ndash;&gt;-->
-    <!--<div :class="'col-md-' + cssColumnSize">-->
-      <!--<ul class="list-group" id="module-proposals" v-sortable="getConfig()" :data-type="types.PROPOSALS">-->
-        <!--<li v-for="module in modules.proposals" :data-module-id="module.id" class="list-group-item">-->
-          <!--<b>{{ module.id }}</b>-->
-          <!--<span class="glyphicon glyphicon-move float-right handle" aria-hidden="true" />-->
-          <!--<br/>{{ module.name }}-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
-
-    <!--&lt;!&ndash; semester columns with each their modules &ndash;&gt;-->
-    <!--<div :class="'col-md-' + cssColumnSize" v-for="semNr in totalSemesters">-->
-      <!--<ul class="list-group" :data-semester="semNr" :data-type="types.PLANNINGS" v-sortable="semNr > currentSemester ? getConfig() : ''">-->
-
-          <!--&lt;!&ndash; completed modules &ndash;&gt;-->
-          <!--<li v-for="module in filterBySemester('completions', semNr)"-->
-              <!--class="list-group-item list-group-item&#45;&#45;completed">-->
-              <!--{{ module.id }}<br/>{{ module.name }}-->
-          <!--</li>-->
-
-          <!--&lt;!&ndash; booked modules &ndash;&gt;-->
-          <!--<li v-for="module in filterBySemester('bookings', semNr)"-->
-              <!--class="list-group-item list-group-item&#45;&#45;booked">-->
-              <!--{{ module.id }}<br/>{{ module.name }}-->
-          <!--</li>-->
-
-          <!--&lt;!&ndash; planned modules &ndash;&gt;-->
-          <!--<li v-for="module in filterBySemester('plannings', semNr)" :data-module-id="module.id"-->
-              <!--class="list-group-item list-group-item&#45;&#45;planned">-->
-            <!--<b>{{ module.id }}</b>-->
-            <!--<span class="glyphicon glyphicon-move float-right handle" aria-hidden="true" />-->
-            <!--<br/>{{ module.name }}-->
-          <!--</li>-->
-
-          <!--&lt;!&ndash; placeholder for empty planning slots &ndash;&gt;-->
-          <!--<li v-show="semNr > currentSemester && filterBySemester('plannings', semNr) < 1"-->
-              <!--class="list-group-item list-group-item&#45;&#45;placeholder">{ Platzhalter }</li>-->
-      <!--</ul>-->
-    <!--</div>-->
-
-  <!--</div>-->
-
 
 </div>
