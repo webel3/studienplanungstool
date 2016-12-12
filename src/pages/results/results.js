@@ -1,7 +1,9 @@
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+import jQuery from 'jquery';
 import DynamicTable from '../../components/dynamic-table/dynamic-table';
 
-import jQuery from 'jquery';
-
+Vue.use(VueResource);
 
 
 let headerz = ['Code', 'Titel', 'Typ', 'Semester', 'Sprache', 'Bewertung', 'ECTS (erworben)', 'ECTS (anrechenbar)'];
@@ -20,24 +22,38 @@ let Results = {
     template: require('./results.html'),
     data: () => {
         return {
-            message: 'results.js',
             headers: [],
-            rows: []
+            groups: [],
+            modules: []
         }
     },
 
     created: function createdHook() {
-        window.console.log("'created' hook called. jQuery version: ", jQuery.fn.jquery);
+        this.$http.get('/src/pages/results/results-mock.json').then((response) => {
+            this.headers = response.body.headers;
+            this.groups = response.body.groups;
+            this.modules = response.body.modules;
+        }, (response) => {
+            window.console.log(response);
+        });
+
+        // window.console.log("'created' hook called. jQuery version: ", jQuery.fn.jquery);
+
         this.headers = headerz;
         this.rows = rowz;
     },
 
     mounted: function mounted() {
-
         // ensure that DOM element exists prior to use jquery
         this.$nextTick(function() {
           // some fancy jquery stuff
         });
+    },
+
+    methods: {
+        filterModules: function(group) {
+            return this.modules.filter(m => m.group === group);
+        }
     },
 
     components: { DynamicTable }

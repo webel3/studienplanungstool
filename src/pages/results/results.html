@@ -6,5 +6,36 @@
       inside the dynamic-table component. For that the table passes the data itself, we have
       to use the 'v-bind' directive in front of the attribute name.
     -->
-    <dynamic-table v-bind:headers="headers" v-bind:rows="rows"></dynamic-table>
+    <!--<dynamic-table v-bind:headers="headers" v-bind:rows="rows"></dynamic-table>-->
+
+
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th v-for="head in headers">{{ head }}</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <template v-for="group in groups">
+          <!-- group header -->
+          <tr>
+            <th :colspan="headers.length + 1">{{ group }}</th>
+          </tr>
+
+          <!-- entries for that module group -->
+          <tr v-for="item in filterModules(group)">
+            <!-- empty cell to jump over module group's cell -->
+            <td></td>
+            
+            <td v-for="(property, key) in item" v-if="key !== 'group'">{{ property }}</td>
+          </tr>
+        </template>
+
+      </tbody>
+    </table>
+
+
+
 </div>
