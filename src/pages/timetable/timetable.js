@@ -13,6 +13,8 @@ let Timetable = {
         this.$nextTick(function() {
             // some fancy jquery stuff
             window.console.log("'created' hook called. jQuery version: ", jQuery.fn.jquery);
+
+            // https://fullcalendar.io/docs/
         });
     }
 };

@@ -18,7 +18,6 @@
 
 
 /* Hide un-compiled mustache bindings until the Vue instance is ready */
-
 [v-cloak] {
   display: none;
 }
@@ -54,6 +53,19 @@
 }
 
 
+/* stylings for an execution tile */
+.execution-tile {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.execution-tile--provided {
+  background-color: antiquewhite;
+}
+
+.execution-tile--booked {
+  background-color: lightcyan;
+}
 
 
 /* additional column-size definitions for the existing grid system */

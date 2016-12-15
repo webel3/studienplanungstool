@@ -1,0 +1,18 @@
+<div class="execution-tile" :class="cssClass">
+  <h4>{{ execution.code }}.{{ execution.identifier }} - {{ execution.title }}</h4>
+  <p>
+    <div v-for="slot in execution.slots">
+      {{ slot.day }}, von {{ slot.start }} bis {{ slot.end }}, Raum {{ slot.room }} in {{ slot.place }}
+    </div>
+    <br />
+    <div>Findet statt im Semester: {{ execution.semester }}</div>
+  </p>
+
+  <p v-if="addFn">
+    <button v-on:click.keyup="addFn(execution)">buchen</button>
+  </p>
+
+  <p v-if="removeFn">
+    <button v-on:click.keyup="removeFn(execution)">entfernen</button>
+  </p>
+</div>

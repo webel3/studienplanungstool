@@ -1,5 +1,36 @@
 <div class="container-fluid">
-    <h3>Teilnahme an Modulen auswählen</h3>
 
-    <p>ViewModel: {{ message }}</p>
+  <!-- column with search filter and provided executions -->
+  <div class="col-md-4" id="executions">
+    <h3>Angebotene Durchführungen</h3>
+
+    <!-- filter functionality -->
+    <div>
+      <input type="text" v-model="searchString" placeholder="Modul suchen" />
+    </div>
+
+    <!-- list of provided executions -->
+    <div v-for="execution in filteredExecutions">
+      <execution-tile :execution="execution" cssClass="execution-tile--provided" :addFn="add"></execution-tile>
+    </div>
+  </div>
+
+  <!-- booked executions for next semester -->
+  <div class="col-md-4" id="bookings-next">
+    <h3>Semester: {{ nextSemester }}</h3>
+
+    <div v-for="execution in bookings">
+      <execution-tile :execution="execution" cssClass="execution-tile--booked" :removeFn="remove"></execution-tile>
+    </div>
+  </div>
+
+  <!-- booked executions for semester after the next one -->
+  <div class="col-md-4" id="bookings-after-next">
+    <h3>Übernächstes Semester: {{ nextSemester + 1 }}</h3>
+
+    <div v-for="execution in bookingsAfterNext">
+      <execution-tile :execution="execution" cssClass="execution-tile--booked" :removeFn="remove"></execution-tile>
+    </div>
+  </div>
+
 </div>
