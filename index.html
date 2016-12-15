@@ -13,18 +13,19 @@
   </head>
   <body>
 
-  <!-- whole page-specific content goes inside here -->
-  <div class="container-fluid" id="app">
+    <!-- whole page-specific content goes inside here -->
+    <div class="container-fluid" id="app" v-cloak>
 
-    <navigation-bar></navigation-bar>
+      <navigation-bar></navigation-bar>
 
-    <!-- vue-router displays partial content through this special tag -->
-    <router-view></router-view>
+      <!-- vue-router displays partial content through this special tag -->
+      <router-view></router-view>
 
-  </div>
+    </div>
 
-  <!-- include javascript file, bundled by webpack -->
-  <script src="target/bundle.js"></script>
+    <!-- include javascript file, bundled by webpack -->
+    <script src="target/bundle.js"></script>
+
   </body>
 
 </html>

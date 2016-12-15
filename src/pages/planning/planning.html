@@ -11,10 +11,14 @@
         <!-- module proposals (stand-alone column) -->
         <div :class="'col-md-' + cssColumnSize">
 
+            <div class="searchbox">
+                <input type="text" v-model="searchString" placeholder="Modul suchen" />
+            </div>
+
             <ul class="list-group">
                 <draggable  :list="modules.proposals" :options="proposalConfig"
                             :data-module-type="types.PROPOSALS" :data-semester="0">
-                    <li v-for="item in modules.proposals" class="list-group-item" :data-module-id="item.id">
+                    <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.id">
                         {{ item.id }} - {{ item.name }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
                     </li>
                     <li v-show="modules.proposals.length < 1"

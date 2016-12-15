@@ -12,10 +12,16 @@
 
 /* add some styling to the default css classes that are used by the vue.draggable plugin */
 .sortable-ghost {
-  opacity: 0.4;
+  opacity: 0.3;
   background-color: crimson !important;
 }
 
+
+/* Hide un-compiled mustache bindings until the Vue instance is ready */
+
+[v-cloak] {
+  display: none;
+}
 
 
 /* floating class with clear-fix afterwards */

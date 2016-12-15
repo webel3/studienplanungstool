@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
-import jQuery from 'jquery';
 import DynamicTable from '../../components/dynamic-table/dynamic-table';
 
 Vue.use(VueResource);
@@ -36,8 +35,6 @@ let Results = {
         }, (response) => {
             window.console.log(response);
         });
-
-        // window.console.log("'created' hook called. jQuery version: ", jQuery.fn.jquery);
 
         this.headers = headerz;
         this.rows = rowz;

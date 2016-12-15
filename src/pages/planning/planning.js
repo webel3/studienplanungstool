@@ -69,7 +69,8 @@ let Planning = {
         COMPLETIONS: 'completions',
         BOOKINGS: 'bookings',
         PLANNINGS: 'plannings'
-      }
+      },
+      searchString: ""
     }
   },
 
@@ -82,9 +83,6 @@ let Planning = {
       response.body.moduleCompletions.forEach(m => this.modules.completions.push(m));
       response.body.moduleBookings.forEach(m => this.modules.bookings.push(m));
       response.body.modulePlannings.forEach(m => this.modules.plannings.push(m));
-
-      window.console.log("**** Initial Planning State:");
-      this.modules.plannings.forEach(m => window.console.log("" + m.id));
     }, (response) => {
       window.console.log(response);
     });
@@ -100,7 +98,7 @@ let Planning = {
       let origin = event.from.attributes['data-module-type'].value;
       //let target = event.target.attributes['data-module-type'].value;
       let moduleId = event.item.attributes['data-module-id'].value;
-      let semester = event.target.attributes['data-semester'].value;
+      let semester = parseInt(event.target.attributes['data-semester'].value);
 
       let itemArray = _self.modules[origin].filter(m => m.id === moduleId);
       itemArray[0].semester = semester;
@@ -132,6 +130,14 @@ let Planning = {
           put: [this.types.PLANNINGS, this.types.PROPOSALS]
         }
       }, this.baseConfig);
+    },
+
+    filteredProposals: function() {
+      return this.modules.proposals.filter(item => {
+        if (item.name.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
+          return item;
+        }
+      });
     }
 
   },
