@@ -4,11 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>studienplanungstool</title>
-
-    <!-- Bootstrap CSS -->
+    <!-- used CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-
-    <!-- TODO: als SASS schreiben, dann von Webpack rendern lassen -->
+    <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.min.css">
+    <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.print.min.css" media="print">
     <link rel="stylesheet" href="src/css/individualstylings.css">
   </head>
   <body>
@@ -16,16 +15,15 @@
     <!-- whole page-specific content goes inside here -->
     <div class="container-fluid" id="app" v-cloak>
 
+      <!-- navigation bar shall be visible on each page -->
       <navigation-bar></navigation-bar>
 
-      <!-- vue-router displays partial content through this special tag -->
+      <!-- vue-router displays partial content through this directive -->
       <router-view></router-view>
 
     </div>
 
     <!-- include javascript file, bundled by webpack -->
     <script src="target/bundle.js"></script>
-
   </body>
-
 </html>

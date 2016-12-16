@@ -21,7 +21,7 @@ module.exports = {
     modules: [
       'node_modules', path.resolve(__dirname, 'src')
     ],
-    extensions: ['.ts', '.js', '.css', '.scss'],
+    extensions: ['.js', '.css', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.js'
     }
@@ -29,10 +29,6 @@ module.exports = {
 
   module: {
     loaders: [
-      {
-        test: /\.ts$/,
-        use: ['awesome-typescript-loader']
-      },
       {
         test: /\.(html|css)$/,
         use: 'raw-loader'
