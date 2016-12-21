@@ -1,6 +1,9 @@
 import jQuery from 'jquery';
 import FullCalendar from 'fullcalendar';
 
+import HttpConfig from '../../rest/HttpConfig';
+import Endpoints from '../../rest/Endpoints';
+
 let Timetable = {
     template: require('./timetable.html'),
     data: () => {
@@ -16,6 +19,14 @@ let Timetable = {
         }, (response) => {
             window.console.log(response);
         });
+
+
+        this.$http.get(Endpoints.TABLE_COURSE_EXECUTION, HttpConfig).then(response => {
+            window.console.log(response.body);
+        }, response => {
+            window.console.log(response);
+        });
+
     },
 
     mounted: function () {
@@ -37,9 +48,9 @@ let Timetable = {
                 navLinks: true,
                 editable: false,
                 events: [{
-                    "title": "All Day Event",
-                    "start": "2016-12-01"
-                },
+                        "title": "All Day Event",
+                        "start": "2016-12-01"
+                    },
                     {
                         "title": "Long Event",
                         "start": "2016-12-07",
@@ -95,7 +106,7 @@ let Timetable = {
         });
     },
 
-    components: { jQuery, FullCalendar }
+    components: { jQuery, FullCalendar, HttpConfig, Endpoints }
 };
 
 export default Timetable;
