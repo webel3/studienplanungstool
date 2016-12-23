@@ -1,5 +1,9 @@
 import ExecutionTile from '../../components/execution-tile/execution-tile';
 
+import HttpConfig from '../../rest/HttpConfig';
+import Endpoints from '../../rest/Endpoints';
+
+
 let Modules = {
     template: require('./modules.html'),
 
@@ -16,11 +20,41 @@ let Modules = {
     created: function() {
         this.$http.get('/src/pages/modules/modules-mock.json').then((response) => {
             this.nextSemester = response.body.nextSemester;
-            this.executions = response.body.executions;
+            //this.executions = response.body.executions;
             this.bookings = response.body.bookingsNext;
             this.bookingsAfterNext = response.body.bookingsAfterNext;
         }, (response) => {
             window.console.log(response);
+        });
+
+
+        let _self = this;
+        let startDate = new Date();
+
+        Promise.all([
+            this.$http.get(Endpoints.COURSE_EXECUTION, HttpConfig),
+            this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig) // TODO: Call auf 'Modules' für weitere infos zum modul, z.B. titel
+        ]).then(function(responses) {
+            _self.executions = responses[0].body.resource;
+
+            let time2 = new Date();
+            console.log("call duration: ", (time2 - startDate));
+            responses[1].body.resource.forEach(slot => {
+                _self.executions.forEach(exec => {
+                    if (exec.uid === slot.courseexecution_id) {
+                        if (!exec.slots) {
+                            exec.slots = [];
+                        }
+                        exec.slots.push(slot);
+                    }
+                });
+            });
+
+            console.log("aggregation duration:", (new Date() - time2));
+
+        }, responses => {
+            console.log(responses[0]);
+            console.log(responses[1]);
         });
     },
 
@@ -48,7 +82,8 @@ let Modules = {
     computed: {
         filteredExecutions: function() {
             return this.executions.filter(item => {
-                if (item.title.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
+                // TODO: title aus view verwenden anstatt executioncode
+                if (item.executioncode.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
                     return item;
                 }
             });

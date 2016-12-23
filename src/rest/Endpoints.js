@@ -1,8 +1,10 @@
 let Endpoints = {
 
     // local dreamfactory instance: 'http://localhost'
-    TABLE_COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course',
-    TABLE_COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution'
+    COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course',
+    COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution',
+    EXECUTION_SLOT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/executionslot',
+    STUDENT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student'
 
 };
 

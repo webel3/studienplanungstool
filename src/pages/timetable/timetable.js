@@ -21,7 +21,7 @@ let Timetable = {
         });
 
 
-        this.$http.get(Endpoints.TABLE_COURSE_EXECUTION, HttpConfig).then(response => {
+        this.$http.get(Endpoints.COURSE_EXECUTION, HttpConfig).then(response => {
             window.console.log(response.body);
         }, response => {
             window.console.log(response);
