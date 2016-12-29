@@ -1,11 +1,12 @@
 <div class="execution-tile" :class="cssClass">
-  <h4>{{ execution.code }}.{{ execution.identifier }} - {{ execution.title }}</h4>
+  <h4>{{ execution.executioncode }} - {{ execution.course_name_de }}</h4>
   <p>
+    <div>{{ execution.place }}</div>
     <div v-for="slot in execution.slots">
-      {{ slot.day }}, von {{ slot.start }} bis {{ slot.end }}, Raum {{ slot.room }} in {{ slot.place }}
+      {{ slot.day }}, {{ slot.start }} - {{ slot.end }}, {{ slot.room }}
     </div>
     <br />
-    <div>Findet statt im Semester: {{ execution.semester }}</div>
+    <div>Semester: {{ execution.semester }}</div>
   </p>
 
   <p v-if="addFn">

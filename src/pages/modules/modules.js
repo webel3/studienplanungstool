@@ -4,6 +4,33 @@ import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
 
 
+var setDay = function (slot) {
+    switch (slot.dayofweek) {
+        case 1:
+            slot.day = "Montag";
+            break;
+        case 2:
+            slot.day = "Dienstag";
+            break;
+        case 3:
+            slot.day = "Mittwoch";
+            break;
+        case 4:
+            slot.day = "Donnerstag";
+            break;
+        case 5:
+            slot.day = "Freitag";
+            break;
+        case 6:
+            slot.day = "Samstag";
+            break;
+        case 7:
+            slot.day = "Sonntag";
+            break;
+    }
+    return slot;
+}
+
 let Modules = {
     template: require('./modules.html'),
 
@@ -24,7 +51,7 @@ let Modules = {
             this.bookings = response.body.bookingsNext;
             this.bookingsAfterNext = response.body.bookingsAfterNext;
         }, (response) => {
-            window.console.log(response);
+            //window.console.log(response);
         });
 
 
@@ -32,9 +59,9 @@ let Modules = {
         let startDate = new Date();
 
         Promise.all([
-            this.$http.get(Endpoints.COURSE_EXECUTION, HttpConfig),
-            this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig) // TODO: Call auf 'Modules' für weitere infos zum modul, z.B. titel
-        ]).then(function(responses) {
+            this.$http.get(Endpoints.COURSE_EXECUTION_VIEW, HttpConfig),
+            this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig)
+        ]).then(function (responses) {
             _self.executions = responses[0].body.resource;
 
             let time2 = new Date();
@@ -45,7 +72,7 @@ let Modules = {
                         if (!exec.slots) {
                             exec.slots = [];
                         }
-                        exec.slots.push(slot);
+                        exec.slots.push(setDay(slot));
                     }
                 });
             });
@@ -82,8 +109,7 @@ let Modules = {
     computed: {
         filteredExecutions: function() {
             return this.executions.filter(item => {
-                // TODO: title aus view verwenden anstatt executioncode
-                if (item.executioncode.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
+                if (item.course_name_de.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
                     return item;
                 }
             });
