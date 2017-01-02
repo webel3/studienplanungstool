@@ -1,16 +1,7 @@
 <div class="container-fluid">
     <h3>Meine persönlichen Ergebnisse</h3>
 
-    <!--
-      If we only would write 'headers=headers', the vue would pass the string value 'headers'
-      inside the dynamic-table component. For that the table passes the data itself, we have
-      to use the 'v-bind' directive in front of the attribute name.
-    -->
-    <!--<dynamic-table v-bind:headers="headers" v-bind:rows="rows"></dynamic-table>-->
-
-
-
-    <table class="table table-striped">
+    <table class="table table-striped" v-cloak>
       <thead>
         <tr>
           <th v-for="head in headers">{{ head }}</th>
@@ -26,6 +17,7 @@
 
           <!-- entries for that module group -->
           <tr v-for="item in filterModules(group)">
+
             <!-- empty cell to jump over module group's cell -->
             <td></td>
             

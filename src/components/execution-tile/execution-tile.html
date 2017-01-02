@@ -6,7 +6,7 @@
       {{ slot.day }}, {{ slot.start }} - {{ slot.end }}, {{ slot.room }}
     </div>
     <br />
-    <div>Semester: {{ execution.semester }}</div>
+    <div>Semester: {{ execution.semester.type.name }} {{ execution.semester.year }}</div>
   </p>
 
   <p v-if="addFn">

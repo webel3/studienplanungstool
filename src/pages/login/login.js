@@ -27,7 +27,6 @@ let Login = {
             this.$http.get(encodeURI(Endpoints.STUDENT + queryString), HttpConfig).then((response) => {
                 if (response.body.resource.length === 1) {
                     sessionStorage.setItem('user', JSON.stringify(response.body.resource[0]));
-                    // this.$route.router.go('/');
                     location.href = '/';
                 } else {
                     this.loginFailed = true;

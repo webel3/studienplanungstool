@@ -17,18 +17,22 @@
 
   <!-- booked executions for next semester -->
   <div class="col-md-4" id="bookings-next">
-    <h3>Semester: {{ nextSemester }}</h3>
+    <h3>Semester: {{ formatSemester() }}</h3>
 
-    <div v-for="execution in bookings">
+    <div v-for="execution in filteredBookings">
       <execution-tile :execution="execution" cssClass="execution-tile--booked" :removeFn="remove"></execution-tile>
     </div>
   </div>
 
   <!-- booked executions for semester after the next one -->
   <div class="col-md-4" id="bookings-after-next">
-    <h3>Übernächstes Semester: {{ nextSemester + 1 }}</h3>
+    <h3>Übernächstes Semester: {{ formatSemester(1) }}</h3>
 
-    <div v-for="execution in bookingsAfterNext">
+    <div class="row" v-if="filteredBookingsAfterNext.length === 0">
+      <div class="alert alert-info" role="alert"><b>Es sind noch keine Moduldurchführungen für dieses Semester bekannt.</b></div>
+    </div>
+
+    <div v-for="execution in filteredBookingsAfterNext">
       <execution-tile :execution="execution" cssClass="execution-tile--booked" :removeFn="remove"></execution-tile>
     </div>
   </div>
