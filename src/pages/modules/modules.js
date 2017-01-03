@@ -1,5 +1,8 @@
 import ExecutionTile from '../../components/execution-tile/execution-tile';
 
+import jQuery from 'jquery';
+import BootstrapSelect from 'bootstrap-select';
+
 import DayOfWeek from '../../helpers/DayOfWeek';
 import SemesterHelper from '../../helpers/SemesterHelper';
 
@@ -15,8 +18,68 @@ let Modules = {
             upcomingSemester: JSON.parse(sessionStorage.getItem('user')).upcomingsemester,
             executions: [],
             bookings: [],
-            searchString: ""
+            searches: {
+                module: '',
+                places: {
+                    model: [],
+                    options: [{
+                        value: 'BER',
+                        name: 'Bern'
+                    }, {
+                        value: 'BIE',
+                        name: 'Biel'
+                    }]
+                },
+                types: {
+                    model: [],
+                    options: [{
+                        value: 'PM',
+                        name: 'Pflicht'
+                    }, {
+                        value: 'WM',
+                        name: 'Wahlpflicht'
+                    }, {
+                        value: 'WW',
+                        name: 'Wahl'
+                    }]
+                },
+                groups: {
+                    model: [],
+                    options: [{
+                        value: 'A',
+                        name: 'A'
+                    }, {
+                        value: 'B',
+                        name: 'B'
+                    }, {
+                        value: 'C',
+                        name: 'C'
+                    }, {
+                        value: 'D',
+                        name: 'D'
+                    }, {
+                        value: 'D1',
+                        name: 'D1'
+                    }, {
+                        value: 'D2',
+                        name: 'D2'
+                    }]
+                }
+            }
         }
+    },
+
+    mounted: function() {
+        this.$nextTick(function() { // ensure that DOM element exists prior to use jquery
+            jQuery('.selectpicker').selectpicker();
+
+            /* unfortunately, we have to use that bugfix to get it working.
+             * otherwise, the 'open' class won't get toggled and the dropdown is never shown.
+             */
+            jQuery(".bootstrap-select").click(function () {
+                jQuery(this).toggleClass('open');
+            });
+        });
     },
 
     created: function() {
@@ -37,6 +100,8 @@ let Modules = {
                             exec.slots = [];
                         }
                         slot.day = DayOfWeek.getDay(slot.dayofweek);
+                        slot.start = slot.start.substr(0, 5);
+                        slot.end = slot.end.substr(0, 5);
                         exec.slots.push(slot);
                     }
 
@@ -81,11 +146,49 @@ let Modules = {
 
     computed: {
         filteredExecutions: function() {
-            return this.executions.filter(item => {
-                if (item.course_name_de.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
-                    return item;
-                }
-            });
+
+            window.console.log('--------------------------------------------------------------');
+            window.console.log('module: ', this.searches.module);
+            window.console.log('places:', this.searches.places.model);
+            window.console.log('types: ', this.searches.types.model);
+            window.console.log('groups: ', this.searches.groups.model);
+
+            return this.executions
+
+                // check if the module name matches the searched input string.
+                .filter(item => {
+                    if (item.course_name_de.toLowerCase().indexOf(this.searches.module.trim().toLowerCase()) > -1) {
+                        return item;
+                    }
+                })
+
+                // if there is at least one place selected, check for it.
+                .filter(item => {
+                    if (this.searches.places.model.length > 0) {
+                        if (this.searches.places.model.indexOf(item.place) > -1) {
+                            return item;
+                        }
+                    } else return item;
+                })
+
+                // if there is at least one module type selected, check for it.
+                .filter(item => {
+                    if (this.searches.types.model.length > 0) {
+                        if (this.searches.types.model.indexOf(item.coursetype) > -1) {
+                            return item;
+                        }
+                    } else return item;
+                })
+
+                // if there is at least one module group selected, check for it.
+                .filter(item => {
+                    if (this.searches.groups.model.length > 0) {
+                        if (this.searches.groups.model.indexOf(item.coursegroup) > -1) {
+                            return item;
+                        }
+                    } else return item;
+                })
+            ;
         },
 
         filteredBookings: function() {
@@ -111,7 +214,7 @@ let Modules = {
         }
     },
 
-    components: { ExecutionTile }
+    components: { ExecutionTile, jQuery, BootstrapSelect }
 };
 
 export default Modules;

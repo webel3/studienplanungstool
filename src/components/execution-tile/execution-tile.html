@@ -1,19 +1,35 @@
 <div class="execution-tile" :class="cssClass">
-  <h4>{{ execution.executioncode }} - {{ execution.course_name_de }}</h4>
-  <p>
-    <div>{{ execution.place }}</div>
-    <div v-for="slot in execution.slots">
-      {{ slot.day }}, {{ slot.start }} - {{ slot.end }}, {{ slot.room }}
+
+  <div class="card">
+    <div class="card-block">
+      <h4 class="card-title">
+        <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + execution.coursecode + '-de.xml'" target="_blank">
+          {{ execution.executioncode }} - {{ execution.course_name_de }}
+        </a>
+      </h4>
+      <p class="card-text">
+        XXX ECTS, Modulgruppe {{ execution.coursegroup }}<br/>
+        Standort: <b>{{ execution.place }}</b>
+      </p>
     </div>
-    <br />
-    <div>Semester: {{ execution.semester.type.name }} {{ execution.semester.year }}</div>
-  </p>
+    <ul class="list-group">
+      <li class="list-group-item" v-for="slot in execution.slots">
+        {{ slot.day }}, {{ slot.start }} - {{ slot.end }}, Raum {{ slot.room }}
+      </li>
+    </ul>
+    <div class="card-block float-right">
 
-  <p v-if="addFn">
-    <button v-on:click.keyup="addFn(execution)">buchen</button>
-  </p>
+      <button type="button" class="btn btn-default" v-if="addFn" v-on:click.keyup="addFn(execution)">
+        buchen <span class="glyphicon glyphicon-shopping-cart"></span>
+      </button>
 
-  <p v-if="removeFn">
-    <button v-on:click.keyup="removeFn(execution)">entfernen</button>
-  </p>
+      <button type="button" class="btn btn-default" v-if="removeFn" v-on:click.keyup="removeFn(execution)">
+        entfernen <span class="glyphicon glyphicon-trash"></span>
+      </button>
+    </div>
+
+    <!-- because the book/remove link is right-floated, we need an empty clearfix div -->
+    <div class="clearfix">&nbsp;</div>
+  </div>
+
 </div>

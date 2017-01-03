@@ -4,14 +4,48 @@
   <div class="col-md-4" id="executions">
     <h3>Angebotene Durchführungen</h3>
 
-    <!-- filter functionality -->
+    <!-- dropdown to filter for execution places -->
     <div>
-      <input type="text" v-model="searchString" placeholder="Modul suchen" />
+      <label for="search-places" class="width-thirty">Ort:</label>
+      <select id="search-places" class="selectpicker width-seventy" multiple v-model="searches.places.model">
+        <option v-for="option in searches.places.options" :value="option.value">{{ option.name }}</option>
+      </select>
     </div>
+
+    <!-- dropdown to filter for module types -->
+    <div>
+      <label for="search-types" class="width-thirty">Typ:</label>
+      <select id="search-types" class="selectpicker width-seventy" multiple v-model="searches.types.model">
+        <option v-for="option in searches.types.options" :value="option.value">{{ option.name }}</option>
+      </select>
+    </div>
+
+    <!-- dropdown to filter for module groups -->
+    <div>
+      <label for="search-groups" class="width-thirty">Gruppe:</label>
+      <select id="search-groups" class="selectpicker width-seventy" multiple v-model="searches.groups.model">
+        <option v-for="option in searches.groups.options" :value="option.value">{{ option.name }}</option>
+      </select>
+    </div>
+
+    <!-- input field for search functionality -->
+    <div>
+      <label for="search-module" class="width-thirty">Name:</label>
+      <div class="input-group input-group--module width-seventy">
+        <input id="search-module" type="text" class="form-control" placeholder="Nach Modulname suchen" v-model="searches.module" />
+      </div>
+    </div>
+
 
     <!-- list of provided executions -->
     <div v-for="execution in filteredExecutions">
       <execution-tile :execution="execution" cssClass="execution-tile--provided" :addFn="add"></execution-tile>
+    </div>
+
+    <div class="row" v-if="filteredExecutions.length === 0">
+      <div class="alert alert-warning" role="alert">
+        <b>Für die gewählten Filter existieren keine Moduldurchführungen.</b>
+      </div>
     </div>
   </div>
 
