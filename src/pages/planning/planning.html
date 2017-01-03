@@ -19,7 +19,7 @@
                 <draggable  :list="modules.proposals" :options="proposalConfig"
                             :data-module-type="types.PROPOSALS" :data-semester="0">
                     <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.id">
-                        {{ item.id }} - {{ item.name }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
+                        {{ item.code }} - {{ item.name_de }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true" />
                     </li>
                     <li v-show="modules.proposals.length < 1"
                         class="list-group-item list-group-item--placeholder">placeholder</li>

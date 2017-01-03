@@ -5,6 +5,9 @@ import draggable from 'vuedraggable';
 import FilterBy from '../../components/filters/filter-by/filter-by';
 import FindBy from '../../components/filters/find-by/find-by';
 
+import HttpConfig from '../../rest/HttpConfig';
+import Endpoints from '../../rest/Endpoints';
+
 /*
  * Tell Vue that we want to use some plugins:
  *   - 'vue-resource' provides http services
@@ -49,7 +52,7 @@ Vue.use(VueResource);
 let Planning = {
   template: require('./planning.html'),
 
-  data: function() {
+  data: function () {
     return {
       currentSemester: 0,
       totalSemesters: 0,
@@ -74,24 +77,31 @@ let Planning = {
     }
   },
 
-  created: function() {
-    this.$http.get('/src/pages/planning/planning-mock.json').then((response) => {
-      this.currentSemester = response.body.currentSemester;
-      this.totalSemesters = response.body.totalSemesters;
+  created: function () {
 
-      response.body.moduleProposals.forEach(m => this.modules.proposals.push(m));
-      response.body.moduleCompletions.forEach(m => this.modules.completions.push(m));
-      response.body.moduleBookings.forEach(m => this.modules.bookings.push(m));
-      response.body.modulePlannings.forEach(m => this.modules.plannings.push(m));
-    }, (response) => {
-      window.console.log(response);
-    });
-  },
-
-  mounted: function() {
     let _self = this;
 
-    this.$el.addEventListener('add', function(event) {
+    Promise.all([
+      this.$http.get('/src/pages/planning/planning-mock.json'),
+      this.$http.get(Endpoints.COURSE, HttpConfig),
+      this.$http.get(Endpoints.RESULT_VIEW, HttpConfig),
+    ]).then(function (responses) {
+
+      _self.currentSemester = responses[0].body.currentSemester;
+      _self.totalSemesters = responses[0].body.totalSemesters;
+
+      responses[1].body.resource.forEach(m => _self.modules.proposals.push(m));
+      responses[0].body.moduleCompletions.forEach(m => _self.modules.completions.push(m));
+      responses[0].body.moduleBookings.forEach(m => _self.modules.bookings.push(m));
+      responses[0].body.modulePlannings.forEach(m => _self.modules.plannings.push(m));
+    });
+
+  },
+
+  mounted: function () {
+    let _self = this;
+
+    this.$el.addEventListener('add', function (event) {
       console.log("------------------- 'add' event called.");
       console.log(event);
 
@@ -107,14 +117,14 @@ let Planning = {
 
 
   computed: {
-    cssColumnSize: function() {
+    cssColumnSize: function () {
       if (this.totalSemesters == 9) {
         return 10;
       }
       return 7;
     },
 
-    proposalConfig: function() {
+    proposalConfig: function () {
       return Object.assign({
         group: {
           name: this.types.PROPOSALS,
@@ -123,7 +133,7 @@ let Planning = {
       }, this.baseConfig);
     },
 
-    planningConfig: function() {
+    planningConfig: function () {
       return Object.assign({
         group: {
           name: this.types.PLANNINGS,
@@ -132,9 +142,9 @@ let Planning = {
       }, this.baseConfig);
     },
 
-    filteredProposals: function() {
+    filteredProposals: function () {
       return this.modules.proposals.filter(item => {
-        if (item.name.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
+        if (item.name_de.toLowerCase().indexOf(this.searchString.trim().toLowerCase()) > -1) {
           return item;
         }
       });
@@ -147,7 +157,7 @@ let Planning = {
     findBy: FindBy,
   },
 
-  components: { draggable, FilterBy, FindBy }
+  components: {draggable, FilterBy, FindBy}
 };
 
 export default Planning;
