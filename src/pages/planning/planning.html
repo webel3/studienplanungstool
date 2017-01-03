@@ -32,7 +32,7 @@
 
             <!-- Completed modules if the semester is in the past.
                     NOTE: they are not draggable -->
-            <div v-if="semester < currentSemester && findBy(modules.completions, semester, 'semester')">
+            <div v-if="semester < upcomingSemester && findBy(modules.completions, semester, 'semester')">
                 <ul class="list-group">
                     <li v-for="item in findBy(modules.completions, semester, 'semester')" class="list-group-item list-group-item--completed">
                         {{ item.id }} ({{ item.ects }})<br/>{{ item.name }}
@@ -40,9 +40,9 @@
                 </ul>
             </div>
 
-            <!-- Booked modules for the current semester (and the following-next semester if there are bookings ).
+            <!-- Booked modules for the upcoming semester (and the following-next semester if there are bookings ).
                     NOTE: they are not draggable -->
-            <div v-if="findBy(modules.bookings, semester, 'semester') && (semester === currentSemester || semester === (currentSemester + 1))">
+            <div v-if="findBy(modules.bookings, semester, 'semester') && (semester === upcomingSemester || semester === (upcomingSemester + 1))">
                 <ul class="list-group">
                     <li v-for="item in findBy(modules.bookings, semester, 'semester')" class="list-group-item list-group-item--booked">
                         {{ item.id }} ({{ item.ects }})<br/>{{ item.name }}
@@ -51,7 +51,7 @@
             </div>
 
             <!-- each semester in the future can be planned -->
-            <div v-if="semester > currentSemester">
+            <div v-if="semester > upcomingSemester">
                 <ul class="list-group">
                     <draggable  :list="modules.plannings" :options="planningConfig"
                                 :data-module-type="types.PLANNINGS" :data-semester="semester">
