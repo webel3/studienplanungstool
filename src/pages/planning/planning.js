@@ -77,18 +77,7 @@ let Planning = {
     }
   },
 
-<<<<<<< HEAD
   created: function() {
-    this.$http.get('/src/pages/planning/planning-mock.json').then((response) => {
-      response.body.moduleProposals.forEach(m => this.modules.proposals.push(m));
-      response.body.moduleCompletions.forEach(m => this.modules.completions.push(m));
-      response.body.moduleBookings.forEach(m => this.modules.bookings.push(m));
-      response.body.modulePlannings.forEach(m => this.modules.plannings.push(m));
-    }, (response) => {
-      window.console.log(response);
-=======
-  created: function () {
-
     let _self = this;
 
     Promise.all([
@@ -104,9 +93,9 @@ let Planning = {
       responses[0].body.moduleCompletions.forEach(m => _self.modules.completions.push(m));
       responses[0].body.moduleBookings.forEach(m => _self.modules.bookings.push(m));
       responses[0].body.modulePlannings.forEach(m => _self.modules.plannings.push(m));
->>>>>>> effcd9fe38bbdb26e52e75b7fe52937a2fdde4d9
+    }, (response) => {
+        window.console.log(response);
     });
-
   },
 
   mounted: function () {
