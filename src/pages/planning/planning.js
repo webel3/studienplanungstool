@@ -51,8 +51,8 @@ let Planning = {
 
   data: function() {
     return {
-      currentSemester: 0,
-      totalSemesters: 0,
+      upcomingSemester: JSON.parse(sessionStorage.getItem('user')).upcomingsemester,
+      totalSemesters: JSON.parse(sessionStorage.getItem('user')).totalsemester,
       modules: {
         proposals: [],
         completions: [],
@@ -70,15 +70,12 @@ let Planning = {
         BOOKINGS: 'bookings',
         PLANNINGS: 'plannings'
       },
-      searchString: ""
+      searchString: ''
     }
   },
 
   created: function() {
     this.$http.get('/src/pages/planning/planning-mock.json').then((response) => {
-      this.currentSemester = response.body.currentSemester;
-      this.totalSemesters = response.body.totalSemesters;
-
       response.body.moduleProposals.forEach(m => this.modules.proposals.push(m));
       response.body.moduleCompletions.forEach(m => this.modules.completions.push(m));
       response.body.moduleBookings.forEach(m => this.modules.bookings.push(m));

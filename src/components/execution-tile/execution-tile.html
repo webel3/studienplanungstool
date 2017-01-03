@@ -8,8 +8,10 @@
         </a>
       </h4>
       <p class="card-text">
-        XXX ECTS, Modulgruppe {{ execution.coursegroup }}<br/>
-        Standort: <b>{{ execution.place }}</b>
+        ECTS: {{ execution.ects }}<br/>
+        Modulgruppe: {{ execution.coursegroup }}<br/>
+        Standort: <b>{{ execution.place }}</b><br/>
+        Semester: {{ execution.semester.type.name }} {{ execution.semester.year }}
       </p>
     </div>
     <ul class="list-group">

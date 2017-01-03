@@ -91,7 +91,16 @@ let Modules = {
         ]).then(function (responses) {
             _self.executions = responses[0].body.resource;
 
-            // TODO: bookings auch noch laden
+            _self.executions.forEach(exec => {
+                let option = _self.searches.places.options.filter(option => {
+                    return option.value === exec.place;
+                });
+                exec.place = option[0].name;
+                exec.semester = SemesterHelper.add(_self.startingSemester, _self.upcomingSemester);
+            });
+
+            // TODO: bookings auch noch laden (FK's reichen)
+            // TODO: jene Module aus executions rauslöschen, die bereits gebucht sind
 
             responses[1].body.resource.forEach(slot => {
                 _self.executions.forEach(exec => {
@@ -104,8 +113,6 @@ let Modules = {
                         slot.end = slot.end.substr(0, 5);
                         exec.slots.push(slot);
                     }
-
-                    exec.semester = SemesterHelper.add(_self.startingSemester, _self.upcomingSemester);
                 });
             });
         }, responses => {
@@ -146,13 +153,6 @@ let Modules = {
 
     computed: {
         filteredExecutions: function() {
-
-            window.console.log('--------------------------------------------------------------');
-            window.console.log('module: ', this.searches.module);
-            window.console.log('places:', this.searches.places.model);
-            window.console.log('types: ', this.searches.types.model);
-            window.console.log('groups: ', this.searches.groups.model);
-
             return this.executions
 
                 // check if the module name matches the searched input string.
