@@ -80,19 +80,41 @@ let Planning = {
   created: function() {
     let _self = this;
 
+    let queryString = ['?filter=(student_id="', JSON.parse(sessionStorage.getItem('user')).uid, '")'].join('');
     Promise.all([
-      this.$http.get('/src/pages/planning/planning-mock.json'),
-      this.$http.get(Endpoints.COURSE, HttpConfig),
-      this.$http.get(Endpoints.RESULT_VIEW, HttpConfig),
-    ]).then(function (responses) {
+      this.$http.get(Endpoints.COURSE, HttpConfig), // proposals
+      this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig), // completions
+      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // bookings
+      this.$http.get(Endpoints.PLANNING + queryString, HttpConfig), // plannings
+    ])
+    .then(function (responses) {
+      _self.modules.proposals = responses[0].body.resource; // comes with all information
+      _self.modules.completions = responses[1].body.resource; // comes with all information
 
-      _self.currentSemester = responses[0].body.currentSemester;
-      _self.totalSemesters = responses[0].body.totalSemesters;
+      console.log("proposals: ", responses[0].body.resource);
+      console.log("completions: ", responses[1].body.resource);
+      console.log("bookings: ", responses[2].body.resource); // courseexecution_ID:42, student_ID:3
+      console.log("plannings: ", responses[3].body.resource); // course_ID:19, semester:201702, student_ID:3, uid:0
 
-      responses[1].body.resource.forEach(m => _self.modules.proposals.push(m));
-      responses[0].body.moduleCompletions.forEach(m => _self.modules.completions.push(m));
-      responses[0].body.moduleBookings.forEach(m => _self.modules.bookings.push(m));
-      responses[0].body.modulePlannings.forEach(m => _self.modules.plannings.push(m));
+      /* the 'bookings' view delivers the foreign keys to concerned modules.
+       * with that, we can find the real module in the 'proposals' array
+       * and move that item to the 'bookings' array.
+       */
+      responses[2].body.resource.forEach(booking => {
+        let elems = _self.modules.proposals.filter(proposal => {
+          return proposal.uid === booking.courseexecution_id;
+        });
+        // normally, that should only be one module.
+        elems.forEach(elem => {
+          _self.modules.proposals.splice(_self.modules.proposals.indexOf(elem), 1);
+          _self.modules.bookings.push(elem);
+        });
+      });
+
+      // TODO: Module anhand der FK von bookings response aus proposals rüberzügeln
+      // TODO: Module anhand der FK von plannings response aus proposals rüberzügeln
+      // TODO: Module, die in 'completions' enthalten sind, aus 'proposals' entfernen
+
     }, (response) => {
         window.console.log(response);
     });
