@@ -5,9 +5,6 @@ let HttpConfig = {
         'X-DreamFactory-Api-Key': '083c71adddc76c3a9004fbb42357dc87ff86b6e7adff5fccb4661a9136d2995c'
     },
 
-    params: {
-        // filter=firstname=kaspar & filter=lastname=QWERTZ
-    }
 };
 
 export default  HttpConfig;
