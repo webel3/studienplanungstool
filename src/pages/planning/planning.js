@@ -2,8 +2,6 @@ import Vue from 'vue';
 import VueResource from 'vue-resource';
 import draggable from 'vuedraggable';
 
-import FilterBy from '../../components/filters/filter-by/filter-by';
-import FindBy from '../../components/filters/find-by/find-by';
 import SemesterHelper from '../../helpers/SemesterHelper';
 
 import HttpConfig from '../../rest/HttpConfig';
@@ -85,15 +83,21 @@ let Planning = {
   created: function () {
     let _self = this;
 
-    let queryString = ['?filter=(student_id="', JSON.parse(sessionStorage.getItem('user')).uid, '")'].join('');
+    let queryUser = ['?filter=(student_id="', JSON.parse(sessionStorage.getItem('user')).uid, '")'].join('');
+    let queryUserAndRelated = [queryUser, '&related=courseexecution_by_courseexecution_ID'].join('');
+
     Promise.all([
       this.$http.get(Endpoints.COURSE, HttpConfig), // proposals
-      this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig), // completions
-      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // bookings
-      this.$http.get(Endpoints.PLANNING + queryString, HttpConfig), // plannings
+      this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig), // completions
+      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryUserAndRelated + '', HttpConfig), // bookings
+      this.$http.get(Endpoints.PLANNING + queryUser, HttpConfig), // plannings
     ])
     .then(function (responses) {
       _self.modules.proposals = responses[0].body.resource; // comes with all information
+      _self.modules.proposals.forEach(prop => {
+        prop.id_of_the_module = prop.uid;
+      });
+
       _self.modules.completions = responses[1].body.resource; // comes with all information
 
       // Remove all completed modules from the proposals.
@@ -105,12 +109,18 @@ let Planning = {
        * with that FK, we can find the real module in the 'proposals' array
        * and move that item to the 'bookings' array.
        */
-      responses[2].body.resource.forEach(booking => { // TODO: Bookings sind Executions, keine Modules !!
+      responses[2].body.resource.forEach(booking => {
         _self.modules.proposals.filter(proposal => {
-          return proposal.uid === booking.courseexecution_ID;
+          return proposal.uid === booking.courseexecution_by_courseexecution_ID.course_id;
         }).forEach(prop => {
           _self.modules.proposals.splice(_self.modules.proposals.indexOf(prop), 1);
-          _self.modules.bookings.push(prop);
+
+          // transfer some infos from proposal to bookings object.
+          let bkn = booking.courseexecution_by_courseexecution_ID;
+          bkn.ects = prop.ects;
+          bkn.title = prop.name_de;
+
+          _self.modules.bookings.push(bkn);
         });
       });
 
@@ -157,21 +167,41 @@ let Planning = {
     let _self = this;
 
     this.$el.addEventListener('add', function (event) {
-      console.log("------------------- 'add' event called.");
-      console.log(event);
 
       let origin = event.from.attributes['data-module-type'].value;
       let target = event.target.attributes['data-module-type'].value;
-      let moduleId = event.item.attributes['data-module-id'].value;
+      let moduleId = parseInt(event.item.attributes['data-module-id'].value);
       let semester = parseInt(event.target.attributes['data-semester'].value);
-      // let itemArray = _self.modules[origin].filter(m => m.id === moduleId);
-      // itemArray[0].semester = semester;
+
+      // set the new semester label to the moved element.
+      _self.modules[origin].filter(item => {
+        if (item.id_of_the_module === moduleId) {
+          item.semester = semester;
+        }
+      });
 
       /*
        * TODO:
-       *    proposals => planning  : PUT to Endpoints.PLANNING
-       *    planning  => proposals : DELETE from Endpoints.PLANNING
-       *    planning  => planning  : PATCH on Endpoints.PLANNING
+       * There are three possibilities that are expected to happen:
+       *    1) module newly moved from proposal to planning  --> add that module to the planning table
+       *   2) module moved back from planning to proposal   --> remove that module from the planning table
+       *   3) moved a module between two planning semesters --> update the record with the new semester
+       *
+       * Then, in the resolve callback of the promise, do the stuff from lines 177 - 181 (semester update);
+       */
+      if (origin === _self.types.PROPOSALS && target === _self.types.PLANNINGS) {
+        // case 1)
+      } else if (origin === _self.types.PLANNINGS && target === _self.types.PROPOSALS) {
+        // case 2)
+      } else if (origin === target === _self.types.PLANNINGS) {
+        // case 3)
+      } else {
+        window.console.log("oops, that should never happen...");
+      }
+
+      /*
+       * TODO:
+       *    ECTS Punkte je Semester summieren und anzeigen.
        */
     });
   },
@@ -222,9 +252,6 @@ let Planning = {
   },
 
   methods: {
-    filterBy: FilterBy,
-    findBy: FindBy,
-
     filterModules: function(target, semester) {
       return this.modules[target].filter(module => {
         if (module.semester === semester.label) {
@@ -234,7 +261,7 @@ let Planning = {
     }
   },
 
-  components: {draggable, FilterBy, FindBy, SemesterHelper}
+  components: {draggable, SemesterHelper}
 };
 
 export default Planning;

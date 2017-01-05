@@ -16,7 +16,7 @@
     </div>
 
     <div v-for="semester in semesters" :class="colMdSizeCssClass">
-      ECTS: xx
+      ECTS: xxx
     </div>
   </div>
 
@@ -29,11 +29,14 @@
       <ul class="list-group">
         <draggable :list="modules.proposals" :options="proposalConfig"
                    :data-module-type="types.PROPOSALS"> <!-- :data-semester="getUpcomingSemesterLabel" -->
-          <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.code">
-            {{ item.code }} - {{ item.name_de }} <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true"/>
+          <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.id_of_the_module">
+            <b>{{ item.code }}</b> ({{ item.ects }})<br/>
+            <span>{{ item.name_de }}&nbsp;</span>
+            <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true" />
+            <span class="clearfix"/>
           </li>
           <li v-show="modules.proposals.length < 1"
-              class="list-group-item list-group-item--placeholder">placeholder
+              class="list-group-item list-group-item--placeholder">Platzhalter
           </li>
         </draggable>
       </ul>
@@ -47,56 +50,48 @@
         <ul class="list-group">
           <li v-for="item in filterModules('completions', semester)"
               class="list-group-item list-group-item--completed">
-            {{ item.code }} ({{ item.ects }})<br/>{{ item.title }}
+            <b>{{ item.code }}</b> ({{ item.ects }})<br/>{{ item.title }}
           </li>
         </ul>
       </div>
 
-      <!-- Booked modules for the upcoming semester (and the following-next semester if there are bookings ).
-              NOTE: they are not draggable -->
 
-      Bookings: <pre>{{filterModules('bookings', semester)}}</pre>
+      <!-- Booked modules for the upcoming semester (and the following-next semester if there are bookings ).
+         NOTE: they are not draggable -->
       <div
           v-if="filterModules('bookings', semester).length > 0 &&
-          (semester === getUpcomingSemesterLabel || semester === getAfterNextSemesterLabel)">
+          (semester.label === getUpcomingSemesterLabel || semester.label === getAfterNextSemesterLabel)">
 
         <ul class="list-group">
           <li v-for="item in filterModules('bookings', semester)"
               class="list-group-item list-group-item--booked">
-            {{ item.code }} ({{ item.ects }})<br/>{{ item.title }}
+            <b>{{ item.executioncode }}</b> ({{ item.ects }})<br/>{{ item.title }}
           </li>
         </ul>
       </div>
 
 
-      Plannings: <pre>{{filterModules('plannings', semester)}}</pre>
-
       <!-- each semester in the future can be planned -->
-      <div v-if="semester > getUpcomingSemesterLabel">
+      <div v-if="semester.label > getUpcomingSemesterLabel">
 
         <ul class="list-group">
           <draggable :list="modules.plannings" :options="planningConfig"
-                     :data-module-type="types.PLANNINGS" :data-semester="getUpcomingSemesterLabel">
-            <li v-for="item in filterModules('plannings', semester)" :data-module-id="item.code"
+                     :data-module-type="types.PLANNINGS" :data-semester="semester.label">
+            <li v-for="item in filterModules('plannings', semester)" :data-module-id="item.id_of_the_module"
                 class="list-group-item list-group-item--planned">
-              {{ item.code }} - {{ item.title }}&nbsp;
-              <span class="glyphicon glyphicon-move dnd-handler" aria-hidden="true"/>
+              <b>{{ item.code }}</b> ({{ item.ects }})<br/>
+              <span>{{ item.name_de }}&nbsp;</span>
+              <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true" />
+              <span class="clearfix"/>
             </li>
             <li v-show="filterModules('plannings', semester).length < 1"
-                class="list-group-item list-group-item--placeholder">placeholder
+                class="list-group-item list-group-item--placeholder">Platzhalter
             </li>
           </draggable>
         </ul>
       </div>
 
     </div>
-
-  </div>
-
-
-  <!-- for each column, show the summarized ects credits -->
-  <div class="row">
-    TODO: summierte ECTS-Punkte pro Column anzeigen.
   </div>
 
 </div>
