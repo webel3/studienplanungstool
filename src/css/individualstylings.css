@@ -1,8 +1,20 @@
 
-/* TODO: remove - use only to see that routing mechanism works */
-.router-link-active {
-    color: crimson !important;
-    background-color: #ccc !important;
+/* overwrite the bootstrap stylings for the navigation bar */
+.navbar-default {
+    background-color: #64788B;
+}
+.navbar-default a {
+    color: white !important;
+}
+.navbar-default .router-link-active {
+    background-color: #EFF1F3 !important;
+    color: #64788B !important;
+}
+
+/* bootstrap's input-group class styling is table.
+ * that leads to an unwanted line wrapping that can be fixed by using display:block.  */
+.input-group--displayblock {
+    display: block;
 }
 
 /* show the hand-icon when hovering that class (which is used for module drag-and-drop) */
@@ -16,7 +28,6 @@
   background-color: crimson !important;
 }
 
-
 /* overwrite some bootstrap styling for the search input field for module names */
 .input-group--module {
   display: flex;
@@ -29,13 +40,30 @@
 }
 
 
-/* floating class with clear-fix afterwards */
+/* orientation classes with clear-fix afterwards */
 .float-right {
   float: right;
 }
 .float-right:after {
   clear: both;
   content: "";
+}
+.align-center {
+    text-align: center;
+}
+
+/* stylings for the results page */
+.sufficient-ects {
+    color: white;
+    background-color: green;
+}
+.insufficient-ects {
+    color: white;
+    background-color: red;
+}
+.total-ects {
+    border-top-style: double;
+    border-bottom-style: double;
 }
 
 /* this class is used for modules on the 'planning' page.
