@@ -258,10 +258,45 @@ let Planning = {
           return module;
         }
       });
+    },
+
+    totalEcts: function() {
+      let ects = 0;
+      this.modules.completions.forEach(completion => {
+        ects += completion.ects;
+      });
+      this.modules.bookings.forEach(booking => {
+        ects += booking.ects;
+      });
+      this.modules.plannings.forEach(planning => {
+        ects += planning.ects;
+      });
+      return ects;
+    },
+
+    calculateEcts: function(semester) {
+      let ects = 0;
+      this.modules.completions.forEach(completion => {
+        if (completion.semester === semester.label) {
+          ects += completion.ects;
+        }
+      });
+      this.modules.bookings.forEach(booking => {
+        if (booking.semester === semester.label) {
+          ects += booking.ects;
+        }
+      });
+      this.modules.plannings.forEach(planning => {
+        if (planning.semester === semester.label) {
+          ects += planning.ects;
+        }
+      });
+      return ects;
     }
   },
 
   components: {draggable, SemesterHelper}
+
 };
 
 export default Planning;

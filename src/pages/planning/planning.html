@@ -2,21 +2,24 @@
 
   <h3>Meine Studienplanung</h3>
 
-  <!-- row for column headers -->
+  <!-- row for column headers and total/cumulated ects credits -->
   <div class="row">
-    <h4 :class="colMdSizeCssClass">Modulangebot</h4>
-    <h4 v-for="semester in semesters" :class="colMdSizeCssClass">{{ semester.type.name }} {{ semester.year }}</h4>
-  </div>
-
-
-  <!-- row for 1) search input field (proposals), and 2) cumulated ects points (semesters) -->
-  <div class="row">
-    <div class="input-group input-group--displayblock" :class="colMdSizeCssClass">
-      <input id="search-module" type="text" class="form-control" placeholder="Modulname" v-model="searches.module" />
+    <div :class="colMdSizeCssClass">
+      <h4>Modulangebot</h4>
+      <span>Total ECTS: {{ totalEcts() }}</span>
     </div>
 
     <div v-for="semester in semesters" :class="colMdSizeCssClass">
-      ECTS: xxx
+      <h4>{{ semester.type.name }} {{ semester.year }}</h4>
+      <span>ECTS: {{ calculateEcts(semester) }}</span>
+    </div>
+  </div>
+
+
+  <!-- row for search input field (proposals) -->
+  <div class="row">
+    <div class="input-group input-group--displayblock" :class="colMdSizeCssClass">
+      <input id="search-module" type="text" class="form-control" placeholder="Modulname" v-model="searches.module" />
     </div>
   </div>
 
