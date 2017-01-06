@@ -191,13 +191,11 @@ let Planning = {
       };
 
       /*
-       * TODO:
        * There are three possibilities that are expected to happen:
        *   1) module newly moved from proposal to planning  --> add that module to the planning table
        *   2) module moved back from planning to proposal   --> remove that module from the planning table
        *   3) moved a module between two planning semesters --> update the record with the new semester
        *
-       * Then, in the resolve callback of the promise, do the stuff from lines 177 - 181 (semester update);
        */
       if (origin === _self.types.PROPOSALS && target === _self.types.PLANNINGS) {
         // case 1)
