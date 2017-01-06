@@ -102,7 +102,7 @@ let Modules = {
           return option.value === exec.place;
         });
         exec.placeLabel = option[0].name;
-        exec.semester = SemesterHelper.split(SemesterHelper.NOW_REFERENCE);
+        exec.semester = SemesterHelper.split(exec.semester);
       });
 
       // assign time slots to executions
@@ -262,7 +262,6 @@ let Modules = {
 
     filteredBookings: function () {
       let info = SemesterHelper.split(SemesterHelper.NOW_REFERENCE);
-      let label = parseInt([info.year, info.type.value].join(''));
 
       return this.bookings.filter(elem => {
         if (elem.semester.year === info.year && elem.semester.type === info.type) {
@@ -273,10 +272,9 @@ let Modules = {
 
     filteredBookingsAfterNext: function () {
       let info = SemesterHelper.add(SemesterHelper.NOW_REFERENCE, 1);
-      let label = parseInt([info.year, info.type.value].join(''));
 
       return this.bookings.filter(elem => {
-        if (elem.semester === label) {
+        if (elem.semester.year === info.year && elem.semester.type === info.type) {
           return elem;
         }
       });
