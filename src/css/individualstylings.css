@@ -3,12 +3,26 @@
 .navbar-default {
     background-color: #64788B;
 }
+
 .navbar-default a {
     color: white !important;
 }
+
 .navbar-default .router-link-active {
     background-color: #EFF1F3 !important;
     color: #64788B !important;
+}
+
+.alert-default {
+    border: 1px solid #ddd;
+    color: #777;
+    background-color: rgba(240, 240, 240, 0.2);
+}
+
+/* bootstrap uses negative margins for class 'row' which is quite annoying. */
+.row {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* bootstrap's input-group class styling is table.
@@ -19,35 +33,36 @@
 
 /* show the hand-icon when hovering that class (which is used for module drag-and-drop) */
 .dnd-handler {
-  cursor: move;
+    cursor: move;
 }
 
 /* add some styling to the default css classes that are used by the vue.draggable plugin */
 .sortable-ghost {
-  opacity: 0.3;
-  background-color: crimson !important;
+    opacity: 0.3;
+    background-color: crimson !important;
 }
 
 /* overwrite some bootstrap styling for the search input field for module names */
 .input-group--module {
-  display: flex;
-  margin-bottom: 10px;
+    display: flex;
+    margin-bottom: 10px;
 }
 
 /* Hide un-compiled mustache bindings until the Vue instance is ready */
 [v-cloak] {
-  display: none;
+    display: none;
 }
-
 
 /* orientation classes with clear-fix afterwards */
 .float-right {
-  float: right;
+    float: right;
 }
+
 .float-right:after {
-  clear: both;
-  content: "";
+    clear: both;
+    content: "";
 }
+
 .align-center {
     text-align: center;
 }
@@ -57,10 +72,12 @@
     color: white;
     background-color: green;
 }
+
 .insufficient-ects {
     color: white;
     background-color: red;
 }
+
 .total-ects {
     border-top-style: double;
     border-bottom-style: double;
@@ -70,70 +87,84 @@
  * because space is very rare, we have to break long wordings.
  */
 .list-group-item {
-  word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 /* stylings for the different types of modules */
 .list-group-item--completed {
-  background-color: lightgreen;
-}
-.list-group-item--booked {
-  background-color: tan;
-}
-.list-group-item--planned {
-  background-color: lightskyblue;
-}
-.list-group-item--placeholder {
-  background-color: #f7f7f7;
+    background-color: lightgreen;
 }
 
+.list-group-item--booked {
+    background-color: tan;
+}
+
+.list-group-item--planned {
+    background-color: lightskyblue;
+}
+
+.list-group-item--placeholder {
+    background-color: #f7f7f7;
+}
 
 /* stylings for an execution tile */
 .execution-tile {
-  padding: 10px;
-  margin-bottom: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #DFDDDC;
 }
 
 .execution-tile--provided {
-  border: 1px solid antiquewhite;
-  background-color: rgba(250, 235, 215, 0.2);
+    /*border: 1px solid antiquewhite;*/
+    background-color: rgba(0, 255, 0, 0.1);
 }
 
 .execution-tile--booked {
-  background-color: lightcyan;
+    /*background-color: rgba(250, 165, 0, 0.2); /* #FAA500 */
+    background-color: rgba(255, 197, 10, 0.1);  /* #FFC50A */
 }
 
 /* define some classes with pre-defined width's */
-.width-thirty {
-  display: inline-block;
-  width: 30%;
+.width-fourty {
+    display: inline-block;
+    width: 39% !important;
+    margin: 0.2%;
+    vertical-align: middle;
 }
 
-.width-seventy {
-  display: inline-block;
-  width: 70%;
+.width-sixty {
+    display: inline-block;
+    width: 59% !important;
+    margin: 0.2%;
+    vertical-align: middle;
+}
+input[type=checkbox].nsp-only {
+    width: 20px !important;
+    height: 20px;
+    vertical-align: middle;
 }
 
 /* additional column-size definitions for the existing grid system */
 @media (min-width: 992px) {
-  .col-md-7 {
-    width: 14.2857%;
-  }
+    .col-md-7 {
+        width: 14.2857%;
+    }
 
-  .col-md-10 {
-    width: 10%;
-  }
+    .col-md-10 {
+        width: 10%;
+    }
 
-  .col-md-11 {
-    width: 9.0909%;
-  }
-  .col-md-11-doubled {
-    width: 18.1818%;
-    float: left;
-  }
+    .col-md-11 {
+        width: 9.0909%;
+    }
+
+    .col-md-11-doubled {
+        width: 18.1818%;
+        float: left;
+    }
 }
 
 /* give a row some more padding to look pretty nice */
 .row [class^=col-] {
-  padding: 10px 0 15px 5px;
+    padding: 10px 0 15px 5px;
 }

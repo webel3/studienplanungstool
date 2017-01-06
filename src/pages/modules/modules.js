@@ -5,20 +5,18 @@ import BootstrapSelect from 'bootstrap-select';
 
 import DayOfWeek from '../../helpers/DayOfWeek';
 import SemesterHelper from '../../helpers/SemesterHelper';
+import UserHelper from '../../helpers/UserHelper';
 
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
-
-function getUser() {
-  return JSON.parse(sessionStorage.getItem('user'));
-}
 
 let Modules = {
   template: require('./modules.html'),
 
   data: function () {
     return {
-      upcomingSemester: JSON.parse(sessionStorage.getItem('user')).upcomingsemester,
+      upcomingSemester: UserHelper.getUser().upcomingsemester,
+      bookingsModifiable: !UserHelper.getUser().booking_confirmed,
       executions: [],
       bookings: [],
       nspCourses: [],
@@ -89,8 +87,8 @@ let Modules = {
 
   created: function () {
     let _self = this;
-    let queryString = ['?filter=(student_id="', getUser().uid, '")'].join('');
-    let queryDspCourse = "?filter=defaultstudyplan_ID=" + getUser().defaultstudyplan_ID;
+    let queryString = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
+    let queryDspCourse = "?filter=defaultstudyplan_ID=" + UserHelper.getUser().defaultstudyplan_ID;
     Promise.all([
       this.$http.get(Endpoints.COURSE_EXECUTION_VIEW, HttpConfig),
       this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
@@ -132,7 +130,7 @@ let Modules = {
         });
       });
 
-      let sem = getUser().upcomingsemester;
+      let sem = UserHelper.getUser().upcomingsemester;
       responses[3].body.resource.forEach((item) => {
         if(item.semester === sem || item.semester === (sem + 1)){
           _self.nspCourses.push(item);
@@ -149,7 +147,7 @@ let Modules = {
     createRequestBody: function (execution) {
       return {
         "resource": {
-          "student_ID": getUser().uid,
+          "student_ID": UserHelper.getUser().uid,
           "courseexecution_ID": execution.uid
         }
       };
@@ -174,6 +172,27 @@ let Modules = {
       }, (response) => {
         window.console.error(response);
       });
+    },
+
+    confirmBooking: function() {
+      let sure = window.confirm('Soll die Moduleinschreibung definitiv abgegeben werden? ' +
+       'Danach kann sie nicht mehr verändert werden.');
+
+      if (sure) {
+        let user = UserHelper.getUser();
+        let endpoint = [Endpoints.STUDENT, '/', user.uid].join('');
+        let body = {
+          'booking_confirmed': true
+        };
+
+        this.$http.patch(endpoint, body, HttpConfig).then((response) => {
+          user.booking_confirmed = true;
+          UserHelper.setUser(user);
+          window.location.reload();
+        }, (failure) => {
+          window.console.log('confirm bookings went wrong. ', failure);
+        });
+      }
     },
 
     formatSemester: function (incremental) {

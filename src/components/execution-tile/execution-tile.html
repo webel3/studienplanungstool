@@ -21,13 +21,15 @@
     </ul>
     <div class="card-block float-right">
 
-      <button type="button" class="btn btn-default" v-if="addFn" v-on:click.keyup="addFn(execution)">
-        buchen <span class="glyphicon glyphicon-shopping-cart"></span>
-      </button>
+      <div v-if="bookable">
+        <button type="button" class="btn btn-default" v-if="addFn" v-on:click.keyup="addFn(execution)">
+          buchen <span class="glyphicon glyphicon-shopping-cart"></span>
+        </button>
 
-      <button type="button" class="btn btn-default" v-if="removeFn" v-on:click.keyup="removeFn(execution)">
-        entfernen <span class="glyphicon glyphicon-trash"></span>
-      </button>
+        <button type="button" class="btn btn-default" v-if="removeFn" v-on:click.keyup="removeFn(execution)">
+          entfernen <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      </div>
     </div>
 
     <!-- because the book/remove link is right-floated, we need an empty clearfix div -->
