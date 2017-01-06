@@ -112,6 +112,7 @@
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #DFDDDC;
+    border-radius: 4px;
 }
 
 .execution-tile--provided {
@@ -142,6 +143,17 @@ input[type=checkbox].nsp-only {
     width: 20px !important;
     height: 20px;
     vertical-align: middle;
+}
+
+
+/* overwrite some stylings and hide some elements of the fullcalendar.io layout */
+.fc-toolbar .fc-left h2 {
+    display: none !important;
+}
+.fc-header-toolbar .fc-button {
+    margin-left: 0;
+    border-radius: 0;
+    width: 80px;
 }
 
 /* additional column-size definitions for the existing grid system */

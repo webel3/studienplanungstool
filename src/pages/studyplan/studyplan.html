@@ -1,4 +1,11 @@
 <div class="container-fluid">
-    <h3>Normstudienplan</h3>
-    <p>Message-Objekt vom ViewModel: '{{ message }}'</p>
+
+  <h3>Normstudienplan {{totalSemesters}} Semester ({{ getStudyPlace }})</h3>
+
+  <!-- this should not be an image but real dom elements, created by some
+      javascript library that can paint data graphs or similar -->
+  <div class="row">
+    <img :src="'/src/images/' + imgName" />
+  </div>
+
 </div>

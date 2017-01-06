@@ -10,7 +10,8 @@ let Endpoints = {
   STUDENT_COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution',
   RESULT_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/result_view',
   PLANNING: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/plan',
-  DEFAULTSTUDYPLAN_COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/defaultstudyplan_course'
+  DEFAULTSTUDYPLAN_COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/defaultstudyplan_course',
+  STUDENT_EXEC_SLOT_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution_slot_view'
 
 };
 
