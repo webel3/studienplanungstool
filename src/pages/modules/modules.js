@@ -1,5 +1,7 @@
 import ExecutionTile from '../../components/execution-tile/execution-tile';
 
+import { ScaleLoader } from 'vue-spinner';
+
 import jQuery from 'jquery';
 import BootstrapSelect from 'bootstrap-select';
 
@@ -15,6 +17,7 @@ let Modules = {
 
   data: function () {
     return {
+      ready: false,
       upcomingSemester: UserHelper.getUser().upcomingsemester,
       bookingsModifiable: !UserHelper.getUser().booking_confirmed,
       executions: [],
@@ -136,6 +139,7 @@ let Modules = {
           _self.nspCourses.push(item);
         }
       });
+      _self.ready = true;
     }, responses => {
       console.log("something went wrong:", responses);
     });
@@ -281,7 +285,7 @@ let Modules = {
     }
   },
 
-  components: {ExecutionTile, jQuery, BootstrapSelect}
+  components: { ExecutionTile, jQuery, BootstrapSelect, ScaleLoader }
 };
 
 export default Modules;

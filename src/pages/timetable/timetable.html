@@ -1,7 +1,10 @@
 <div class="container-fluid">
-    <h3>Mein Wochenstundenplan</h3>
 
+  <h3>Mein Wochenstundenplan</h3>
 
-    <div id="calendar"></div>
+  <!-- show a loading spinner when data is not ready yet -->
+  <scale-loader :loading="!ready" color="#64788b"></scale-loader>
+
+  <div id="calendar" v-show="ready"></div>
 
 </div>

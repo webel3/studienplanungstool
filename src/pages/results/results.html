@@ -1,67 +1,69 @@
 <div class="container-fluid">
-    <h3>Meine persönlichen Ergebnisse</h3>
 
-    <table class="table table-striped" v-cloak>
-      <thead>
-        <tr>
-          <th>Gruppe</th>
-          <th>Code</th>
-          <th>Titel</th>
-          <th>Typ</th>
-          <th>Semester</th>
-          <th>Sprache</th>
-          <th>Bewertung</th>
-          <th>ECTS</th>
-          <th>Min.</th>
-          <th>Max.</th>
-          <th>erworben</th>
-          <th>anrechenbar</th>
-        </tr>
-      </thead>
-      <tbody>
+  <h3>Meine persönlichen Ergebnisse</h3>
 
-        <!-- use a template for the iteration over groups (templates won't be rendered as html) -->
-        <template v-for="group in groups">
+  <!-- show a loading spinner when data is not ready yet -->
+  <scale-loader :loading="!ready" color="#64788b"></scale-loader>
 
-          <!-- group header -->
-          <tr>
-            <th :colspan="8">{{ group.shortName }}</th>
-            <th>{{ group.minECTS }}</th>
-            <th>{{ group.maxECTS }}</th>
-            <th>{{ group.summarizedEcts }}</th>
-            <th :class="[{ 'sufficient-ects' : group.sufficientEcts, 'insufficient-ects' : !group.sufficientEcts }, 'align-center']">
-              {{ group.usableEcts }}
-            </th>
-          </tr>
+  <table class="table table-striped" v-show="ready">
+    <thead>
+    <tr>
+      <th>Gruppe</th>
+      <th>Code</th>
+      <th>Titel</th>
+      <th>Typ</th>
+      <th>Semester</th>
+      <th>Sprache</th>
+      <th>Bewertung</th>
+      <th>ECTS</th>
+      <th>Min.</th>
+      <th>Max.</th>
+      <th>erworben</th>
+      <th>anrechenbar</th>
+    </tr>
+    </thead>
+    <tbody>
 
-          <!-- entries for that module group -->
-          <tr v-for="item in filterModules(group)">
+    <!-- use a template for the iteration over groups (templates won't be rendered as html) -->
+    <template v-for="group in groups">
 
-            <!-- empty cell to jump over module group's cell -->
-            <td></td>
+      <!-- group header -->
+      <tr>
+        <th :colspan="8">{{ group.shortName }}</th>
+        <th>{{ group.minECTS }}</th>
+        <th>{{ group.maxECTS }}</th>
+        <th>{{ group.summarizedEcts }}</th>
+        <th :class="[{ 'sufficient-ects' : group.sufficientEcts, 'insufficient-ects' : !group.sufficientEcts }, 'align-center']">
+          {{ group.usableEcts }}
+        </th>
+      </tr>
 
-            <td>{{ item.code }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.type }}</td>
-            <td>{{ formatSemester(item.semester) }}</td>
-            <td>{{ item.language }}</td>
-            <td>{{ item.grade }}</td>
-            <td>{{ item.ects }}</td>
+      <!-- entries for that module group -->
+      <tr v-for="item in filterModules(group)">
 
-            <!-- empty cells that are used for group information only -->
-            <td colspan="4"></td>
-          </tr>
-        </template>
+        <!-- empty cell to jump over module group's cell -->
+        <td></td>
 
-        <!-- summarize all ects points -->
-        <tr class="total-ects">
-          <th colspan="11">ECTS Total:</th>
-          <th class="align-center">{{ getTotalEcts() }}</th>
-        </tr>
+        <td>{{ item.code }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.type }}</td>
+        <td>{{ formatSemester(item.semester) }}</td>
+        <td>{{ item.language }}</td>
+        <td>{{ item.grade }}</td>
+        <td>{{ item.ects }}</td>
 
-      </tbody>
-    </table>
+        <!-- empty cells that are used for group information only -->
+        <td colspan="4"></td>
+      </tr>
+    </template>
 
+    <!-- summarize all ects points -->
+    <tr class="total-ects">
+      <th colspan="11">ECTS Total:</th>
+      <th class="align-center">{{ getTotalEcts() }}</th>
+    </tr>
 
+    </tbody>
+  </table>
 
 </div>

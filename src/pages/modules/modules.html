@@ -1,117 +1,125 @@
 <div class="container-fluid">
 
-  <!-- row with all headers -->
-  <div class="row">
-    <div class="col-md-4">
-      <h3>Angebotene Durchführungen</h3>
+  <h3>Moduldurchführungen buchen</h3>
+
+  <!-- show a loading spinner when data is not ready yet -->
+  <scale-loader :loading="!ready" color="#64788b"></scale-loader>
+
+  <div v-show="ready">
+    <!-- row with all headers -->
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Angebotene Durchführungen</h3>
+      </div>
+
+      <div class="col-md-4">
+        <h3>Semester: {{ formatSemester() }}</h3>
+      </div>
+
+      <div class="col-md-4">
+        <h3>Semester: {{ formatSemester(1) }}</h3>
+      </div>
     </div>
 
-    <div class="col-md-4">
-      <h3>Semester: {{ formatSemester() }}</h3>
-    </div>
 
-    <div class="col-md-4">
-      <h3>Semester: {{ formatSemester(1) }}</h3>
-    </div>
-  </div>
+    <!-- row with the filter options for proposals and the button to confirm the bookings -->
+    <div class="row">
 
-
-  <!-- row with the filter options for proposals and the button to confirm the bookings -->
-  <div class="row">
-
-    <!-- filter options -->
-    <div class="col-md-4">
-      <!-- dropdown to filter for execution places -->
-      <div>
-        <label for="search-places" class="width-fourty">Ort:</label>
-        <select id="search-places" class="selectpicker width-sixty" multiple v-model="searches.places.model">
-          <option v-for="option in searches.places.options" :value="option.value">{{ option.name }}</option>
-        </select>
-      </div>
-
-      <!-- dropdown to filter for module types -->
-      <div>
-        <label for="search-types" class="width-fourty">Typ:</label>
-        <select id="search-types" class="selectpicker width-sixty" multiple v-model="searches.types.model">
-          <option v-for="option in searches.types.options" :value="option.value">{{ option.name }}</option>
-        </select>
-      </div>
-
-      <!-- dropdown to filter for module groups -->
-      <div>
-        <label for="search-groups" class="width-fourty">Gruppe:</label>
-        <select id="search-groups" class="selectpicker width-sixty" multiple v-model="searches.groups.model">
-          <option v-for="option in searches.groups.options" :value="option.value">{{ option.name }}</option>
-        </select>
-      </div>
-
-      <!-- checkbox for NSP-Only -->
-      <div>
-        <label for="search-nsp" class="width-fourty">Nur Normstudienplan:</label>
-        <input id="search-nsp" type="checkbox" class="nsp-only width-sixty" v-model="searches.nspOnly" />
-      </div>
-
-      <!-- input field for search functionality -->
-      <div>
-        <label for="search-module" class="width-fourty">Name:</label>
-        <div class="input-group input-group--module width-sixty">
-          <input id="search-module" type="text" class="form-control"
-                 placeholder="Nach Modulname suchen" v-model="searches.module"/>
+      <!-- filter options -->
+      <div class="col-md-4">
+        <!-- dropdown to filter for execution places -->
+        <div>
+          <label for="search-places" class="width-fourty">Ort:</label>
+          <select id="search-places" class="selectpicker width-sixty" multiple v-model="searches.places.model">
+            <option v-for="option in searches.places.options" :value="option.value">{{ option.name }}</option>
+          </select>
         </div>
-      </div>
-    </div>
 
-    <!-- empty element so that the button is in the 3th column. -->
-    <div class="col-md-4"></div>
-
-    <!-- button to definitively confirm bookings (only shown when confirmation is not done yet). -->
-    <div class="col-md-4" v-if="bookingsModifiable">
-      <label for="confirm-bookings">Definitive Einschreibung:</label>
-      <button type="button" id="confirm-bookings"
-              class="btn btn-warning" v-on:click.keyup="confirmBooking">Bestätigen</button>
-    </div>
-  </div>
-
-
-  <!-- row that contains all provided executions and the selected ones of the next two semesters -->
-  <div class="row">
-
-    <div class="col-md-4">
-      <div v-for="execution in filteredExecutions">
-        <execution-tile :execution="execution" cssClass="execution-tile--provided"
-                        :addFn="add" :bookable="bookingsModifiable"></execution-tile>
-      </div>
-
-      <!-- if there are no executions, then show a message -->
-      <div class="row" v-if="filteredExecutions.length === 0">
-        <div class="alert alert-warning" role="alert">
-          <b>Für die gewählten Filter existieren keine Moduldurchführungen.</b>
+        <!-- dropdown to filter for module types -->
+        <div>
+          <label for="search-types" class="width-fourty">Typ:</label>
+          <select id="search-types" class="selectpicker width-sixty" multiple v-model="searches.types.model">
+            <option v-for="option in searches.types.options" :value="option.value">{{ option.name }}</option>
+          </select>
         </div>
-      </div>
-    </div>
 
+        <!-- dropdown to filter for module groups -->
+        <div>
+          <label for="search-groups" class="width-fourty">Gruppe:</label>
+          <select id="search-groups" class="selectpicker width-sixty" multiple v-model="searches.groups.model">
+            <option v-for="option in searches.groups.options" :value="option.value">{{ option.name }}</option>
+          </select>
+        </div>
 
-    <!-- booked executions for next semester -->
-    <div class="col-md-4" id="bookings-next">
-      <div v-for="execution in filteredBookings">
-        <execution-tile :execution="execution" cssClass="execution-tile--booked"
-                        :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
-      </div>
-    </div>
+        <!-- checkbox for NSP-Only -->
+        <div>
+          <label for="search-nsp" class="width-fourty">Nur Normstudienplan:</label>
+          <input id="search-nsp" type="checkbox" class="nsp-only width-sixty" v-model="searches.nspOnly" />
+        </div>
 
-    <!-- booked executions for semester after the next one -->
-    <div class="col-md-4" id="bookings-after-next">
-      <div class="row" v-if="filteredBookingsAfterNext.length === 0">
-        <div class="alert alert-default" role="alert">
-          <b>Es sind noch keine Moduldurchführungen für dieses Semester bekannt.</b>
+        <!-- input field for search functionality -->
+        <div>
+          <label for="search-module" class="width-fourty">Name:</label>
+          <div class="input-group input-group--module width-sixty">
+            <input id="search-module" type="text" class="form-control"
+                   placeholder="Nach Modulname suchen" v-model="searches.module"/>
+          </div>
         </div>
       </div>
 
-      <div v-for="execution in filteredBookingsAfterNext">
-        <execution-tile :execution="execution" cssClass="execution-tile--booked"
-                        :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
+      <!-- empty element so that the button is in the 3th column. -->
+      <div class="col-md-4"></div>
+
+      <!-- button to definitively confirm bookings (only shown when confirmation is not done yet). -->
+      <div class="col-md-4" v-if="bookingsModifiable">
+        <label for="confirm-bookings">Definitive Einschreibung:</label>
+        <button type="button" id="confirm-bookings"
+                class="btn btn-warning" v-on:click.keyup="confirmBooking">Bestätigen</button>
       </div>
     </div>
 
+
+    <!-- row that contains all provided executions and the selected ones of the next two semesters -->
+    <div class="row">
+
+      <div class="col-md-4">
+        <div v-for="execution in filteredExecutions">
+          <execution-tile :execution="execution" cssClass="execution-tile--provided"
+                          :addFn="add" :bookable="bookingsModifiable"></execution-tile>
+        </div>
+
+        <!-- if there are no executions, then show a message -->
+        <div class="row" v-if="filteredExecutions.length === 0">
+          <div class="alert alert-warning" role="alert">
+            <b>Für die gewählten Filter existieren keine Moduldurchführungen.</b>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- booked executions for next semester -->
+      <div class="col-md-4" id="bookings-next">
+        <div v-for="execution in filteredBookings">
+          <execution-tile :execution="execution" cssClass="execution-tile--booked"
+                          :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
+        </div>
+      </div>
+
+      <!-- booked executions for semester after the next one -->
+      <div class="col-md-4" id="bookings-after-next">
+        <div class="row" v-if="filteredBookingsAfterNext.length === 0">
+          <div class="alert alert-default" role="alert">
+            <b>Es sind noch keine Moduldurchführungen für dieses Semester bekannt.</b>
+          </div>
+        </div>
+
+        <div v-for="execution in filteredBookingsAfterNext">
+          <execution-tile :execution="execution" cssClass="execution-tile--booked"
+                          :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
+        </div>
+      </div>
+
+    </div>
   </div>
+
 </div>

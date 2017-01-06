@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import { ScaleLoader } from 'vue-spinner';
 
 import SemesterHelper from '../../helpers/SemesterHelper';
+
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
 
@@ -11,6 +13,7 @@ let Results = {
   template: require('./results.html'),
   data: () => {
     return {
+      ready: false,
       groups: [],
       modules: []
     }
@@ -38,6 +41,7 @@ let Results = {
           this.groups.push(group);
         }
       });
+      this.ready = true;
     }, (failures) => {
       window.console.log(failures);
     });
@@ -59,7 +63,9 @@ let Results = {
     formatSemester: function(semester) {
       return SemesterHelper.formatLabel(semester);
     }
-  }
+  },
+
+  components: { ScaleLoader }
 };
 
 export default Results;

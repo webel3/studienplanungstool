@@ -23,7 +23,8 @@ module.exports = {
     ],
     extensions: ['.js', '.css', '.scss'],
     alias: {
-      'vue$': 'vue/dist/vue.js'
+      'vue$': 'vue/dist/vue.js',
+      'vue-spinner$': 'vue-spinner/dist/vue-spinner.min.js'
     }
   },
 

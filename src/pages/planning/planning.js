@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import draggable from 'vuedraggable';
+import { ScaleLoader } from 'vue-spinner';
 
 import SemesterHelper from '../../helpers/SemesterHelper';
 import UserHelper from '../../helpers/UserHelper';
@@ -77,7 +78,8 @@ let Planning = {
       searches: {
         module: ''
       },
-      colMdSizeCssClass: ''
+      colMdSizeCssClass: '',
+      ready: false
     }
   },
 
@@ -152,6 +154,7 @@ let Planning = {
         _self.semesters.push(sem);
       }
 
+      _self.ready = true;
     }, (response) => {
       window.console.log(response);
     });
@@ -321,7 +324,7 @@ let Planning = {
     }
   },
 
-  components: {draggable, SemesterHelper}
+  components: { draggable, SemesterHelper, ScaleLoader }
 
 };
 
