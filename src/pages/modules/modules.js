@@ -9,8 +9,8 @@ import SemesterHelper from '../../helpers/SemesterHelper';
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
 
-function getUserId() {
-  return JSON.parse(sessionStorage.getItem('user')).uid;
+function getUser() {
+  return JSON.parse(sessionStorage.getItem('user'));
 }
 
 let Modules = {
@@ -21,7 +21,9 @@ let Modules = {
       upcomingSemester: JSON.parse(sessionStorage.getItem('user')).upcomingsemester,
       executions: [],
       bookings: [],
+      nspCourses: [],
       searches: {
+        nspOnly: 0,
         module: '',
         places: {
           model: [],
@@ -87,12 +89,13 @@ let Modules = {
 
   created: function () {
     let _self = this;
-    let queryString = ['?filter=(student_id="', getUserId(), '")'].join('');
-
+    let queryString = ['?filter=(student_id="', getUser().uid, '")'].join('');
+    let queryDspCourse = "?filter=defaultstudyplan_ID=" + getUser().defaultstudyplan_ID;
     Promise.all([
       this.$http.get(Endpoints.COURSE_EXECUTION_VIEW, HttpConfig),
       this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
-      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig) // Bookings
+      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // Bookings
+      this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig)
     ]).then(function (responses) {
       _self.executions = responses[0].body.resource;
 
@@ -100,7 +103,7 @@ let Modules = {
         let option = _self.searches.places.options.filter(option => {
           return option.value === exec.place;
         });
-        exec.place = option[0].name;
+        exec.placeLabel = option[0].name;
         exec.semester = SemesterHelper.split(SemesterHelper.NOW_REFERENCE);
       });
 
@@ -129,6 +132,12 @@ let Modules = {
         });
       });
 
+      let sem = getUser().upcomingsemester;
+      responses[3].body.resource.forEach((item) => {
+        if(item.semester === sem || item.semester === (sem + 1)){
+          _self.nspCourses.push(item);
+        }
+      });
     }, responses => {
       console.log("something went wrong:", responses);
     });
@@ -140,7 +149,7 @@ let Modules = {
     createRequestBody: function (execution) {
       return {
         "resource": {
-          "student_ID": getUserId(),
+          "student_ID": getUser().uid,
           "courseexecution_ID": execution.uid
         }
       };
@@ -210,6 +219,24 @@ let Modules = {
             return item;
           }
         } else return item;
+      })
+
+      // only nsp modules
+      .filter(item => {
+        if (this.searches.nspOnly) {
+          let isNsp = 0;
+          this.nspCourses.forEach((course) => {
+            if (course.course_ID === item.course_id) {
+              isNsp = 1;
+              return;
+            }
+          });
+          if (isNsp){
+            return item;
+          }
+        } else {
+          return item;
+        }
       })
         ;
     },
