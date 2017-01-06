@@ -3,6 +3,7 @@ import VueResource from 'vue-resource';
 import draggable from 'vuedraggable';
 
 import SemesterHelper from '../../helpers/SemesterHelper';
+import UserHelper from '../../helpers/UserHelper';
 
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
@@ -53,8 +54,8 @@ let Planning = {
 
   data: function () {
     return {
-      upcomingSemester: JSON.parse(sessionStorage.getItem('user')).upcomingsemester,
-      totalSemesters: JSON.parse(sessionStorage.getItem('user')).totalsemester,
+      upcomingSemester: UserHelper.getUser().upcomingsemester,
+      totalSemesters: UserHelper.getUser().totalsemester,
       semesters: [],
       modules: {
         proposals: [],
@@ -83,7 +84,7 @@ let Planning = {
   created: function () {
     let _self = this;
 
-    let queryUser = ['?filter=(student_id="', JSON.parse(sessionStorage.getItem('user')).uid, '")'].join('');
+    let queryUser = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
     let queryUserAndRelated = [queryUser, '&related=courseexecution_by_courseexecution_ID'].join('');
 
     Promise.all([
@@ -136,6 +137,7 @@ let Planning = {
           }
         }).forEach(prop => {
           _self.modules.proposals.splice(_self.modules.proposals.indexOf(prop), 1);
+          prop.planning_id = planning.uid;
           _self.modules.plannings.push(prop);
         });
       });
@@ -174,16 +176,24 @@ let Planning = {
       let semester = parseInt(event.target.attributes['data-semester'].value);
 
       // set the new semester label to the moved element.
-      _self.modules[origin].filter(item => {
+      let module = _self.modules[origin].filter(item => {
         if (item.id_of_the_module === moduleId) {
-          item.semester = semester;
+          return item;
         }
-      });
+      })[0];
+      module.semester = semester;
+      let planningId = module.planning_id;
+
+      let resource = {
+        "student_ID": UserHelper.getUser().uid,
+        "semester": module.semester,
+        "course_ID": moduleId
+      };
 
       /*
        * TODO:
        * There are three possibilities that are expected to happen:
-       *    1) module newly moved from proposal to planning  --> add that module to the planning table
+       *   1) module newly moved from proposal to planning  --> add that module to the planning table
        *   2) module moved back from planning to proposal   --> remove that module from the planning table
        *   3) moved a module between two planning semesters --> update the record with the new semester
        *
@@ -191,10 +201,28 @@ let Planning = {
        */
       if (origin === _self.types.PROPOSALS && target === _self.types.PLANNINGS) {
         // case 1)
+        _self.$http.post(Endpoints.PLANNING, {"resource": resource}, HttpConfig).then((response) => {
+          console.log("created planning for module " + moduleId);
+          module.planning_id = response.body.resource[0].uid;
+        }, (response) => {
+          console.error(response);
+        })
+
       } else if (origin === _self.types.PLANNINGS && target === _self.types.PROPOSALS) {
         // case 2)
-      } else if (origin === target === _self.types.PLANNINGS) {
+        _self.$http.delete(Endpoints.PLANNING + "/" + planningId, HttpConfig).then((response) => {
+          console.log("deleted planning " + planningId);
+        }, (response) => {
+          console.error(response);
+        })
+
+      } else if (origin === target && origin === _self.types.PLANNINGS) {
         // case 3)
+        _self.$http.patch(Endpoints.PLANNING + "/" + planningId, resource, HttpConfig).then((response) => {
+          console.log("patched planning " + planningId);
+        }, (response) => {
+          console.error(response);
+        })
       } else {
         window.console.log("oops, that should never happen...");
       }

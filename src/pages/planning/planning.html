@@ -31,7 +31,7 @@
 
       <ul class="list-group">
         <draggable :list="modules.proposals" :options="proposalConfig"
-                   :data-module-type="types.PROPOSALS"> <!-- :data-semester="getUpcomingSemesterLabel" -->
+                   :data-module-type="types.PROPOSALS" :data-semester="0">
           <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.id_of_the_module">
             <b>{{ item.code }}</b> ({{ item.ects }})<br/>
             <span>{{ item.name_de }}&nbsp;</span>
