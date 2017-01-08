@@ -72,7 +72,7 @@
           <ul class="list-group">
             <li v-for="item in filterModules('bookings', semester)"
                 class="list-group-item list-group-item--booked">
-              <b>{{ item.executioncode }}</b> ({{ item.ects }})<br/>{{ item.title }}
+              <b>{{ item.code }}</b> ({{ item.ects }})<br/>{{ item.name_de }}
             </li>
           </ul>
         </div>

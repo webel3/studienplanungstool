@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import draggable from 'vuedraggable';
-import { ScaleLoader } from 'vue-spinner';
+import {ScaleLoader} from 'vue-spinner';
 
 import SemesterHelper from '../../helpers/SemesterHelper';
 import UserHelper from '../../helpers/UserHelper';
@@ -90,7 +90,7 @@ let Planning = {
     let queryUserAndRelated = [queryUser, '&related=courseexecution_by_courseexecution_ID'].join('');
 
     Promise.all([
-      this.$http.get(Endpoints.COURSE, HttpConfig), // proposals
+      this.$http.get(Endpoints.COURSE, HttpConfig), // proposals TODO only PM modules should be loaded! But what happens to bookings of modules that does not exist in proposals list...
       this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig), // completions
       this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryUserAndRelated + '', HttpConfig), // bookings
       this.$http.get(Endpoints.PLANNING + queryUser, HttpConfig), // plannings
@@ -105,7 +105,11 @@ let Planning = {
 
       // Remove all completed modules from the proposals.
       _self.modules.completions.forEach(completion => {
-        _self.modules.proposals.splice(_self.modules.proposals.indexOf(completion), 1);
+        _self.modules.proposals.filter((prop) => {
+          return prop.uid === completion.course_id;
+        }).forEach((prop) => {
+          _self.modules.proposals.splice(_self.modules.proposals.indexOf(prop), 1);
+        });
       });
 
       /* The 'bookings' view only delivers the foreign keys of the concerned modules.
@@ -117,13 +121,8 @@ let Planning = {
           return proposal.uid === booking.courseexecution_by_courseexecution_ID.course_id;
         }).forEach(prop => {
           _self.modules.proposals.splice(_self.modules.proposals.indexOf(prop), 1);
-
-          // transfer some infos from proposal to bookings object.
-          let bkn = booking.courseexecution_by_courseexecution_ID;
-          bkn.ects = prop.ects;
-          bkn.title = prop.name_de;
-
-          _self.modules.bookings.push(bkn);
+          prop.semester = booking.courseexecution_by_courseexecution_ID.semester;
+          _self.modules.bookings.push(prop);
         });
       });
 
@@ -134,11 +133,12 @@ let Planning = {
       responses[3].body.resource.forEach(planning => {
         _self.modules.proposals.filter(proposal => {
           if (proposal.uid === planning.course_ID) {
-            proposal.semester = planning.semester; // transfer semester information
             return true;
           }
         }).forEach(prop => {
+          // TODO dummy proposals should not be removed from proposals list (WPM modules)
           _self.modules.proposals.splice(_self.modules.proposals.indexOf(prop), 1);
+          prop.semester = planning.semester; // transfer semester information
           prop.planning_id = planning.uid;
           _self.modules.plannings.push(prop);
         });
@@ -257,18 +257,18 @@ let Planning = {
       }, this.baseConfig);
     },
 
-    orderedSemesters: function() {
-      return this.semesters.sort(function(sem1, sem2) {
+    orderedSemesters: function () {
+      return this.semesters.sort(function (sem1, sem2) {
         return sem1.label > sem2.label;
       });
     },
 
-    getUpcomingSemesterLabel: function() {
+    getUpcomingSemesterLabel: function () {
       return SemesterHelper.NOW_REFERENCE;
     },
 
-    getAfterNextSemesterLabel: function() {
-      return SemesterHelper.add(SemesterHelper.NOW_REFERENCE, 1);
+    getAfterNextSemesterLabel: function () {
+      return SemesterHelper.add(SemesterHelper.NOW_REFERENCE, 1).label;
     },
 
     filteredProposals: function () {
@@ -281,7 +281,7 @@ let Planning = {
   },
 
   methods: {
-    filterModules: function(target, semester) {
+    filterModules: function (target, semester) {
       return this.modules[target].filter(module => {
         if (module.semester === semester.label) {
           return module;
@@ -289,7 +289,7 @@ let Planning = {
       });
     },
 
-    totalEcts: function() {
+    totalEcts: function () {
       let ects = 0;
       this.modules.completions.forEach(completion => {
         ects += completion.ects;
@@ -303,7 +303,7 @@ let Planning = {
       return ects;
     },
 
-    calculateEcts: function(semester) {
+    calculateEcts: function (semester) {
       let ects = 0;
       this.modules.completions.forEach(completion => {
         if (completion.semester === semester.label) {
@@ -324,7 +324,7 @@ let Planning = {
     }
   },
 
-  components: { draggable, SemesterHelper, ScaleLoader }
+  components: {draggable, SemesterHelper, ScaleLoader}
 
 };
 
