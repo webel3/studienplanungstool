@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "bundle": "webpack --config webpack.config.js",
-    "server": "webpack-dev-server --hot --inline"
+    "server": "webpack-dev-server --hot --inline",
+    "doc": "documentation build src/** -f html -o docs"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
