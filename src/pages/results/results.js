@@ -9,8 +9,22 @@ import Endpoints from '../../rest/Endpoints';
 
 Vue.use(VueResource);
 
+/**
+ * Vue instance for the results section.
+ * @namespace Results
+ */
 let Results = {
+
+  /**
+   * html template for the results section.
+   * @property {object}
+   */
   template: require('./results.html'),
+
+  /**
+   * Function that provides the data of the vue instance to the view so that it can be used.
+   * @returns {object} object with proxied data
+   */
   data: () => {
     return {
       ready: false,
@@ -19,11 +33,15 @@ let Results = {
     }
   },
 
+  /**
+   * Hook that is called when the instance is created.
+   * @method {created}
+   */
   created: function createdHook() {
 
     Promise.all([
-      this.$http.get(Endpoints.RESULT_VIEW, HttpConfig),
-      this.$http.get(Endpoints.COURSE_GROUP, HttpConfig)
+      this.$http.get(new HttpConfig(Endpoints.RESULT_VIEW)),
+      this.$http.get(new HttpConfig(Endpoints.COURSE_GROUP))
     ]).then(responses => {
       this.modules = responses[0].body.resource;
 
