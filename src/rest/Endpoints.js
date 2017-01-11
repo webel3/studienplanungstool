@@ -1,6 +1,6 @@
 let Endpoints = {
 
-  // local dreamfactory instance: 'http://localhost'
+  // local dreamfactory instance is under: 'http://localhost'
   COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course',
   COURSE_GROUP: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/coursegroup',
   COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution',

@@ -87,5 +87,7 @@ let app = new Vue({
 });
 
 
-// bind the application to the id 'app'.
+/*
+ * Bind the application to the id 'app'.
+ */
 app.$mount('#app');
