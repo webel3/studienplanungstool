@@ -40,8 +40,8 @@ let Results = {
   created: function () {
 
     Promise.all([
-      this.$http.get(new HttpConfig(Endpoints.RESULT_VIEW)),
-      this.$http.get(new HttpConfig(Endpoints.COURSE_GROUP))
+      this.$http.get(Endpoints.RESULT_VIEW, HttpConfig),
+      this.$http.get(Endpoints.COURSE_GROUP, HttpConfig)
     ]).then(responses => {
       this.modules = responses[0].body.resource;
 

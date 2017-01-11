@@ -1,5 +1,6 @@
 import jQuery from 'jquery';
 import FullCalendar from 'fullcalendar';
+import moment from 'moment';
 
 import {ScaleLoader} from 'vue-spinner';
 
@@ -71,6 +72,7 @@ let Timetable = {
             right: 'germanAgendaWeek, germanListWeek'
           },
           defaultView: 'agendaWeek',
+          defaultDate: moment('2017-01-02'),
           columnFormat: 'dddd',
           slotLabelFormat: 'HH:mm',
           timeFormat: 'HH:mm',
