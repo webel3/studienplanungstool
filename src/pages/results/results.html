@@ -5,7 +5,10 @@
   <!-- show a loading spinner when data is not ready yet -->
   <scale-loader :loading="!ready" color="#64788b"></scale-loader>
 
+  <!-- table for all results -->
   <table class="table table-striped" v-show="ready">
+
+    <!-- table headers -->
     <thead>
     <tr>
       <th>Gruppe</th>
@@ -22,6 +25,7 @@
       <th>anrechenbar</th>
     </tr>
     </thead>
+
     <tbody>
 
     <!-- use a template for the iteration over groups (templates won't be rendered as html) -->
@@ -33,6 +37,8 @@
         <th>{{ group.minECTS }}</th>
         <th>{{ group.maxECTS }}</th>
         <th>{{ group.summarizedEcts }}</th>
+
+        <!-- add 'align-center' and '(in)sufficient-ects' classes to the <th> element -->
         <th :class="[{ 'sufficient-ects' : group.sufficientEcts, 'insufficient-ects' : !group.sufficientEcts }, 'align-center']">
           {{ group.usableEcts }}
         </th>

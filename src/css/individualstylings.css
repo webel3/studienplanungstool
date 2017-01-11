@@ -3,23 +3,22 @@
 .navbar-default {
     background-color: #64788B;
 }
-
 .navbar-default a {
     color: white !important;
 }
-
 .navbar-default .router-link-active {
     background-color: #EFF1F3 !important;
     color: #64788B !important;
 }
 
+/* extend bootstrap's alerts with a 'default' class */
 .alert-default {
     border: 1px solid #ddd;
     color: #777;
     background-color: rgba(240, 240, 240, 0.2);
 }
 
-/* bootstrap uses negative margins for class 'row' which is quite annoying. */
+/* bootstrap uses negative margins for class 'row' which is quite annoying ... */
 .row {
     margin-left: 0;
     margin-right: 0;
@@ -57,12 +56,10 @@
 .float-right {
     float: right;
 }
-
 .float-right:after {
     clear: both;
     content: "";
 }
-
 .align-center {
     text-align: center;
 }

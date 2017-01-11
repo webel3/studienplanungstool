@@ -6,6 +6,7 @@
   <scale-loader :loading="!ready" color="#64788b"></scale-loader>
 
   <div v-show="ready">
+
     <!-- row with all headers -->
     <div class="row">
       <div class="col-md-4">
@@ -20,7 +21,6 @@
         <h3>Semester: {{ formatSemester(1) }}</h3>
       </div>
     </div>
-
 
     <!-- row with the filter options for proposals and the button to confirm the bookings -->
     <div class="row">
@@ -54,7 +54,7 @@
         <!-- checkbox for NSP-Only -->
         <div>
           <label for="search-nsp" class="width-fourty">Nur Normstudienplan:</label>
-          <input id="search-nsp" type="checkbox" class="nsp-only width-sixty" v-model="searches.nspOnly" />
+          <input id="search-nsp" type="checkbox" class="nsp-only width-sixty" v-model="searches.nspOnly"/>
         </div>
 
         <!-- input field for search functionality -->
@@ -74,18 +74,18 @@
       <div class="col-md-4" v-if="bookingsModifiable">
         <label for="confirm-bookings">Definitive Einschreibung:</label>
         <button type="button" id="confirm-bookings"
-                class="btn btn-warning" v-on:click.keyup="confirmBooking">Bestätigen</button>
+                class="btn btn-warning" v-on:click.keyup="confirmBooking">Bestätigen
+        </button>
       </div>
     </div>
 
 
     <!-- row that contains all provided executions and the selected ones of the next two semesters -->
     <div class="row">
-
       <div class="col-md-4">
         <div v-for="execution in filteredExecutions">
           <execution-tile :execution="execution" cssClass="execution-tile--provided"
-                          :addFn="add" :bookable="bookingsModifiable"></execution-tile>
+              :addFn="add" :bookable="bookingsModifiable"></execution-tile>
         </div>
 
         <!-- if there are no executions, then show a message -->
@@ -101,7 +101,7 @@
       <div class="col-md-4" id="bookings-next">
         <div v-for="execution in filteredBookings">
           <execution-tile :execution="execution" cssClass="execution-tile--booked"
-                          :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
+              :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
         </div>
       </div>
 
@@ -115,7 +115,7 @@
 
         <div v-for="execution in filteredBookingsAfterNext">
           <execution-tile :execution="execution" cssClass="execution-tile--booked"
-                          :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
+              :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
         </div>
       </div>
 

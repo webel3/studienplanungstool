@@ -3,6 +3,19 @@
     "exclude": ["node_modules"]
   },
   "opts": {
-    "destination": "./generated-jsdoc/"
+    "destination": "./jsdoc/",
+    "recurse": true,
+    "template": "node_modules/minami"
+  },
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc","closure"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": "true"
+    }
   }
 }

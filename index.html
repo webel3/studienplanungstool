@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>studienplanungstool</title>
+    <!-- used CSS (individuals that overwrite other stylings is at the end of the list) -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.min.css" media="all">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" media="all">
-    <link rel="stylesheet" href="src/css/individualstylings.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-select/dist/css/bootstrap-select.min.css" media="all">
+    <link rel="stylesheet" href="src/css/individualstylings.css" media="all">
     <link rel="icon" href="/src/images/favicon-16x16.png">
   </head>
   <body>
@@ -20,10 +21,9 @@
 
       <!-- vue-router displays partial content through this directive -->
       <router-view></router-view>
-
     </div>
 
-    <!-- include javascript file, bundled by webpack -->
+    <!-- include the single javascript file, bundled by webpack -->
     <script src="target/bundle.js"></script>
   </body>
 </html>

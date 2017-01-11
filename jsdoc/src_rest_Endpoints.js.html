@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/rest/Endpoints.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="AppRouter.html">AppRouter</a></li><li><a href="DayOfWeek.html">DayOfWeek</a><ul class='methods'><li data-type='method'><a href="DayOfWeek.html#.getDay">getDay</a></li><li data-type='method'><a href="DayOfWeek.html#.getDeferenceDay">getDeferenceDay</a></li></ul></li><li><a href="Endpoints.html">Endpoints</a></li><li><a href="HttpConfig.html">HttpConfig</a></li><li><a href="Login.html">Login</a><ul class='methods'><li data-type='method'><a href="Login.html#.data">data</a></li></ul></li><li><a href="Modules.html">Modules</a><ul class='methods'><li data-type='method'><a href="Modules.html#.created">created</a></li><li data-type='method'><a href="Modules.html#.data">data</a></li><li data-type='method'><a href="Modules.html#.mounted">mounted</a></li></ul></li><li><a href="Planning.html">Planning</a><ul class='methods'><li data-type='method'><a href="Planning.html#.created">created</a></li><li data-type='method'><a href="Planning.html#.data">data</a></li><li data-type='method'><a href="Planning.html#.mounted">mounted</a></li></ul></li><li><a href="Results.html">Results</a><ul class='methods'><li data-type='method'><a href="Results.html#.created">created</a></li><li data-type='method'><a href="Results.html#.data">data</a></li></ul></li><li><a href="SemesterHelper.html">SemesterHelper</a><ul class='methods'><li data-type='method'><a href="SemesterHelper.html#.add">add</a></li><li data-type='method'><a href="SemesterHelper.html#.formatLabel">formatLabel</a></li><li data-type='method'><a href="SemesterHelper.html#.label">label</a></li><li data-type='method'><a href="SemesterHelper.html#.split">split</a></li><li data-type='method'><a href="SemesterHelper.html#.subtract">subtract</a></li></ul></li><li><a href="StandardStudyPlan.html">StandardStudyPlan</a><ul class='methods'><li data-type='method'><a href="StandardStudyPlan.html#.data">data</a></li></ul></li><li><a href="Timetable.html">Timetable</a><ul class='methods'><li data-type='method'><a href="Timetable.html#.data">data</a></li><li data-type='method'><a href="Timetable.html#.mounted">mounted</a></li></ul></li><li><a href="UserHelper.html">UserHelper</a><ul class='methods'><li data-type='method'><a href="UserHelper.html#.getUser">getUser</a></li><li data-type='method'><a href="UserHelper.html#.setUser">setUser</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-ExecutionTile.html">ExecutionTile</a></li><li><a href="module-NavigationBar.html">NavigationBar</a></li><li><a href="module-webpack_config.html">webpack/config</a></li></ul><h3>Global</h3><ul><li><a href="global.html#FilterBy">FilterBy</a></li><li><a href="global.html#FindBy">FindBy</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">src/rest/Endpoints.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Object that stores the REST endpoints that are available on the DreamFactory backend.
+ *
+ * @class
+ * @classdesc Endpoints is an Object indeed, but it is used like a class.
+ *
+ * @property {string} COURSE:                     endpoint for courses
+ * @property {string} COURSE_GROUP:               endpoint for course-groups (A, B, C, D)
+ * @property {string} COURSE_EXECUTION            endpoint for executions
+ * @property {string} COURSE_EXECUTION_VIEW       endpoint for a view that enriches executions with other information
+ * @property {string} STUDENT                     endpoint for students
+ * @property {string} STUDENT_COURSE_EXECUTION    endpoint for selected executions of students
+ * @property {string} EXECUTION_SLOT              endpoint for time slots of execution
+ * @property {string} STUDENT_EXEC_SLOT_VIEW      endpoint for a view that enriches time slots of student's executions with other information
+ * @property {string} RESULT_VIEW                 endpoint for results of students
+ * @property {string} PLANNING                    endpoint for plannings of students
+ * @property {string} DEFAULTSTUDYPLAN_COURSE     endpoint for courses for default study plans
+ */
+let Endpoints = {
+
+  COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course',
+  COURSE_GROUP: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/coursegroup',
+  COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution',
+  COURSE_EXECUTION_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution_view',
+  STUDENT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student',
+  STUDENT_COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution',
+  EXECUTION_SLOT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/executionslot',
+  STUDENT_EXEC_SLOT_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution_slot_view',
+  RESULT_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/result_view',
+  PLANNING: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/plan',
+  DEFAULTSTUDYPLAN_COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/defaultstudyplan_course'
+
+};
+
+export default Endpoints;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 11 2017 14:59:34 GMT+0100 (Mitteleuropäische Zeit) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,20 +1,49 @@
+/**
+ * Helper that does the handling between a semester-label (form: '201602') and semester objects.
+ *
+ * @class
+ * @classdesc SemesterHelper is an Object indeed, but it is used like a class.
+ */
 let SemesterHelper = {
 
+  /**
+   * @property {number} NOW_REFERENCE: semester-label of the upcoming semester.
+   */
   NOW_REFERENCE: 201602,
+
+  /**
+   * @property {object} FS: object with the configuration of a spring semester.
+   */
   FS: {
     value: '01',
     name: 'FS'
   },
+
+  /**
+   * @property {object} HS: object with configuration of an autumn semester.
+   */
   HS: {
     value: '02',
     name: 'HS'
   },
 
+  /**
+   * Generate the semester-label for the given semester-info object.
+   *
+   * @param {object} info: information object for a semester.
+   * @returns {number} semester-label.
+   */
   label: function(info) {
     info.label = parseInt([info.year, info.type.value].join(''));
     return info;
   },
 
+  /**
+   * Generate the semester-info object for the given semester-label.
+   *
+   * @param {number} semesterLabel: semester-label to get information about.
+   * @returns {object} semester-info object for the given semester-label.
+   */
   split: function (semesterLabel) {
     let info = {
       year: parseInt(semesterLabel.toString().substr(0, 4)),
@@ -23,19 +52,14 @@ let SemesterHelper = {
     return this.label(info);
   },
 
-  // step: function(semesterLabel, semesterSteps) {
-  //   let info = this.split(semesterLabel);
-  //
-  //   // in case of an odd step number, change the semester.
-  //   if (semesterSteps % 2 === 1) {
-  //     info.type = this.FS ? this.HS : this.FS;
-  //   }
-  //
-  //   // add (or in case of negativity: subtract) half the amount of the steps, rounded down.
-  //   info.year += Math.floor(semesterSteps / 2);
-  //   return info;
-  // },
-
+  /**
+   * Based on the given semester-label, add the given number of semesters
+   * and return the calculated semester (which is in the future) as info-object.
+   *
+   * @param {number} semesterLabel: semester-label used as starting point.
+   * @param {number} nr: number of semesters to go forwards.
+   * @returns {object} semester-info object for the calculated future semester.
+   */
   add: function (semesterLabel, nr) {
     let info = this.split(semesterLabel);
 
@@ -52,6 +76,15 @@ let SemesterHelper = {
     return this.label(info);
   },
 
+
+  /**
+   * Based on the given semester-label, subtract the given number of semesters
+   * and return the calculated semester (which is in the past) as info-object.
+   *
+   * @param {number} semesterLabel: semester-label used as starting point.
+   * @param {number} nr: number of semesters to go backwards.
+   * @returns {object} semester-info object for the calculated past semester.
+   */
   subtract: function (semesterLabel, nr) {
     let info = this.split(semesterLabel);
 
@@ -68,6 +101,14 @@ let SemesterHelper = {
     return this.label(info);
   },
 
+
+  /**
+   * Formats the given semester-label.
+   * This function is assumed to be used for views only.
+   *
+   * @param {number} semesterLabel: semester-label to format
+   * @returns {string} formatted label in the form: 'HS 2016'.
+   */
   formatLabel: function(semesterLabel) {
     let info = this.split(semesterLabel);
     return [info.type.name, info.year].join(' ');

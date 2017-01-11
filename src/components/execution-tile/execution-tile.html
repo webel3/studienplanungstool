@@ -1,6 +1,8 @@
 <div class="execution-tile" :class="cssClass">
 
   <div class="card">
+
+    <!-- informations about the module behind the execution -->
     <div class="card-block">
       <h4 class="card-title">
         <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + execution.coursecode + '-de.xml'" target="_blank">
@@ -14,13 +16,18 @@
         Semester: {{ execution.semester.type.name }} {{ execution.semester.year }}
       </p>
     </div>
+
+    <!-- show a list with all execution slots -->
     <ul class="list-group">
       <li class="list-group-item" v-for="slot in execution.slots">
         {{ slot.day }}, {{ slot.start }} - {{ slot.end }}, Raum {{ slot.room }}
       </li>
     </ul>
+
+    <!-- container that holds buttons -->
     <div class="card-block float-right">
 
+      <!-- only show add / remove buttons when the execution is allowed to get booked -->
       <div v-if="bookable">
         <button type="button" class="btn btn-default" v-if="addFn" v-on:click.keyup="addFn(execution)">
           buchen <span class="glyphicon glyphicon-shopping-cart"></span>

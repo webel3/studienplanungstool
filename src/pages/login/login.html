@@ -1,32 +1,37 @@
 <div class="container">
 
-    <div class="row" v-show="loginFailed">
-        <div class="alert alert-warning" role="alert"><b>Die eingegebenen Credentials für {{ abbreviation }} sind ungültig.</b></div>
+  <!-- show a message when the entered credentials are false. -->
+  <div class="row" v-show="loginFailed">
+    <div class="alert alert-warning" role="alert"><b>Die eingegebenen Credentials für {{ abbreviation }} sind
+      ungültig.</b></div>
+  </div>
+
+  <!-- form for credentials (abbreviation and password) -->
+  <form>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="abbreviation">Kürzel:</label>
+      </div>
+      <div class="col-md-9">
+        <input type="text" id="abbreviation" name="abbreviation" v-model="abbreviation"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="password">Passwort:</label>
+      </div>
+      <div class="col-md-9">
+        <input type="password" id="password" name="password" v-model="password"/>
+      </div>
     </div>
 
-    <form>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="abbreviation">Kürzel:</label>
-            </div>
-            <div class="col-md-9">
-                <input type="text" id="abbreviation" name="abbreviation" v-model="abbreviation" />
-            </div>
-        </div><div class="row">
-            <div class="col-md-3">
-                <label for="password">Passwort:</label>
-            </div>
-            <div class="col-md-9">
-                <input type="password" id="password" name="password" v-model="password" />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-9">
-                <button class="btn btn-primary" v-on:click="login" v-bind:disabled="!isEnabled">Einloggen</button>
-            </div>
-        </div>
-    </form>
+    <!-- the submit button is only enabled when abbreviation and password are entered -->
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-9">
+        <button class="btn btn-primary" v-on:click="login" :disabled="!isEnabled">Einloggen</button>
+      </div>
+    </div>
+  </form>
 
 </div>

@@ -1,5 +1,3 @@
-import Vue from 'vue';
-import VueResource from 'vue-resource';
 import draggable from 'vuedraggable';
 import {ScaleLoader} from 'vue-spinner';
 
@@ -9,50 +7,25 @@ import UserHelper from '../../helpers/UserHelper';
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
 
-/*
- * Tell Vue that we want to use some plugins:
- *   - 'vue-resource' provides http services
- *
- * documentations:
- *   - https://github.com/pagekit/vue-resource    <-- doesn't update view-model
- *   - http://sagalbot.github.io/vue-sortable     <-- updates view-model correctly.
- */
-Vue.use(VueResource);
 
-/*
- * ------------ BE AWARE ------------
- *   Actually, vue-sortable does not work yet with vue 2.0 [29.11.2016].
- *   For that reason, I had to patch the node-module manually corresponding to that suggestion:
+/**
+ * Component that is responsible for the planning page.
  *
- *      https://github.com/sagalbot/vue-sortable/pull/13/files
- *
- *  This means that if you run "npm install", you have to add that workaround until it gets
- *  merged into the official vue-sortable repository (and published via version update).
- *
- *
- *
- *  ------------ BE AWARE 2 ----------
- *  Vue-Sortable did nothing than problems when trying to synchronize the view-model with the displayed data.
- *  For that, we now use 'draggable', a Vue 2.0 - compliant addon that exactly solves the problem of the
- *  synchronisation between view changes due to drag-and-drop functionality and view-model data.
- *
- *      https://github.com/SortableJS/Vue.Draggable
- *
- *  The options for that framework are the same than for the Sortable.js framework and can be found under:
- *
- *      https://github.com/RubaXa/Sortable#options
- *
- *  This means that the patch mentioned above is not further necessary. Anyway, I'll delete that hint
- *  after finishing the 'planning' page to not loosing some maybe-relevant information.
- *
- *
- *  How to deal with Vue event bus:
- *      https://www.sitepoint.com/up-and-running-vue-js-2-0/
+ * @class
+ * @classdesc Plannings is an Object indeed, but it is used as a class to create a new Vue instance.
  */
-
 let Planning = {
+
+  /**
+   * @property {template} template: html for the planning page.
+   */
   template: require('./planning.html'),
 
+
+  /**
+   * Function that provides the data of the Vue instance to the view so that it can be used.
+   * @returns {object} object with proxied data
+   */
   data: function () {
     return {
       upcomingSemester: UserHelper.getUser().upcomingsemester,
@@ -83,6 +56,11 @@ let Planning = {
     }
   },
 
+
+  /**
+   * Callback function that is called after the Vue instance's creation.
+   * It is used to load data from the backend, then fill it into the component's view models.
+   */
   created: function () {
     let _self = this;
 
@@ -90,7 +68,8 @@ let Planning = {
     let queryUserAndRelated = [queryUser, '&related=courseexecution_by_courseexecution_ID'].join('');
 
     Promise.all([
-      this.$http.get(Endpoints.COURSE, HttpConfig), // proposals TODO only PM modules should be loaded! But what happens to bookings of modules that does not exist in proposals list...
+      // TODO only PM modules should be loaded! But what happens to bookings of modules that does not exist in proposals list...
+      this.$http.get(Endpoints.COURSE, HttpConfig), // proposals
       this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig), // completions
       this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryUserAndRelated + '', HttpConfig), // bookings
       this.$http.get(Endpoints.PLANNING + queryUser, HttpConfig), // plannings
@@ -168,6 +147,12 @@ let Planning = {
     this.colMdSizeCssClass = ['col-md', (this.totalSemesters + 1)].join('-');
   },
 
+
+  /**
+   * Callback function that is called when the component is mounted to the DOM tree.
+   * It is used to add an event listener when a module is dragged
+   * so that the view model can therefore get updated.
+   */
   mounted: function () {
     let _self = this;
 
@@ -188,9 +173,9 @@ let Planning = {
       let planningId = module.planning_id;
 
       let resource = {
-        "student_ID": UserHelper.getUser().uid,
-        "semester": module.semester,
-        "course_ID": moduleId
+        student_ID: UserHelper.getUser().uid,
+        semester: module.semester,
+        course_ID: moduleId
       };
 
       /*
@@ -227,15 +212,15 @@ let Planning = {
       } else {
         window.console.log("oops, that should never happen...");
       }
-
-      /*
-       * TODO:
-       *    ECTS Punkte je Semester summieren und anzeigen.
-       */
     });
   },
 
 
+  /**
+   * @property {object} computed: computed properties that are calculated once
+   * and just get recalculated when one (or more) of the view model properties change
+   * on which a computed property depends.
+   */
   computed: {
     proposalConfig: function () {
       return Object.assign({
@@ -280,6 +265,10 @@ let Planning = {
     }
   },
 
+
+  /**
+   * @property {object} methods: object that contains all functions that are accessible from the view.
+   */
   methods: {
     filterModules: function (target, semester) {
       return this.modules[target].filter(module => {
@@ -324,6 +313,10 @@ let Planning = {
     }
   },
 
+
+  /**
+   * @property {object} components: object that defines all components that are used inside this Vue component.
+   */
   components: {draggable, SemesterHelper, ScaleLoader}
 
 };

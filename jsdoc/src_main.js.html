@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/main.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="AppRouter.html">AppRouter</a></li><li><a href="DayOfWeek.html">DayOfWeek</a><ul class='methods'><li data-type='method'><a href="DayOfWeek.html#.getDay">getDay</a></li><li data-type='method'><a href="DayOfWeek.html#.getDeferenceDay">getDeferenceDay</a></li></ul></li><li><a href="Endpoints.html">Endpoints</a></li><li><a href="HttpConfig.html">HttpConfig</a></li><li><a href="Login.html">Login</a><ul class='methods'><li data-type='method'><a href="Login.html#.data">data</a></li></ul></li><li><a href="Modules.html">Modules</a><ul class='methods'><li data-type='method'><a href="Modules.html#.created">created</a></li><li data-type='method'><a href="Modules.html#.data">data</a></li><li data-type='method'><a href="Modules.html#.mounted">mounted</a></li></ul></li><li><a href="Planning.html">Planning</a><ul class='methods'><li data-type='method'><a href="Planning.html#.created">created</a></li><li data-type='method'><a href="Planning.html#.data">data</a></li><li data-type='method'><a href="Planning.html#.mounted">mounted</a></li></ul></li><li><a href="Results.html">Results</a><ul class='methods'><li data-type='method'><a href="Results.html#.created">created</a></li><li data-type='method'><a href="Results.html#.data">data</a></li></ul></li><li><a href="SemesterHelper.html">SemesterHelper</a><ul class='methods'><li data-type='method'><a href="SemesterHelper.html#.add">add</a></li><li data-type='method'><a href="SemesterHelper.html#.formatLabel">formatLabel</a></li><li data-type='method'><a href="SemesterHelper.html#.label">label</a></li><li data-type='method'><a href="SemesterHelper.html#.split">split</a></li><li data-type='method'><a href="SemesterHelper.html#.subtract">subtract</a></li></ul></li><li><a href="StandardStudyPlan.html">StandardStudyPlan</a><ul class='methods'><li data-type='method'><a href="StandardStudyPlan.html#.data">data</a></li></ul></li><li><a href="Timetable.html">Timetable</a><ul class='methods'><li data-type='method'><a href="Timetable.html#.data">data</a></li><li data-type='method'><a href="Timetable.html#.mounted">mounted</a></li></ul></li><li><a href="UserHelper.html">UserHelper</a><ul class='methods'><li data-type='method'><a href="UserHelper.html#.getUser">getUser</a></li><li data-type='method'><a href="UserHelper.html#.setUser">setUser</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-ExecutionTile.html">ExecutionTile</a></li><li><a href="module-NavigationBar.html">NavigationBar</a></li><li><a href="module-webpack_config.html">webpack/config</a></li></ul><h3>Global</h3><ul><li><a href="global.html#FilterBy">FilterBy</a></li><li><a href="global.html#FindBy">FindBy</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">src/main.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Vue from 'vue';
+import VueRouter from 'vue-router';
+import VueResource from 'vue-resource';
+
+import Results from './pages/results/results';
+import StudyPlan from './pages/studyplan/studyplan';
+import Modules from './pages/modules/modules';
+import Planning from './pages/planning/planning';
+import Timetable from './pages/timetable/timetable';
+import Login from './pages/login/login';
+
+import NavigationBar from './components/navigation-bar/navigation-bar';
+
+/*
+ * Use vue-router to let the framework switch between different content.
+ * This brings the advantage that no page reloads are done when switching content.
+ */
+Vue.use(VueRouter);
+
+/*
+ * Tell Vue that we want to use the plugin 'vue-resource' which provides http services
+ */
+Vue.use(VueResource);
+
+/**
+ * Defines available routes of the application (and also a fallback route) and is also
+ * responsible that the user is authenticated before using most of the routes.
+ *
+ * @name AppRouter
+ * @class
+ *
+ * @see https://github.com/vuejs/vue-router
+ * @see https://router.vuejs.org/en/api/router-link.html
+ */
+let router = new VueRouter({
+    routes : [{
+            path: '/results',
+            component: Results,
+            meta: { requiresAuth: true }
+        }, {
+            path: '/studyplan',
+            component: StudyPlan,
+            meta: { requiresAuth: true }
+        }, {
+            path: '/modules',
+            component: Modules,
+            meta: { requiresAuth: true }
+        }, {
+            path: '/planning',
+            component: Planning,
+            meta: { requiresAuth: true }
+        }, {
+            path: '/timetable',
+            component: Timetable,
+            meta: { requiresAuth: true }
+        }, {
+            path: '/login',
+            component: Login
+        }, {
+            path: '*',
+            redirect: '/results'
+        }
+    ],
+    history: true
+});
+
+/*
+ * Before each router's transition, check if the targeted route requires
+ * an authentication and whether the user is authenticated.
+ * If not, redirect the user to the login page.
+ */
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth) &amp;&amp; !sessionStorage.getItem('user')) {
+        next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+        });
+    } else {
+        next();
+    }
+});
+
+
+/**
+ * Create a new Vue instance that serves as our application.
+ *
+ * @name App
+ * @class
+ *
+ * @see https://vuejs.org/
+ */
+let app = new Vue({
+    router: router,
+    components: {
+        NavigationBar
+    }
+});
+
+
+/*
+ * Bind the application to the id 'app'.
+ */
+app.$mount('#app');</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 11 2017 14:59:34 GMT+0100 (Mitteleuropäische Zeit) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

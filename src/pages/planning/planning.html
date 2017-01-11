@@ -6,6 +6,7 @@
   <scale-loader :loading="!ready" color="#64788b"></scale-loader>
 
   <div v-show="ready">
+
     <!-- row for column headers and total/cumulated ects credits -->
     <div class="row">
       <div :class="colMdSizeCssClass">
@@ -13,33 +14,32 @@
         <span>Total ECTS: {{ totalEcts() }}</span>
       </div>
 
+      <!-- gets rendered for each of the semesters -->
       <div v-for="semester in semesters" :class="colMdSizeCssClass">
         <h4>{{ semester.type.name }} {{ semester.year }}</h4>
         <span>ECTS: {{ calculateEcts(semester) }}</span>
       </div>
     </div>
 
-
     <!-- row for search input field (proposals) -->
     <div class="row">
       <div class="input-group input-group--displayblock" :class="colMdSizeCssClass">
-        <input id="search-module" type="text" class="form-control" placeholder="Modulname" v-model="searches.module" />
+        <input id="search-module" type="text" class="form-control" placeholder="Modulname" v-model="searches.module"/>
       </div>
     </div>
 
-
+    <!-- row for proposals, completions, bookings and plannings -->
     <div class="row">
 
       <!-- module proposals (stand-alone column) -->
       <div :class="colMdSizeCssClass">
-
         <ul class="list-group">
           <draggable :list="modules.proposals" :options="proposalConfig"
                      :data-module-type="types.PROPOSALS" :data-semester="0">
             <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.id_of_the_module">
               <b>{{ item.code }}</b> ({{ item.ects }})<br/>
               <span>{{ item.name_de }}&nbsp;</span>
-              <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true" />
+              <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true"/>
               <span class="clearfix"/>
             </li>
             <li v-show="modules.proposals.length < 1"
@@ -62,7 +62,6 @@
           </ul>
         </div>
 
-
         <!-- Booked modules for the upcoming semester (and the following-next semester if there are bookings ).
            NOTE: they are not draggable -->
         <div
@@ -77,7 +76,6 @@
           </ul>
         </div>
 
-
         <!-- each semester in the future can be planned -->
         <div v-if="semester.label > getUpcomingSemesterLabel">
 
@@ -88,7 +86,7 @@
                   class="list-group-item list-group-item--planned">
                 <b>{{ item.code }}</b> ({{ item.ects }})<br/>
                 <span>{{ item.name_de }}&nbsp;</span>
-                <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true" />
+                <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true"/>
                 <span class="clearfix"/>
               </li>
               <li v-show="filterModules('plannings', semester).length < 1"

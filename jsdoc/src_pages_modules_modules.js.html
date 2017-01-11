@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/pages/modules/modules.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="AppRouter.html">AppRouter</a></li><li><a href="DayOfWeek.html">DayOfWeek</a><ul class='methods'><li data-type='method'><a href="DayOfWeek.html#.getDay">getDay</a></li><li data-type='method'><a href="DayOfWeek.html#.getDeferenceDay">getDeferenceDay</a></li></ul></li><li><a href="Endpoints.html">Endpoints</a></li><li><a href="HttpConfig.html">HttpConfig</a></li><li><a href="Login.html">Login</a><ul class='methods'><li data-type='method'><a href="Login.html#.data">data</a></li></ul></li><li><a href="Modules.html">Modules</a><ul class='methods'><li data-type='method'><a href="Modules.html#.created">created</a></li><li data-type='method'><a href="Modules.html#.data">data</a></li><li data-type='method'><a href="Modules.html#.mounted">mounted</a></li></ul></li><li><a href="Planning.html">Planning</a><ul class='methods'><li data-type='method'><a href="Planning.html#.created">created</a></li><li data-type='method'><a href="Planning.html#.data">data</a></li><li data-type='method'><a href="Planning.html#.mounted">mounted</a></li></ul></li><li><a href="Results.html">Results</a><ul class='methods'><li data-type='method'><a href="Results.html#.created">created</a></li><li data-type='method'><a href="Results.html#.data">data</a></li></ul></li><li><a href="SemesterHelper.html">SemesterHelper</a><ul class='methods'><li data-type='method'><a href="SemesterHelper.html#.add">add</a></li><li data-type='method'><a href="SemesterHelper.html#.formatLabel">formatLabel</a></li><li data-type='method'><a href="SemesterHelper.html#.label">label</a></li><li data-type='method'><a href="SemesterHelper.html#.split">split</a></li><li data-type='method'><a href="SemesterHelper.html#.subtract">subtract</a></li></ul></li><li><a href="StandardStudyPlan.html">StandardStudyPlan</a><ul class='methods'><li data-type='method'><a href="StandardStudyPlan.html#.data">data</a></li></ul></li><li><a href="Timetable.html">Timetable</a><ul class='methods'><li data-type='method'><a href="Timetable.html#.data">data</a></li><li data-type='method'><a href="Timetable.html#.mounted">mounted</a></li></ul></li><li><a href="UserHelper.html">UserHelper</a><ul class='methods'><li data-type='method'><a href="UserHelper.html#.getUser">getUser</a></li><li data-type='method'><a href="UserHelper.html#.setUser">setUser</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-ExecutionTile.html">ExecutionTile</a></li><li><a href="module-NavigationBar.html">NavigationBar</a></li><li><a href="module-webpack_config.html">webpack/config</a></li></ul><h3>Global</h3><ul><li><a href="global.html#FilterBy">FilterBy</a></li><li><a href="global.html#FindBy">FindBy</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">src/pages/modules/modules.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import ExecutionTile from '../../components/execution-tile/execution-tile';
+
+import {ScaleLoader} from 'vue-spinner';
+
+import jQuery from 'jquery';
+import BootstrapSelect from 'bootstrap-select';
+
+import DayOfWeek from '../../helpers/DayOfWeek';
+import SemesterHelper from '../../helpers/SemesterHelper';
+import UserHelper from '../../helpers/UserHelper';
+
+import HttpConfig from '../../rest/HttpConfig';
+import Endpoints from '../../rest/Endpoints';
+
+
+/**
+ * Component that is responsible for the modules page.
+ *
+ * @class
+ * @classdesc Modules is an Object indeed, but it is used as a class to create a new Vue instance.
+ */
+let Modules = {
+
+  /**
+   * @property {template} template: html for the modules page.
+   */
+  template: require('./modules.html'),
+
+
+  /**
+   * Function that provides the data of the Vue instance to the view so that it can be used.
+   * @returns {object} object with proxied data
+   */
+  data: function () {
+    return {
+      ready: false,
+      upcomingSemester: UserHelper.getUser().upcomingsemester,
+      bookingsModifiable: !UserHelper.getUser().booking_confirmed,
+      executions: [],
+      bookings: [],
+      nspCourses: [],
+      searches: {
+        nspOnly: 0,
+        module: '',
+        places: {
+          model: [],
+          options: [{
+            value: 'BER',
+            name: 'Bern'
+          }, {
+            value: 'BIE',
+            name: 'Biel'
+          }]
+        },
+        types: {
+          model: [],
+          options: [{
+            value: 'PM',
+            name: 'Pflicht'
+          }, {
+            value: 'WM',
+            name: 'Wahlpflicht'
+          }, {
+            value: 'WW',
+            name: 'Wahl'
+          }]
+        },
+        groups: {
+          model: [],
+          options: [{
+            value: 'A',
+            name: 'A'
+          }, {
+            value: 'B',
+            name: 'B'
+          }, {
+            value: 'C',
+            name: 'C'
+          }, {
+            value: 'D',
+            name: 'D'
+          }, {
+            value: 'D1',
+            name: 'D1'
+          }, {
+            value: 'D2',
+            name: 'D2'
+          }]
+        }
+      }
+    }
+  },
+
+
+  /**
+   * Callback function that is called when the component is mounted to the DOM tree.
+   * It is used to use the jQuery selectpicker plugin to create the dropdop selection elements.
+   */
+  mounted: function () {
+    this.$nextTick(function () { // ensure that DOM element exists prior to use jquery
+      jQuery('.selectpicker').selectpicker();
+
+      /* unfortunately, we have to use that bugfix to get it working.
+       * otherwise, the 'open' class won't get toggled and the dropdown is never shown.
+       */
+      jQuery(".bootstrap-select").click(function () {
+        jQuery(this).toggleClass('open');
+      });
+    });
+  },
+
+
+  /**
+   * Callback function that is called after the Vue instance's creation.
+   * It is used to load data from the backend, then fill it into the component's view models.
+   */
+  created: function () {
+    let _self = this;
+    let queryString = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
+    let queryDspCourse = "?filter=defaultstudyplan_ID=" + UserHelper.getUser().defaultstudyplan_ID;
+    Promise.all([
+      this.$http.get(Endpoints.COURSE_EXECUTION_VIEW, HttpConfig),
+      this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
+      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // Bookings
+      this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig)
+    ]).then(function (responses) {
+      _self.executions = responses[0].body.resource;
+
+      _self.executions.forEach(exec => {
+        let option = _self.searches.places.options.filter(option => {
+          return option.value === exec.place;
+        });
+        exec.placeLabel = option[0].name;
+        exec.semester = SemesterHelper.split(exec.semester);
+      });
+
+      // assign time slots to executions
+      responses[1].body.resource.forEach(slot => {
+        _self.executions.forEach(exec => {
+          if (exec.uid === slot.courseexecution_id) {
+            if (!exec.slots) {
+              exec.slots = [];
+            }
+            slot.day = DayOfWeek.getDay(slot.dayofweek);
+            slot.start = slot.start.substr(0, 5);
+            slot.end = slot.end.substr(0, 5);
+            exec.slots.push(slot);
+          }
+        });
+      });
+
+      // remove bookings from executions, add them to bookings
+      responses[2].body.resource.forEach(booking => {
+        _self.executions.forEach(execution => {
+          if (execution.uid === booking.courseexecution_ID) {
+            _self.bookings.push(execution);
+            _self.executions.splice(_self.executions.indexOf(execution), 1);
+          }
+        });
+      });
+
+      let sem = UserHelper.getUser().upcomingsemester;
+      responses[3].body.resource.forEach((item) => {
+        if (item.semester === sem || item.semester === (sem + 1)) {
+          _self.nspCourses.push(item);
+        }
+      });
+      _self.ready = true;
+    }, responses => {
+      console.log("something went wrong:", responses);
+    });
+
+  },
+
+
+  /**
+   * @property {object} computed: computed properties that are calculated once
+   * and just get recalculated when one (or more) of the view model properties change
+   * on which a computed property depends.
+   */
+  computed: {
+    filteredExecutions: function () {
+      return this.executions
+
+      // check if the module name matches the searched input string.
+      .filter(item => {
+        if (item.course_name_de.toLowerCase().indexOf(this.searches.module.trim().toLowerCase()) > -1) {
+          return item;
+        }
+      })
+
+      // if there is at least one place selected, check for it.
+      .filter(item => {
+        if (this.searches.places.model.length > 0) {
+          if (this.searches.places.model.indexOf(item.place) > -1) {
+            return item;
+          }
+        } else return item;
+      })
+
+      // if there is at least one module type selected, check for it.
+      .filter(item => {
+        if (this.searches.types.model.length > 0) {
+          if (this.searches.types.model.indexOf(item.coursetype) > -1) {
+            return item;
+          }
+        } else return item;
+      })
+
+      // if there is at least one module group selected, check for it.
+      .filter(item => {
+        if (this.searches.groups.model.length > 0) {
+          if (this.searches.groups.model.indexOf(item.coursegroup) > -1) {
+            return item;
+          }
+        } else return item;
+      })
+
+      // only nsp modules
+      .filter(item => {
+        if (this.searches.nspOnly) {
+          let isNsp = 0;
+          this.nspCourses.forEach((course) => {
+            if (course.course_ID === item.course_id) {
+              isNsp = 1;
+              return;
+            }
+          });
+          if (isNsp) {
+            return item;
+          }
+        } else {
+          return item;
+        }
+      })
+        ;
+    },
+
+    filteredBookings: function () {
+      let info = SemesterHelper.split(SemesterHelper.NOW_REFERENCE);
+
+      return this.bookings.filter(elem => {
+        if (elem.semester.year === info.year &amp;&amp; elem.semester.type === info.type) {
+          return elem;
+        }
+      });
+    },
+
+    filteredBookingsAfterNext: function () {
+      let info = SemesterHelper.add(SemesterHelper.NOW_REFERENCE, 1);
+
+      return this.bookings.filter(elem => {
+        if (elem.semester.year === info.year &amp;&amp; elem.semester.type === info.type) {
+          return elem;
+        }
+      });
+    }
+  },
+
+
+  /**
+   * @property {object} methods: object that contains all functions that are accessible from the view.
+   */
+  methods: {
+    createRequestBody: function (execution) {
+      return {
+        "resource": {
+          "student_ID": UserHelper.getUser().uid,
+          "courseexecution_ID": execution.uid
+        }
+      };
+    },
+
+    add: function (execution) {
+      this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
+        this.executions.splice(this.executions.indexOf(execution), 1);
+        this.bookings.push(execution);
+      }, (response) => {
+        window.console.error(response);
+      });
+
+    },
+
+    remove: function (execution) {
+      let options = Object.assign({}, HttpConfig);
+      options.body = this.createRequestBody(execution);
+      this.$http.delete(Endpoints.STUDENT_COURSE_EXECUTION, options).then((response) => {
+        this.bookings.splice(this.bookings.indexOf(execution), 1);
+        this.executions.push(execution);
+      }, (response) => {
+        window.console.error(response);
+      });
+    },
+
+    confirmBooking: function () {
+      let sure = window.confirm('Soll die Moduleinschreibung definitiv abgegeben werden? ' +
+        'Danach kann sie nicht mehr verändert werden.');
+
+      if (sure) {
+        let user = UserHelper.getUser();
+        let endpoint = [Endpoints.STUDENT, '/', user.uid].join('');
+        let body = {
+          'booking_confirmed': true
+        };
+
+        this.$http.patch(endpoint, body, HttpConfig).then((response) => {
+          user.booking_confirmed = true;
+          UserHelper.setUser(user);
+          window.location.reload();
+        }, (failure) => {
+          window.console.log('confirm bookings went wrong. ', failure);
+        });
+      }
+    },
+
+    formatSemester: function (incremental) {
+      let increment = incremental || 0;
+      let info = SemesterHelper.add(SemesterHelper.NOW_REFERENCE, increment);
+      return [info.type.name, info.year].join(' ');
+    }
+  },
+
+
+  /**
+   * @property {object} components: object that defines all components that are used inside this Vue component.
+   */
+  components: {ExecutionTile, jQuery, BootstrapSelect, ScaleLoader}
+};
+
+export default Modules;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 11 2017 14:59:34 GMT+0100 (Mitteleuropäische Zeit) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

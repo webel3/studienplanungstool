@@ -1,7 +1,12 @@
 var webpack = require("webpack");
 var path = require('path');
 
-// @see: https://webpack.github.io/docs/configuration.html
+/**
+ * Webpack configuration for the project.
+ *
+ * @module webpack/config
+ * @see https://webpack.github.io/docs/configuration.html
+ */
 module.exports = {
 
   // the entry point for the bundle
@@ -21,6 +26,7 @@ module.exports = {
     modules: [
       'node_modules', path.resolve(__dirname, 'src')
     ],
+    // accepted file endings
     extensions: ['.js', '.css', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.js',
@@ -29,8 +35,8 @@ module.exports = {
   },
 
   module: {
-    loaders: [
-      {
+    // loaders are used to process files of the matching type.
+    loaders: [{
         test: /\.(html|css)$/,
         use: 'raw-loader'
       }
@@ -38,6 +44,7 @@ module.exports = {
   },
 
   plugins: [
+    // used to log the progress during compilation (useful in case of errors)
     new webpack.ProgressPlugin()
   ]
 };

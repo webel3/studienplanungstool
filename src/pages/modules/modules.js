@@ -1,6 +1,6 @@
 import ExecutionTile from '../../components/execution-tile/execution-tile';
 
-import { ScaleLoader } from 'vue-spinner';
+import {ScaleLoader} from 'vue-spinner';
 
 import jQuery from 'jquery';
 import BootstrapSelect from 'bootstrap-select';
@@ -12,9 +12,25 @@ import UserHelper from '../../helpers/UserHelper';
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
 
+
+/**
+ * Component that is responsible for the modules page.
+ *
+ * @class
+ * @classdesc Modules is an Object indeed, but it is used as a class to create a new Vue instance.
+ */
 let Modules = {
+
+  /**
+   * @property {template} template: html for the modules page.
+   */
   template: require('./modules.html'),
 
+
+  /**
+   * Function that provides the data of the Vue instance to the view so that it can be used.
+   * @returns {object} object with proxied data
+   */
   data: function () {
     return {
       ready: false,
@@ -75,6 +91,11 @@ let Modules = {
     }
   },
 
+
+  /**
+   * Callback function that is called when the component is mounted to the DOM tree.
+   * It is used to use the jQuery selectpicker plugin to create the dropdop selection elements.
+   */
   mounted: function () {
     this.$nextTick(function () { // ensure that DOM element exists prior to use jquery
       jQuery('.selectpicker').selectpicker();
@@ -88,6 +109,11 @@ let Modules = {
     });
   },
 
+
+  /**
+   * Callback function that is called after the Vue instance's creation.
+   * It is used to load data from the backend, then fill it into the component's view models.
+   */
   created: function () {
     let _self = this;
     let queryString = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
@@ -135,7 +161,7 @@ let Modules = {
 
       let sem = UserHelper.getUser().upcomingsemester;
       responses[3].body.resource.forEach((item) => {
-        if(item.semester === sem || item.semester === (sem + 1)){
+        if (item.semester === sem || item.semester === (sem + 1)) {
           _self.nspCourses.push(item);
         }
       });
@@ -146,66 +172,12 @@ let Modules = {
 
   },
 
-  methods: {
 
-    createRequestBody: function (execution) {
-      return {
-        "resource": {
-          "student_ID": UserHelper.getUser().uid,
-          "courseexecution_ID": execution.uid
-        }
-      };
-    },
-
-    add: function (execution) {
-      this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
-        this.executions.splice(this.executions.indexOf(execution), 1);
-        this.bookings.push(execution);
-      }, (response) => {
-        window.console.error(response);
-      });
-
-    },
-
-    remove: function (execution) {
-      let options = Object.assign({}, HttpConfig);
-      options.body = this.createRequestBody(execution);
-      this.$http.delete(Endpoints.STUDENT_COURSE_EXECUTION, options).then((response) => {
-        this.bookings.splice(this.bookings.indexOf(execution), 1);
-        this.executions.push(execution);
-      }, (response) => {
-        window.console.error(response);
-      });
-    },
-
-    confirmBooking: function() {
-      let sure = window.confirm('Soll die Moduleinschreibung definitiv abgegeben werden? ' +
-       'Danach kann sie nicht mehr verändert werden.');
-
-      if (sure) {
-        let user = UserHelper.getUser();
-        let endpoint = [Endpoints.STUDENT, '/', user.uid].join('');
-        let body = {
-          'booking_confirmed': true
-        };
-
-        this.$http.patch(endpoint, body, HttpConfig).then((response) => {
-          user.booking_confirmed = true;
-          UserHelper.setUser(user);
-          window.location.reload();
-        }, (failure) => {
-          window.console.log('confirm bookings went wrong. ', failure);
-        });
-      }
-    },
-
-    formatSemester: function (incremental) {
-      let increment = incremental || 0;
-      let info = SemesterHelper.add(SemesterHelper.NOW_REFERENCE, increment);
-      return [info.type.name, info.year].join(' ');
-    }
-  },
-
+  /**
+   * @property {object} computed: computed properties that are calculated once
+   * and just get recalculated when one (or more) of the view model properties change
+   * on which a computed property depends.
+   */
   computed: {
     filteredExecutions: function () {
       return this.executions
@@ -254,7 +226,7 @@ let Modules = {
               return;
             }
           });
-          if (isNsp){
+          if (isNsp) {
             return item;
           }
         } else {
@@ -285,7 +257,74 @@ let Modules = {
     }
   },
 
-  components: { ExecutionTile, jQuery, BootstrapSelect, ScaleLoader }
+
+  /**
+   * @property {object} methods: object that contains all functions that are accessible from the view.
+   */
+  methods: {
+    createRequestBody: function (execution) {
+      return {
+        "resource": {
+          "student_ID": UserHelper.getUser().uid,
+          "courseexecution_ID": execution.uid
+        }
+      };
+    },
+
+    add: function (execution) {
+      this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
+        this.executions.splice(this.executions.indexOf(execution), 1);
+        this.bookings.push(execution);
+      }, (response) => {
+        window.console.error(response);
+      });
+
+    },
+
+    remove: function (execution) {
+      let options = Object.assign({}, HttpConfig);
+      options.body = this.createRequestBody(execution);
+      this.$http.delete(Endpoints.STUDENT_COURSE_EXECUTION, options).then((response) => {
+        this.bookings.splice(this.bookings.indexOf(execution), 1);
+        this.executions.push(execution);
+      }, (response) => {
+        window.console.error(response);
+      });
+    },
+
+    confirmBooking: function () {
+      let sure = window.confirm('Soll die Moduleinschreibung definitiv abgegeben werden? ' +
+        'Danach kann sie nicht mehr verändert werden.');
+
+      if (sure) {
+        let user = UserHelper.getUser();
+        let endpoint = [Endpoints.STUDENT, '/', user.uid].join('');
+        let body = {
+          'booking_confirmed': true
+        };
+
+        this.$http.patch(endpoint, body, HttpConfig).then((response) => {
+          user.booking_confirmed = true;
+          UserHelper.setUser(user);
+          window.location.reload();
+        }, (failure) => {
+          window.console.log('confirm bookings went wrong. ', failure);
+        });
+      }
+    },
+
+    formatSemester: function (incremental) {
+      let increment = incremental || 0;
+      let info = SemesterHelper.add(SemesterHelper.NOW_REFERENCE, increment);
+      return [info.type.name, info.year].join(' ');
+    }
+  },
+
+
+  /**
+   * @property {object} components: object that defines all components that are used inside this Vue component.
+   */
+  components: {ExecutionTile, jQuery, BootstrapSelect, ScaleLoader}
 };
 
 export default Modules;

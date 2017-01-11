@@ -7,7 +7,7 @@
   "scripts": {
     "bundle": "webpack --config webpack.config.js",
     "server": "webpack-dev-server --hot --inline",
-    "doc": "documentation build src/** -f html -o docs"
+    "jsdoc": "jsdoc . -c .jsdoc.json -r --access all --verbose"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -21,6 +21,7 @@
     "vuedraggable": "^2.4.0"
   },
   "devDependencies": {
+    "minami": "^1.1.1",
     "raw-loader": "0.5.1",
     "webpack": "^2.1.0-beta.25",
     "webpack-dev-server": "^2.1.0-beta.9"

@@ -1,25 +1,24 @@
-import Vue from 'vue';
-import VueResource from 'vue-resource';
-import { ScaleLoader } from 'vue-spinner';
+import {ScaleLoader} from 'vue-spinner';
 
 import SemesterHelper from '../../helpers/SemesterHelper';
 
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
 
-Vue.use(VueResource);
 
 /**
- * Vue instance for the results section.
- * @namespace Results
+ * Component that is responsible for the results page.
+ *
+ * @class
+ * @classdesc Results is an Object indeed, but it is used as a class to create a new Vue instance.
  */
 let Results = {
 
   /**
-   * html template for the results section.
-   * @property {object}
+   * @property {template} template: html for the results page.
    */
   template: require('./results.html'),
+
 
   /**
    * Function that provides the data of the vue instance to the view so that it can be used.
@@ -33,11 +32,12 @@ let Results = {
     }
   },
 
+
   /**
-   * Hook that is called when the instance is created.
-   * @method {created}
+   * Callback function that is called after the Vue instance's creation.
+   * It is used to load data from the backend, then fill it into the component's view models.
    */
-  created: function createdHook() {
+  created: function () {
 
     Promise.all([
       this.$http.get(new HttpConfig(Endpoints.RESULT_VIEW)),
@@ -65,6 +65,10 @@ let Results = {
     });
   },
 
+
+  /**
+   * @property {object} methods: object that contains all functions that are accessible from the view.
+   */
   methods: {
     filterModules: function (group) {
       return this.modules.filter(m => m.group === group.shortName);
@@ -78,12 +82,16 @@ let Results = {
       return ects;
     },
 
-    formatSemester: function(semester) {
+    formatSemester: function (semester) {
       return SemesterHelper.formatLabel(semester);
     }
   },
 
-  components: { ScaleLoader }
+
+  /**
+   * @property {object} components: object that defines all components that are used inside this Vue component.
+   */
+  components: {ScaleLoader}
 };
 
 export default Results;
