@@ -22,6 +22,7 @@ let Endpoints = {
   COURSE_GROUP: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/coursegroup',
   COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution',
   COURSE_EXECUTION_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution_view',
+  COURSE_DEPENDENCY_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course_dependency_view',
   STUDENT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student',
   STUDENT_COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution',
   EXECUTION_SLOT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/executionslot',

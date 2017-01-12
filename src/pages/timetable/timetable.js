@@ -55,6 +55,7 @@ let Timetable = {
         event.start = DayOfweek.getDeferenceDay(slot.dayofweek, slot.start);
         event.end = DayOfweek.getDeferenceDay(slot.dayofweek, slot.end);
         event.title = slot.course_name_de;
+        event.url = ['https://www.ti.bfh.ch/fileadmin/modules/', event.coursecode, '-de.xml'].join('');
         _self.events.push(event);
       });
 
@@ -66,6 +67,12 @@ let Timetable = {
       _self.$nextTick(function () {
         jQuery('#calendar').fullCalendar({
           events: _self.events,
+          eventClick: function(event) {
+            if (event.url) {
+              window.open(event.url, "_blank");
+              return false;
+            }
+          },
           locale: 'de',
           header: {
             center: '',

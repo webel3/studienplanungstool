@@ -8,6 +8,7 @@ import BootstrapSelect from 'bootstrap-select';
 import DayOfWeek from '../../helpers/DayOfWeek';
 import SemesterHelper from '../../helpers/SemesterHelper';
 import UserHelper from '../../helpers/UserHelper';
+import DependencyCheck from '../../helpers/DependencyCheck';
 
 import HttpConfig from '../../rest/HttpConfig';
 import Endpoints from '../../rest/Endpoints';
@@ -123,8 +124,35 @@ let Modules = {
       this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
       this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // Bookings
       this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig)
+      // this.$http.get(Endpoints.COURSE_DEPENDENCY_VIEW, HttpConfig), // pre-conditions,
+      // this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig) // results
     ]).then(function (responses) {
-      _self.executions = responses[0].body.resource;
+
+      let dependencies = responses[4].body.resource;
+      let results = responses[5].body.resource;
+
+      /*
+       * Only show executions that are not completed yet.
+       */
+      responses[0].body.resource.forEach(execution => {
+        let resultList = results.filter(result => {
+          if (result.course_id === execution.course_id) {
+            return result;
+          }
+        });
+        if (resultList.length === 0) {
+          _self.executions.push(execution);
+        }
+      });
+
+      /*
+       * check each execution if the student is allowed to book it.
+       *
+       * NOTE: we can NOT do that because the DreamFactroy backend is such a crap that
+       * it can't even handle more than four requests (but two more would be necessary).
+       */
+      //DependencyCheck.setBookingsAllowed(_self.executions, dependencies, results);
+
 
       _self.executions.forEach(exec => {
         let option = _self.searches.places.options.filter(option => {
@@ -272,9 +300,11 @@ let Modules = {
     },
 
     add: function (execution) {
+      this.ready = false;
       this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
         this.executions.splice(this.executions.indexOf(execution), 1);
         this.bookings.push(execution);
+        this.ready = true;
       }, (response) => {
         window.console.error(response);
       });
@@ -282,11 +312,13 @@ let Modules = {
     },
 
     remove: function (execution) {
+      this.ready = false;
       let options = Object.assign({}, HttpConfig);
       options.body = this.createRequestBody(execution);
       this.$http.delete(Endpoints.STUDENT_COURSE_EXECUTION, options).then((response) => {
         this.bookings.splice(this.bookings.indexOf(execution), 1);
         this.executions.push(execution);
+        this.ready = true;
       }, (response) => {
         window.console.error(response);
       });

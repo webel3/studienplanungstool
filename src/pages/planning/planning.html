@@ -38,7 +38,10 @@
                      :data-module-type="types.PROPOSALS" :data-semester="0">
             <li v-for="item in filteredProposals" class="list-group-item" :data-module-id="item.id_of_the_module">
               <b>{{ item.code }}</b> ({{ item.ects }})<br/>
-              <span>{{ item.name_de }}&nbsp;</span>
+              <span>
+                <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + item.code + '-de.xml'"
+                   target="_blank">{{ item.name_de }}</a>&nbsp;
+              </span>
               <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true"/>
               <span class="clearfix"/>
             </li>
@@ -57,7 +60,11 @@
           <ul class="list-group">
             <li v-for="item in filterModules('completions', semester)"
                 class="list-group-item list-group-item--completed">
-              <b>{{ item.code }}</b> ({{ item.ects }})<br/>{{ item.title }}
+              <b>{{ item.code }}</b> ({{ item.ects }})<br/>
+              <span>
+                <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + item.code + '-de.xml'"
+                   target="_blank">{{ item.title }}</a>
+              </span>
             </li>
           </ul>
         </div>
@@ -71,7 +78,11 @@
           <ul class="list-group">
             <li v-for="item in filterModules('bookings', semester)"
                 class="list-group-item list-group-item--booked">
-              <b>{{ item.code }}</b> ({{ item.ects }})<br/>{{ item.name_de }}
+              <b>{{ item.code }}</b> ({{ item.ects }})<br/>
+              <span>
+                <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + item.code + '-de.xml'"
+                   target="_blank">{{ item.name_de }}</a>
+              </span>
             </li>
           </ul>
         </div>
@@ -85,7 +96,14 @@
               <li v-for="item in filterModules('plannings', semester)" :data-module-id="item.id_of_the_module"
                   class="list-group-item list-group-item--planned">
                 <b>{{ item.code }}</b> ({{ item.ects }})<br/>
-                <span>{{ item.name_de }}&nbsp;</span>
+                <span v-if="isWahlmodul(item)">
+                  {{ item.name_de }}
+                </span>
+                <span v-else>
+                  <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + item.code + '-de.xml'"
+                     target="_blank">{{ item.name_de }}</a>
+                </span>
+                &nbsp;
                 <span class="glyphicon glyphicon-move dnd-handler float-right" aria-hidden="true"/>
                 <span class="clearfix"/>
               </li>

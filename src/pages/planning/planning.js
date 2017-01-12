@@ -310,6 +310,10 @@ let Planning = {
         }
       });
       return ects;
+    },
+
+    isWahlmodul: function (item) {
+      return item.name_de.toLowerCase().startsWith('wahl');
     }
   },
 

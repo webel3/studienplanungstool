@@ -51,7 +51,9 @@
         <td></td>
 
         <td>{{ item.code }}</td>
-        <td>{{ item.title }}</td>
+        <td>
+          <a :href="'https://www.ti.bfh.ch/fileadmin/modules/' + item.code + '-de.xml'" target="_blank">{{ item.title }}</a>
+        </td>
         <td>{{ item.type }}</td>
         <td>{{ formatSemester(item.semester) }}</td>
         <td>{{ item.language }}</td>

@@ -22,6 +22,7 @@
     "vuedraggable": "^2.4.0"
   },
   "devDependencies": {
+    "jsdoc": "^3.4.3",
     "minami": "^1.1.1",
     "raw-loader": "0.5.1",
     "webpack": "^2.1.0-beta.25",
