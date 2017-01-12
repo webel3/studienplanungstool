@@ -135,7 +135,8 @@ let Modules = {
        * Only show executions that are not completed yet.
        */
       responses[0].body.resource.forEach(execution => {
-        execution.bookingAllowed = true; // Workaround as long as DependencyCheck does not work.
+        let randomNr = Math.floor(Math.random() * 100); // number between 0..100
+        execution.bookingAllowed = randomNr % 7 !== 0; // workaround as long as DependencyCheck is outcommented.
 
         let resultList = results.filter(result => {
           if (result.course_id === execution.course_id) {
@@ -302,9 +303,9 @@ let Modules = {
     },
 
     add: function (execution) {
-      this.ready = false;
-
       if (execution.bookingAllowed) {
+        this.ready = false;
+
         this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
           this.executions.splice(this.executions.indexOf(execution), 1);
           this.bookings.push(execution);

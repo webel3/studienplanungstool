@@ -54,7 +54,8 @@ let Timetable = {
         let event = Object.assign({}, slot);
         event.start = DayOfweek.getDeferenceDay(slot.dayofweek, slot.start);
         event.end = DayOfweek.getDeferenceDay(slot.dayofweek, slot.end);
-        event.title = slot.course_name_de;
+        let place = slot.place === "BIE" ? "Biel" : "Bern";
+        event.title = [slot.course_name_de, ' (', place, ')'].join('');
         event.url = ['https://www.ti.bfh.ch/fileadmin/modules/', event.coursecode, '-de.xml'].join('');
         _self.events.push(event);
       });
