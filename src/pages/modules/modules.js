@@ -123,13 +123,13 @@ let Modules = {
       this.$http.get(Endpoints.COURSE_EXECUTION_VIEW, HttpConfig),
       this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
       this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // Bookings
-      this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig)
-      // this.$http.get(Endpoints.COURSE_DEPENDENCY_VIEW, HttpConfig), // pre-conditions,
-      // this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig) // results
+      this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig),
+      this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig) // results
+      // this.$http.get(Endpoints.COURSE_DEPENDENCY_VIEW, HttpConfig) // pre-conditions,
     ]).then(function (responses) {
 
-      let dependencies = responses[4].body.resource;
-      let results = responses[5].body.resource;
+      let results = responses[4].body.resource;
+      // let dependencies = responses[5].body.resource;
 
       /*
        * Only show executions that are not completed yet.
