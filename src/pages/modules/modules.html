@@ -84,9 +84,9 @@
     <div class="row">
       <div class="col-md-4">
         <div v-for="execution in filteredExecutions">
-          <p v-if="!execution.bookingAllowed">DONG! {{ execution.course_name_de }}</p>
-
-          <execution-tile :execution="execution" cssClass="execution-tile--provided"
+          <execution-tile :execution="execution"
+              :cssClass="[{ 'execution-tile--allowed' : execution.bookingAllowed,
+                  'execution-tile--prohibited' : !execution.bookingAllowed }, '']"
               :addFn="add" :bookable="bookingsModifiable"></execution-tile>
         </div>
 

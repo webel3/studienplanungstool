@@ -135,6 +135,8 @@ let Modules = {
        * Only show executions that are not completed yet.
        */
       responses[0].body.resource.forEach(execution => {
+        execution.bookingAllowed = true; // Workaround as long as DependencyCheck does not work.
+
         let resultList = results.filter(result => {
           if (result.course_id === execution.course_id) {
             return result;
@@ -301,13 +303,22 @@ let Modules = {
 
     add: function (execution) {
       this.ready = false;
-      this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
-        this.executions.splice(this.executions.indexOf(execution), 1);
-        this.bookings.push(execution);
-        this.ready = true;
-      }, (response) => {
-        window.console.error(response);
-      });
+
+      if (execution.bookingAllowed) {
+        this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
+          this.executions.splice(this.executions.indexOf(execution), 1);
+          this.bookings.push(execution);
+          this.ready = true;
+        }, (response) => {
+          window.console.error(response);
+        });
+      } else {
+        let text = ["Die Auswahl des Moduls '", execution.course_name_de,
+            "' ist nicht erlaubt, da nicht alle Vorbedingungen erfüllt sind."].join('');
+        window.alert(text);
+      }
+
+
 
     },
 

@@ -112,14 +112,15 @@
     border-radius: 4px;
 }
 
-.execution-tile--provided {
-    /*border: 1px solid antiquewhite;*/
+.execution-tile--allowed {
     background-color: rgba(0, 255, 0, 0.1);
+}
+.execution-tile--prohibited {
+    background-color: rgba(255, 197, 10, 0.2);
 }
 
 .execution-tile--booked {
-    /*background-color: rgba(250, 165, 0, 0.2); /* #FAA500 */
-    background-color: rgba(255, 197, 10, 0.1);  /* #FFC50A */
+    background-color: rgba(240, 240, 240, 0.3);
 }
 
 /* define some classes with pre-defined width's */
