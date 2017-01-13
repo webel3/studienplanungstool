@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 11. Jan 2017 um 11:23
+-- Erstellungszeit: 13. Jan 2017 um 15:45
 -- Server Version: 5.6.33
 -- PHP-Version: 5.6.19
 
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `courseexecution` (
   `department` varchar(45) DEFAULT NULL,
   `semester` int(11) NOT NULL,
   `professor` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Durchführungen' AUTO_INCREMENT=141 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Durchführungen' AUTO_INCREMENT=142 ;
 
 --
 -- RELATIONEN DER TABELLE `courseexecution`:
@@ -355,7 +355,8 @@ INSERT INTO `courseexecution` (`uid`, `executioncode`, `course_id`, `studypath_i
 (136, 'BZG4206W', 62, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201602, NULL),
 (137, 'BZG4206r', 62, 'I', 'BIE', 'I4r', 'TI', 201602, NULL),
 (138, 'BZG4206a', 62, 'I', 'BIE', 'I3a', 'TI', 201602, NULL),
-(140, 'BZG3422p', 174, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL);
+(140, 'BZG3422p', 174, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(141, 'BTI7321p', 137, 'I', 'BER', 'I_BT-Be', 'TI', 201601, NULL);
 
 -- --------------------------------------------------------
 
@@ -541,7 +542,7 @@ CREATE TABLE IF NOT EXISTS `defaultstudyplan_course` (
   `semestertype` enum('FS','HS') NOT NULL,
   `defaultstudyplan_ID` int(11) NOT NULL COMMENT 'FK zu DefaultStudyPlan',
   `course_ID` int(11) NOT NULL COMMENT 'FK zu Course'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=103 ;
 
 --
 -- RELATIONEN DER TABELLE `defaultstudyplan_course`:
@@ -593,7 +594,56 @@ INSERT INTO `defaultstudyplan_course` (`uid`, `semester`, `semestertype`, `defau
 (50, 9, 'HS', 2, 193),
 (51, 6, 'FS', 2, 197),
 (52, 7, 'HS', 2, 198),
-(53, 8, 'FS', 2, 199);
+(53, 8, 'FS', 2, 199),
+(54, 1, 'HS', 1, 7),
+(55, 1, 'HS', 1, 40),
+(56, 1, 'HS', 1, 1),
+(57, 1, 'HS', 1, 4),
+(58, 1, 'HS', 1, 36),
+(59, 1, 'HS', 1, 194),
+(60, 1, 'HS', 1, 44),
+(61, 1, 'HS', 1, 194),
+(62, 2, 'FS', 1, 74),
+(63, 2, 'FS', 1, 2),
+(64, 2, 'FS', 1, 70),
+(65, 2, 'FS', 1, 8),
+(66, 2, 'FS', 1, 65),
+(67, 2, 'FS', 1, 195),
+(68, 2, 'FS', 1, 45),
+(69, 3, 'HS', 1, 41),
+(70, 3, 'HS', 1, 11),
+(71, 3, 'HS', 1, 3),
+(72, 3, 'HS', 1, 6),
+(73, 3, 'HS', 1, 12),
+(74, 3, 'HS', 1, 5),
+(75, 3, 'HS', 1, 37),
+(76, 4, 'FS', 1, 78),
+(77, 4, 'FS', 1, 19),
+(78, 4, 'FS', 1, 13),
+(79, 4, 'FS', 1, 9),
+(80, 4, 'FS', 1, 67),
+(81, 4, 'FS', 1, 196),
+(82, 4, 'FS', 1, 122),
+(83, 4, 'FS', 1, 125),
+(84, 4, 'FS', 1, 128),
+(85, 4, 'FS', 1, 131),
+(86, 5, 'HS', 1, 14),
+(87, 5, 'HS', 1, 10),
+(88, 5, 'HS', 1, 20),
+(89, 5, 'HS', 1, 135),
+(90, 5, 'HS', 1, 15),
+(91, 5, 'HS', 1, 16),
+(92, 5, 'HS', 1, 17),
+(93, 5, 'HS', 1, 18),
+(94, 6, 'FS', 1, 137),
+(95, 6, 'FS', 1, 124),
+(96, 6, 'FS', 1, 127),
+(97, 6, 'FS', 1, 130),
+(98, 6, 'FS', 1, 133),
+(99, 1, 'HS', 1, 50),
+(100, 2, 'FS', 1, 89),
+(101, 1, 'HS', 1, 46),
+(102, 2, 'FS', 1, 96);
 
 -- --------------------------------------------------------
 
@@ -1055,7 +1105,7 @@ CREATE TABLE IF NOT EXISTS `plan` (
   `student_ID` int(11) NOT NULL,
   `semester` int(11) NOT NULL,
   `course_ID` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Planung, Planbuchungen' AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Planung, Planbuchungen' AUTO_INCREMENT=39 ;
 
 --
 -- RELATIONEN DER TABELLE `plan`:
@@ -1070,8 +1120,15 @@ CREATE TABLE IF NOT EXISTS `plan` (
 --
 
 INSERT INTO `plan` (`uid`, `student_ID`, `semester`, `course_ID`) VALUES
-(22, 3, 201701, 135),
-(26, 3, 201701, 191);
+(26, 3, 201701, 191),
+(28, 3, 201701, 192),
+(29, 3, 201701, 193),
+(33, 3, 201702, 193),
+(34, 3, 201701, 191),
+(35, 3, 201701, 20),
+(36, 3, 201701, 17),
+(37, 3, 201701, 15),
+(38, 3, 201701, 58);
 
 -- --------------------------------------------------------
 
@@ -1088,7 +1145,7 @@ CREATE TABLE IF NOT EXISTS `result` (
   `semester` int(11) NOT NULL,
   `course_ID` int(11) NOT NULL,
   `student_ID` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Resultate, Noten, Ergebnisse' AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Resultate, Noten, Ergebnisse' AUTO_INCREMENT=56 ;
 
 --
 -- RELATIONEN DER TABELLE `result`:
@@ -1131,7 +1188,23 @@ INSERT INTO `result` (`uid`, `grade`, `semester`, `course_ID`, `student_ID`) VAL
 (36, 'B', 201401, 112, 3),
 (37, 'E', 201501, 114, 3),
 (38, 'D', 201601, 128, 3),
-(39, 'D', 201601, 29, 3);
+(39, 'D', 201601, 29, 3),
+(40, 'B', 201502, 40, 4),
+(41, 'C', 201502, 7, 4),
+(42, 'D', 201502, 1, 4),
+(43, 'A', 201502, 4, 4),
+(44, 'E', 201502, 36, 4),
+(45, 'B', 201502, 44, 4),
+(46, 'C', 201502, 194, 4),
+(47, 'E', 201502, 50, 4),
+(48, 'C', 201601, 74, 4),
+(49, 'D', 201601, 2, 4),
+(50, 'A', 201601, 70, 4),
+(51, 'D', 201601, 8, 4),
+(52, 'F', 201601, 65, 4),
+(53, 'B', 201601, 45, 4),
+(54, 'C', 201601, 89, 4),
+(55, 'B', 201601, 195, 4);
 
 -- --------------------------------------------------------
 
@@ -1188,10 +1261,9 @@ CREATE TABLE IF NOT EXISTS `student` (
 --
 
 INSERT INTO `student` (`uid`, `password`, `abbreviation`, `firstname`, `lastname`, `matriculationnumber`, `matriculationdate`, `upcomingsemester`, `totalsemester`, `studypath_ID`, `defaultstudyplan_ID`, `booking_confirmed`) VALUES
-(1, 'kaspar', 'engek1', 'Kaspar', 'Engel', '11-636-578', '2012-02-01', 9, 9, 'I', 2, 0),
-(2, 'andreas', 'affoa1', 'Andreas', 'Andreas', '12-***-***', '2016-07-01', 1, 6, 'I', 1, 0),
+(2, 'andreas', 'affoa1', 'Andreas', 'Affolter', '12-***-***', '2016-07-01', 1, 6, 'I', 1, 0),
 (3, 'beat', 'bierb1', 'Beat', 'Bieri', '13-***-***', '2013-01-01', 7, 9, 'I', 2, 0),
-(4, 'christian', 'chric1', 'Christian', 'Christen', '10-***-***', '2014-06-01', 4, 6, 'I', 1, 0);
+(4, 'christian', 'chric1', 'Christian', 'Christen', '10-***-***', '2014-06-01', 3, 6, 'I', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1220,8 +1292,10 @@ CREATE TABLE IF NOT EXISTS `student_courseexecution` (
 --
 
 INSERT INTO `student_courseexecution` (`student_ID`, `courseexecution_ID`) VALUES
-(3, 26),
+(3, 5),
+(3, 25),
 (3, 37),
+(3, 108),
 (3, 140);
 
 -- --------------------------------------------------------
@@ -1422,7 +1496,7 @@ MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=200;
 -- AUTO_INCREMENT for table `courseexecution`
 --
 ALTER TABLE `courseexecution`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=141;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=142;
 --
 -- AUTO_INCREMENT for table `coursegroup`
 --
@@ -1442,7 +1516,7 @@ MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `defaultstudyplan_course`
 --
 ALTER TABLE `defaultstudyplan_course`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=103;
 --
 -- AUTO_INCREMENT for table `examtype`
 --
@@ -1462,12 +1536,12 @@ MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=330;
 -- AUTO_INCREMENT for table `plan`
 --
 ALTER TABLE `plan`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `result`
 --
 ALTER TABLE `result`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `student`
 --
