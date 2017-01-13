@@ -33,35 +33,35 @@ Vue.use(VueResource);
  * @see https://router.vuejs.org/en/api/router-link.html
  */
 let router = new VueRouter({
-    routes : [{
-            path: '/results',
-            component: Results,
-            meta: { requiresAuth: true }
-        }, {
-            path: '/studyplan',
-            component: StudyPlan,
-            meta: { requiresAuth: true }
-        }, {
-            path: '/modules',
-            component: Modules,
-            meta: { requiresAuth: true }
-        }, {
-            path: '/planning',
-            component: Planning,
-            meta: { requiresAuth: true }
-        }, {
-            path: '/timetable',
-            component: Timetable,
-            meta: { requiresAuth: true }
-        }, {
-            path: '/login',
-            component: Login
-        }, {
-            path: '*',
-            redirect: '/results'
-        }
-    ],
-    history: true
+  routes: [{
+    path: '/results',
+    component: Results,
+    meta: {requiresAuth: true}
+  }, {
+    path: '/studyplan',
+    component: StudyPlan,
+    meta: {requiresAuth: true}
+  }, {
+    path: '/modules',
+    component: Modules,
+    meta: {requiresAuth: true}
+  }, {
+    path: '/planning',
+    component: Planning,
+    meta: {requiresAuth: true}
+  }, {
+    path: '/timetable',
+    component: Timetable,
+    meta: {requiresAuth: true}
+  }, {
+    path: '/login',
+    component: Login
+  }, {
+    path: '*',
+    redirect: '/results'
+  }
+  ],
+  history: true
 });
 
 /*
@@ -70,14 +70,14 @@ let router = new VueRouter({
  * If not, redirect the user to the login page.
  */
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth) && !sessionStorage.getItem('user')) {
-        next({
-            path: '/login',
-            query: { redirect: to.fullPath }
-        });
-    } else {
-        next();
-    }
+  if (to.matched.some(record => record.meta.requiresAuth) && !sessionStorage.getItem('user')) {
+    next({
+      path: '/login',
+      query: {redirect: to.fullPath}
+    });
+  } else {
+    next();
+  }
 });
 
 
@@ -90,10 +90,10 @@ router.beforeEach((to, from, next) => {
  * @see https://vuejs.org/
  */
 let app = new Vue({
-    router: router,
-    components: {
-        NavigationBar
-    }
+  router: router,
+  components: {
+    NavigationBar
+  }
 });
 
 
