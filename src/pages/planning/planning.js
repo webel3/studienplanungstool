@@ -68,16 +68,21 @@ let Planning = {
     let queryUserAndRelated = [queryUser, '&related=courseexecution_by_courseexecution_ID'].join('');
 
     Promise.all([
-      // TODO only PM modules should be loaded! But what happens to bookings of modules that does not exist in proposals list...
       this.$http.get(Endpoints.COURSE, HttpConfig), // proposals
       this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig), // completions
       this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryUserAndRelated + '', HttpConfig), // bookings
       this.$http.get(Endpoints.PLANNING + queryUser, HttpConfig), // plannings
     ])
     .then(function (responses) {
-      _self.modules.proposals = responses[0].body.resource; // comes with all information
-      _self.modules.proposals.forEach(prop => {
-        prop.id_of_the_module = prop.uid;
+      /*
+       * Proposals come with all necessary information.
+       * Remove Wahlpflichtmodule, only Pflicht- und Wahlmodule are allowed to get planned.
+       */
+      responses[0].body.resource.forEach(prop => {
+        if (prop.type === 1 || prop.type === 2) {
+          prop.id_of_the_module = prop.uid;
+          _self.modules.proposals.push(prop);
+        }
       });
 
       _self.modules.completions = responses[1].body.resource; // comes with all information
@@ -115,7 +120,6 @@ let Planning = {
             return true;
           }
         }).forEach(prop => {
-          // TODO dummy proposals should not be removed from proposals list (WPM modules)
           _self.modules.proposals.splice(_self.modules.proposals.indexOf(prop), 1);
           prop.semester = planning.semester; // transfer semester information
           prop.planning_id = planning.uid;

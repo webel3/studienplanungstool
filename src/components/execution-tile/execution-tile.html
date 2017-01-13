@@ -29,7 +29,7 @@
 
       <!-- only show add / remove buttons when the execution is allowed to get booked -->
       <div v-if="bookable">
-        <button type="button" class="btn btn-default" v-if="addFn" v-on:click.keyup="addFn(execution)">
+        <button type="button" class="btn btn-default" v-if="addFn && execution.bookingAllowed" v-on:click.keyup="addFn(execution)">
           buchen <span class="glyphicon glyphicon-shopping-cart"></span>
         </button>
 

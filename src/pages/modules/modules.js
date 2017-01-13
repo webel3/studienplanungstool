@@ -124,20 +124,17 @@ let Modules = {
       this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
       this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // Bookings
       this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig),
-      this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig) // results
-      // this.$http.get(Endpoints.COURSE_DEPENDENCY_VIEW, HttpConfig) // pre-conditions,
+      this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig), // results
+      this.$http.get(Endpoints.COURSE_DEPENDENCY_VIEW, HttpConfig) // pre-conditions,
     ]).then(function (responses) {
 
       let results = responses[4].body.resource;
-      // let dependencies = responses[5].body.resource;
+      let dependencies = responses[5].body.resource;
 
       /*
        * Only show executions that are not completed yet.
        */
       responses[0].body.resource.forEach(execution => {
-        let randomNr = Math.floor(Math.random() * 100); // number between 0..100
-        execution.bookingAllowed = randomNr % 7 !== 0; // workaround as long as DependencyCheck is outcommented.
-
         let resultList = results.filter(result => {
           if (result.course_id === execution.course_id) {
             return result;
@@ -154,7 +151,7 @@ let Modules = {
        * NOTE: we can NOT do that because the DreamFactroy backend is such a crap that
        * it can't even handle more than four requests (but two more would be necessary).
        */
-      //DependencyCheck.setBookingsAllowed(_self.executions, dependencies, results);
+      DependencyCheck.setBookingsAllowed(_self.executions, dependencies, results);
 
 
       _self.executions.forEach(exec => {
@@ -199,6 +196,7 @@ let Modules = {
       _self.ready = true;
     }, responses => {
       console.log("something went wrong:", responses);
+      window.alert("504 - Gateway Time Out from DreamFactory.");
     });
 
   },

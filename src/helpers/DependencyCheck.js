@@ -16,27 +16,39 @@ let DependencyCheck = {
    */
   setBookingsAllowed: function(executionList, dependencyList, resultList) {
 
+    /*
+     * for each execution, check whether it is allowed to get booked or not.
+     */
     executionList.forEach(execution => {
       let isAllowed = true;
 
       // get all dependencies for that execution.
       let requiredDependencies = dependencyList.filter(dependency => {
-        if (dependency.course_id === execution.course_id) {
-          return dependency;
-        }
+        return dependency.course_id === execution.course_id;
       });
 
-      // for each dependency, check the results
-      requiredDependencies.forEach(dep => {
+      // for each dependency, iterate over its results
+      requiredDependencies.forEach(dependency => {
+
+        // filter the results for a dependency (may be more than one in case of repetitions)
         let filteredResults = resultList.filter(result => {
-          if (result.course_id === dep.pre_course_id) {
-            return result;
-          }
+          return result.course_id === dependency.pre_course_id;
         });
 
-        // if no result is found for the dependency, the execution is not allowed to get booked.
+        // if no result is found, the execution is not allowed to get booked.
         if (filteredResults.length === 0) {
           isAllowed = false;
+        } else {
+          // we have one or more results, so check their grades.
+
+          let gradeOk = false;
+          let validGrades = ['A', 'B', 'C', 'D', 'E', 'FX'];
+          filteredResults.forEach(result => {
+            if (validGrades.indexOf(result.grade.toUpperCase()) > 0) {
+              gradeOk = true;
+            }
+          });
+          isAllowed = gradeOk;
         }
       });
 

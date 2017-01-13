@@ -1,5 +1,6 @@
 import {ScaleLoader} from 'vue-spinner';
 
+import UserHelper from '../../helpers/UserHelper';
 import SemesterHelper from '../../helpers/SemesterHelper';
 
 import HttpConfig from '../../rest/HttpConfig';
@@ -39,8 +40,10 @@ let Results = {
    */
   created: function () {
 
+    let queryUser = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
+
     Promise.all([
-      this.$http.get(Endpoints.RESULT_VIEW, HttpConfig),
+      this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig),
       this.$http.get(Endpoints.COURSE_GROUP, HttpConfig)
     ]).then(responses => {
       this.modules = responses[0].body.resource;
