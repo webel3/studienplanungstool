@@ -19,11 +19,22 @@ let Login = {
    * Function that provides the data of the Vue instance to the view so that it can be used.
    * @returns {object} object with proxied data
    */
-  data: () => {
+  data: function ()  {
     return {
       abbreviation: '',
       password: '',
       loginFailed: false
+    }
+  },
+
+
+  /**
+   * Callback function that is called after the Vue instance's creation.
+   * It is used to check if the 'logout' param is set to destruct the user's session.
+   */
+  created: function () {
+    if (window.location.hash.indexOf('logout') > -1) {
+      sessionStorage.clear();
     }
   },
 
