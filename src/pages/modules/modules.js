@@ -33,6 +33,10 @@ let Modules = {
    * @returns {object} object with proxied data
    */
   data: function () {
+
+    let info = SemesterHelper.split(SemesterHelper.NOW_REFERENCE);
+    let bla = "";
+
     return {
       ready: false,
       upcomingSemester: UserHelper.getUser().upcomingsemester,
@@ -87,6 +91,13 @@ let Modules = {
             value: 'D2',
             name: 'D2'
           }]
+        },
+        semesters: {
+          model: [],
+          options: [
+            SemesterHelper.split(SemesterHelper.NOW_REFERENCE),
+            SemesterHelper.add(SemesterHelper.NOW_REFERENCE, 1)
+          ]
         }
       }
     }
@@ -120,12 +131,12 @@ let Modules = {
     let queryString = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
     let queryDspCourse = "?filter=defaultstudyplan_ID=" + UserHelper.getUser().defaultstudyplan_ID;
     Promise.all([
-      this.$http.get(Endpoints.COURSE_EXECUTION_VIEW, HttpConfig),
-      this.$http.get(Endpoints.EXECUTION_SLOT, HttpConfig),
-      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString, HttpConfig), // Bookings
-      this.$http.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse, HttpConfig),
-      this.$http.get(Endpoints.RESULT_VIEW + queryString, HttpConfig), // results
-      this.$http.get(Endpoints.COURSE_DEPENDENCY_VIEW, HttpConfig) // pre-conditions,
+      this.$http.get(Endpoints.get(Endpoints.COURSE_EXECUTION_VIEW), HttpConfig),
+      this.$http.get(Endpoints.get(Endpoints.EXECUTION_SLOT), HttpConfig),
+      this.$http.get(Endpoints.get(Endpoints.STUDENT_COURSE_EXECUTION + queryString), HttpConfig), // Bookings
+      this.$http.get(Endpoints.get(Endpoints.DEFAULTSTUDYPLAN_COURSE + queryDspCourse), HttpConfig),
+      this.$http.get(Endpoints.get(Endpoints.RESULT_VIEW + queryString), HttpConfig), // results
+      this.$http.get(Endpoints.get(Endpoints.COURSE_DEPENDENCY_VIEW), HttpConfig) // pre-conditions,
     ]).then(function (responses) {
 
       let results = responses[4].body.resource;
@@ -245,6 +256,17 @@ let Modules = {
         } else return item;
       })
 
+      // if there is at least one semester selected, check for it.
+      .filter(item => {
+        if (this.searches.semesters.model.length > 0) {
+          if (this.searches.semesters.model.indexOf(item.semester.label) > -1) {
+            return item;
+          }
+        } else {
+          return item;
+        }
+      })
+
       // only nsp modules
       .filter(item => {
         if (this.searches.nspOnly) {
@@ -283,6 +305,16 @@ let Modules = {
           return elem;
         }
       });
+    },
+
+    filteredExecutionsAfterNext: function () {
+      let info = SemesterHelper.add(SemesterHelper.NOW_REFERENCE, 1);
+
+      return this.executions.filter(elem => {
+        if (elem.semester.year === info.year && elem.semester.type === info.type) {
+          return elem;
+        }
+      });
     }
   },
 
@@ -304,7 +336,7 @@ let Modules = {
       if (execution.bookingAllowed) {
         this.ready = false;
 
-        this.$http.post(Endpoints.STUDENT_COURSE_EXECUTION, this.createRequestBody(execution), HttpConfig).then((response) => {
+        this.$http.post(Endpoints.get(Endpoints.STUDENT_COURSE_EXECUTION), this.createRequestBody(execution), HttpConfig).then((response) => {
           this.executions.splice(this.executions.indexOf(execution), 1);
           this.bookings.push(execution);
           this.ready = true;
@@ -325,7 +357,7 @@ let Modules = {
       this.ready = false;
       let options = Object.assign({}, HttpConfig);
       options.body = this.createRequestBody(execution);
-      this.$http.delete(Endpoints.STUDENT_COURSE_EXECUTION, options).then((response) => {
+      this.$http.delete(Endpoints.get(Endpoints.STUDENT_COURSE_EXECUTION), options).then((response) => {
         this.bookings.splice(this.bookings.indexOf(execution), 1);
         this.executions.push(execution);
         this.ready = true;
@@ -340,7 +372,7 @@ let Modules = {
 
       if (sure) {
         let user = UserHelper.getUser();
-        let endpoint = [Endpoints.STUDENT, '/', user.uid].join('');
+        let endpoint = [Endpoints.get(Endpoints.STUDENT, '/', user.uid)].join('');
         let body = {
           'booking_confirmed': true
         };

@@ -45,7 +45,7 @@ let Timetable = {
     let _self = this;
     let userFilterQuery = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
 
-    this.$http.get(Endpoints.STUDENT_EXEC_SLOT_VIEW + userFilterQuery, HttpConfig).then((response) => {
+    this.$http.get(Endpoints.get(Endpoints.STUDENT_EXEC_SLOT_VIEW + userFilterQuery), HttpConfig).then((response) => {
 
       /*
        * Process the loaded data and prepare it being usable for fullcalendar.io.

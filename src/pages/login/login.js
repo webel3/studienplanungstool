@@ -61,7 +61,7 @@ let Login = {
       event.preventDefault();
 
       let queryString = '?filter=(abbreviation="' + this.abbreviation + '") AND (password="' + this.password + '")';
-      this.$http.get(encodeURI(Endpoints.STUDENT + queryString), HttpConfig).then((response) => {
+      this.$http.get(Endpoints.get(Endpoints.STUDENT + queryString), HttpConfig).then((response) => {
         if (response.body.resource.length === 1) {
           sessionStorage.setItem('user', JSON.stringify(response.body.resource[0]));
           location.href = '/';

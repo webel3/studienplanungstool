@@ -51,6 +51,16 @@
           </select>
         </div>
 
+        <!-- dropdown to filter for semesters -->
+        <div>
+          <label for="search-semesters" class="width-fourty">Semester:</label>
+          <select id="search-semesters" class="selectpicker width-sixty" multiple v-model="searches.semesters.model">
+            <option v-for="option in searches.semesters.options" :value="option.label">
+              {{ option.type.name }} {{ option.year }}
+            </option>
+          </select>
+        </div>
+
         <!-- checkbox for NSP-Only -->
         <div>
           <label for="search-nsp" class="width-fourty">Nur Normstudienplan:</label>
@@ -99,19 +109,34 @@
       </div>
 
 
-      <!-- booked executions for next semester -->
+      <!-- booked executions for next semester (or a message if there aren't any yet) -->
       <div class="col-md-4" id="bookings-next">
+        <div class="row" v-if="filteredBookings.length === 0">
+          <div class="alert alert-default" role="alert">
+            <b>Es sind noch keine Moduldurchführungen für dieses Semester ausgewählt.</b>
+          </div>
+        </div>
+
         <div v-for="execution in filteredBookings">
           <execution-tile :execution="execution" cssClass="execution-tile--booked"
               :removeFn="remove" :bookable="bookingsModifiable"></execution-tile>
         </div>
       </div>
 
-      <!-- booked executions for semester after the next one -->
+      <!-- booked executions for semester after the next one (or a message if there aren't any yet) -->
       <div class="col-md-4" id="bookings-after-next">
-        <div class="row" v-if="filteredBookingsAfterNext.length === 0">
+
+        <!-- show a message if there are no executions offered for the semester after the upcoming one. -->
+        <div class="row" v-if="filteredExecutionsAfterNext.length === 0">
           <div class="alert alert-default" role="alert">
             <b>Es sind noch keine Moduldurchführungen für dieses Semester bekannt.</b>
+          </div>
+        </div>
+
+        <!-- show a message if there are no executions selected BUT some are offered. -->
+        <div class="row" v-if="filteredBookingsAfterNext.length === 0 && filteredExecutionsAfterNext.length > 0">
+          <div class="alert alert-default" role="alert">
+            <b>Es sind noch keine Moduldurchführungen für dieses Semester ausgewählt.</b>
           </div>
         </div>
 

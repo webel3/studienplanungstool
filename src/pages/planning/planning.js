@@ -68,10 +68,10 @@ let Planning = {
     let queryUserAndRelated = [queryUser, '&related=courseexecution_by_courseexecution_ID'].join('');
 
     Promise.all([
-      this.$http.get(Endpoints.COURSE, HttpConfig), // proposals
-      this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig), // completions
-      this.$http.get(Endpoints.STUDENT_COURSE_EXECUTION + queryUserAndRelated + '', HttpConfig), // bookings
-      this.$http.get(Endpoints.PLANNING + queryUser, HttpConfig), // plannings
+      this.$http.get(Endpoints.get(Endpoints.COURSE), HttpConfig), // proposals
+      this.$http.get(Endpoints.get(Endpoints.RESULT_VIEW + queryUser), HttpConfig), // completions
+      this.$http.get(Endpoints.get(Endpoints.STUDENT_COURSE_EXECUTION + queryUserAndRelated), HttpConfig), // bookings
+      this.$http.get(Endpoints.get(Endpoints.PLANNING + queryUser), HttpConfig), // plannings
     ])
     .then(function (responses) {
       /*
@@ -191,7 +191,7 @@ let Planning = {
        */
       if (origin === _self.types.PROPOSALS && target === _self.types.PLANNINGS) {
         // case 1)
-        _self.$http.post(Endpoints.PLANNING, {"resource": resource}, HttpConfig).then((response) => {
+        _self.$http.post(Endpoints.get(Endpoints.PLANNING), {"resource": resource}, HttpConfig).then((response) => {
           console.log("created planning for module " + moduleId);
           module.planning_id = response.body.resource[0].uid;
         }, (response) => {
@@ -200,7 +200,7 @@ let Planning = {
 
       } else if (origin === _self.types.PLANNINGS && target === _self.types.PROPOSALS) {
         // case 2)
-        _self.$http.delete(Endpoints.PLANNING + "/" + planningId, HttpConfig).then((response) => {
+        _self.$http.delete(Endpoints.get(Endpoints.PLANNING + "/" + planningId), HttpConfig).then((response) => {
           console.log("deleted planning " + planningId);
         }, (response) => {
           console.error(response);
@@ -208,7 +208,7 @@ let Planning = {
 
       } else if (origin === target && origin === _self.types.PLANNINGS) {
         // case 3)
-        _self.$http.patch(Endpoints.PLANNING + "/" + planningId, resource, HttpConfig).then((response) => {
+        _self.$http.patch(Endpoints.get(Endpoints.PLANNING + "/" + planningId), resource, HttpConfig).then((response) => {
           console.log("patched planning " + planningId);
         }, (response) => {
           console.error(response);

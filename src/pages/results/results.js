@@ -43,8 +43,8 @@ let Results = {
     let queryUser = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
 
     Promise.all([
-      this.$http.get(Endpoints.RESULT_VIEW + queryUser, HttpConfig),
-      this.$http.get(Endpoints.COURSE_GROUP, HttpConfig)
+      this.$http.get(Endpoints.get(Endpoints.RESULT_VIEW + queryUser), HttpConfig),
+      this.$http.get(Endpoints.get(Endpoints.COURSE_GROUP), HttpConfig)
     ]).then(responses => {
       this.modules = responses[0].body.resource;
 

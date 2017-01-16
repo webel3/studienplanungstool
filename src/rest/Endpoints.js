@@ -18,18 +18,36 @@
  */
 let Endpoints = {
 
-  COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course',
-  COURSE_GROUP: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/coursegroup',
-  COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution',
-  COURSE_EXECUTION_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/courseexecution_view',
-  COURSE_DEPENDENCY_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/course_dependency_view',
-  STUDENT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student',
-  STUDENT_COURSE_EXECUTION: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution',
-  EXECUTION_SLOT: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/executionslot',
-  STUDENT_EXEC_SLOT_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/student_courseexecution_slot_view',
-  RESULT_VIEW: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/result_view',
-  PLANNING: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/plan',
-  DEFAULTSTUDYPLAN_COURSE: 'http://ft-engek1.cl.dreamfactory.com/api/v2/studienplanungstool/_table/defaultstudyplan_course'
+  COURSE: 'course',
+  COURSE_GROUP: 'coursegroup',
+  COURSE_EXECUTION: 'courseexecution',
+  COURSE_EXECUTION_VIEW: 'courseexecution_view',
+  COURSE_DEPENDENCY_VIEW: 'course_dependency_view',
+  STUDENT: 'student',
+  STUDENT_COURSE_EXECUTION: 'student_courseexecution',
+  EXECUTION_SLOT: 'executionslot',
+  STUDENT_EXEC_SLOT_VIEW: 'student_courseexecution_slot_view',
+  RESULT_VIEW: 'result_view',
+  PLANNING: 'plan',
+  DEFAULTSTUDYPLAN_COURSE: 'defaultstudyplan_course',
+
+
+  /**
+   * Get the url for the given endpoint.
+   *
+   * @param endpoint name of the endpoint to use
+   * @returns {string} url for the endpoint.
+   */
+  get: function(endpoint) {
+    let localhost = 'http://localhost';
+    let dfUri = 'http://ft-engek1.cl.dreamfactory.com';
+    let apiPath = '/api/v2/studienplanungstool/_table/';
+
+    if (sessionStorage.getItem('useLocalhost') && JSON.parse(sessionStorage.getItem('useLocalhost')) === true) {
+      return encodeURI([localhost, apiPath, endpoint].join(''));
+    }
+    return encodeURI([dfUri, apiPath, endpoint].join(''));
+  }
 
 };
 
