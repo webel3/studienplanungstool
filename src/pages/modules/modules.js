@@ -372,7 +372,7 @@ let Modules = {
 
       if (sure) {
         let user = UserHelper.getUser();
-        let endpoint = [Endpoints.get(Endpoints.STUDENT, '/', user.uid)].join('');
+        let endpoint = [Endpoints.get(Endpoints.STUDENT), '/', user.uid].join('');
         let body = {
           'booking_confirmed': true
         };
