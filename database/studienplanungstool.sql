@@ -1360,7 +1360,7 @@ INSERT INTO `studypath` (`uid`, `title_de`, `title_fr`, `sorting`, `department`)
 --
 DROP TABLE IF EXISTS `courseexecution_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW `courseexecution_view` AS select `ex`.`uid` AS `uid`,`ex`.`executioncode` AS `executioncode`,`ex`.`studypath_id` AS `studypath_id`,`ex`.`place` AS `place`,`ex`.`classname` AS `classname`,`ex`.`semester` AS `semester`,`ex`.`course_id` AS `course_id`,`co`.`code` AS `coursecode`,`co`.`name_de` AS `course_name_de`,`co`.`name_fr` AS `course_name_fr`,`ct`.`shortName` AS `coursetype`,`cg`.`shortName` AS `coursegroup`,`et`.`name` AS `examtype`,`co`.`ects` AS `ects` from ((((`courseexecution` `ex` join `course` `co` on((`ex`.`course_id` = `co`.`uid`))) join `coursetype` `ct` on((`co`.`type` = `ct`.`uid`))) join `coursegroup` `cg` on((`co`.`coursegroup` = `cg`.`uid`))) join `examtype` `et` on((`co`.`examType` = `et`.`uid`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`sptuser`@`%` SQL SECURITY DEFINER VIEW `courseexecution_view` AS select `ex`.`uid` AS `uid`,`ex`.`executioncode` AS `executioncode`,`ex`.`studypath_id` AS `studypath_id`,`ex`.`place` AS `place`,`ex`.`classname` AS `classname`,`ex`.`semester` AS `semester`,`ex`.`course_id` AS `course_id`,`co`.`code` AS `coursecode`,`co`.`name_de` AS `course_name_de`,`co`.`name_fr` AS `course_name_fr`,`ct`.`shortName` AS `coursetype`,`cg`.`shortName` AS `coursegroup`,`et`.`name` AS `examtype`,`co`.`ects` AS `ects` from ((((`courseexecution` `ex` join `course` `co` on((`ex`.`course_id` = `co`.`uid`))) join `coursetype` `ct` on((`co`.`type` = `ct`.`uid`))) join `coursegroup` `cg` on((`co`.`coursegroup` = `cg`.`uid`))) join `examtype` `et` on((`co`.`examType` = `et`.`uid`)));
 
 -- --------------------------------------------------------
 
@@ -1369,7 +1369,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW
 --
 DROP TABLE IF EXISTS `course_dependency_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW `course_dependency_view` AS select `cd`.`studypath_ID` AS `studypath`,`cd`.`pre_course_ID` AS `pre_course_id`,`c1`.`name_de` AS `modul`,`c2`.`name_de` AS `vorbedingung`,`cd`.`course_ID` AS `course_id` from ((`course_dependency` `cd` join `course` `c1` on((`c1`.`uid` = `cd`.`course_ID`))) join `course` `c2` on((`c2`.`uid` = `cd`.`pre_course_ID`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`sptuser`@`%` SQL SECURITY DEFINER VIEW `course_dependency_view` AS select `cd`.`studypath_ID` AS `studypath`,`cd`.`pre_course_ID` AS `pre_course_id`,`c1`.`name_de` AS `modul`,`c2`.`name_de` AS `vorbedingung`,`cd`.`course_ID` AS `course_id` from ((`course_dependency` `cd` join `course` `c1` on((`c1`.`uid` = `cd`.`course_ID`))) join `course` `c2` on((`c2`.`uid` = `cd`.`pre_course_ID`)));
 
 -- --------------------------------------------------------
 
@@ -1378,7 +1378,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW
 --
 DROP TABLE IF EXISTS `result_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW `result_view` AS select `c`.`code` AS `code`,`c`.`name_de` AS `title`,`t`.`shortName` AS `type`,`g`.`shortName` AS `group`,`r`.`semester` AS `semester`,'de' AS `language`,`r`.`grade` AS `grade`,`c`.`ects` AS `ects`,`r`.`student_ID` AS `student_id`,`c`.`uid` AS `course_id` from (((`result` `r` join `course` `c` on((`r`.`course_ID` = `c`.`uid`))) join `coursetype` `t` on((`c`.`type` = `t`.`uid`))) join `coursegroup` `g` on((`c`.`coursegroup` = `g`.`uid`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`sptuser`@`%` SQL SECURITY DEFINER VIEW `result_view` AS select `c`.`code` AS `code`,`c`.`name_de` AS `title`,`t`.`shortName` AS `type`,`g`.`shortName` AS `group`,`r`.`semester` AS `semester`,'de' AS `language`,`r`.`grade` AS `grade`,`c`.`ects` AS `ects`,`r`.`student_ID` AS `student_id`,`c`.`uid` AS `course_id` from (((`result` `r` join `course` `c` on((`r`.`course_ID` = `c`.`uid`))) join `coursetype` `t` on((`c`.`type` = `t`.`uid`))) join `coursegroup` `g` on((`c`.`coursegroup` = `g`.`uid`)));
 
 -- --------------------------------------------------------
 
@@ -1387,7 +1387,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW
 --
 DROP TABLE IF EXISTS `student_courseexecution_slot_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`studienplaner`@`%` SQL SECURITY DEFINER VIEW `student_courseexecution_slot_view` AS select `student`.`student_ID` AS `student_ID`,`student`.`courseexecution_ID` AS `courseexecution_ID`,`slot`.`uid` AS `slot_id`,`slot`.`room` AS `room`,`slot`.`start` AS `start`,`slot`.`end` AS `end`,`slot`.`dayofweek` AS `dayofweek`,`slot`.`professor` AS `professor`,`courseex`.`place` AS `place`,`courseex`.`classname` AS `classname`,`courseex`.`semester` AS `semester`,`courseex`.`coursecode` AS `coursecode`,`courseex`.`course_name_de` AS `course_name_de`,`courseex`.`course_name_fr` AS `course_name_fr`,`courseex`.`coursetype` AS `coursetype`,`courseex`.`coursegroup` AS `coursegroup`,`courseex`.`examtype` AS `examtype`,`courseex`.`ects` AS `ects` from ((`student_courseexecution` `student` join `courseexecution_view` `courseex` on((`student`.`courseexecution_ID` = `courseex`.`uid`))) join `executionslot` `slot` on((`slot`.`courseexecution_id` = `student`.`courseexecution_ID`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`sptuser`@`%` SQL SECURITY DEFINER VIEW `student_courseexecution_slot_view` AS select `student`.`student_ID` AS `student_ID`,`student`.`courseexecution_ID` AS `courseexecution_ID`,`slot`.`uid` AS `slot_id`,`slot`.`room` AS `room`,`slot`.`start` AS `start`,`slot`.`end` AS `end`,`slot`.`dayofweek` AS `dayofweek`,`slot`.`professor` AS `professor`,`courseex`.`place` AS `place`,`courseex`.`classname` AS `classname`,`courseex`.`semester` AS `semester`,`courseex`.`coursecode` AS `coursecode`,`courseex`.`course_name_de` AS `course_name_de`,`courseex`.`course_name_fr` AS `course_name_fr`,`courseex`.`coursetype` AS `coursetype`,`courseex`.`coursegroup` AS `coursegroup`,`courseex`.`examtype` AS `examtype`,`courseex`.`ects` AS `ects` from ((`student_courseexecution` `student` join `courseexecution_view` `courseex` on((`student`.`courseexecution_ID` = `courseex`.`uid`))) join `executionslot` `slot` on((`slot`.`courseexecution_id` = `student`.`courseexecution_ID`)));
 
 --
 -- Indexes for dumped tables
