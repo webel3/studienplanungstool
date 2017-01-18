@@ -68,6 +68,9 @@ buildNumber.properties
 # IntelliJ
 /out/
 
+# JSDoc: generated documentation files
+/jsdoc/
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
