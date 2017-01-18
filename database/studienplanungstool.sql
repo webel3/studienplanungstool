@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 13. Jan 2017 um 15:45
+-- Erstellungszeit: 18. Jan 2017 um 13:34
 -- Server Version: 5.6.33
 -- PHP-Version: 5.6.19
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `studienplanungstool`
 --
+CREATE DATABASE IF NOT EXISTS `studienplanungstool` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `studienplanungstool`;
 
 -- --------------------------------------------------------
 
@@ -202,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `courseexecution` (
   `department` varchar(45) DEFAULT NULL,
   `semester` int(11) NOT NULL,
   `professor` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Durchführungen' AUTO_INCREMENT=142 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Durchführungen' AUTO_INCREMENT=169 ;
 
 --
 -- RELATIONEN DER TABELLE `courseexecution`:
@@ -356,7 +358,34 @@ INSERT INTO `courseexecution` (`uid`, `executioncode`, `course_id`, `studypath_i
 (137, 'BZG4206r', 62, 'I', 'BIE', 'I4r', 'TI', 201602, NULL),
 (138, 'BZG4206a', 62, 'I', 'BIE', 'I3a', 'TI', 201602, NULL),
 (140, 'BZG3422p', 174, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
-(141, 'BTI7321p', 137, 'I', 'BER', 'I_BT-Be', 'TI', 201601, NULL);
+(141, 'BTI7321p', 137, 'I', 'BER', 'I_BT-Be', 'TI', 201601, NULL),
+(142, 'BZG3422a', 174, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(143, 'BZG4203b', 178, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(144, 'BZG4203a', 178, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(145, 'BZG4203q', 178, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(146, 'BZG4206p', 62, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(147, 'BZG4206q', 62, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(148, 'BZG4205p', 61, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(149, 'BZG4205q', 61, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(150, 'BZG1305A', 183, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(151, 'BZG1312a', 185, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(152, 'BZG2302a', 186, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(153, 'BZG2306p', 187, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(154, 'BZG2309a', 188, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(155, 'BTE5465d', 190, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(156, 'BTI7516p', 150, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(157, 'BTI7528p', 155, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(158, 'BTI7532p', 159, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(159, 'BTI7537a', 164, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(160, 'BTI7504a', 144, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(161, 'BTI7503a', 143, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(162, 'BTI7527a', 154, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(163, 'BTI7501p', 142, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(164, 'BTI7510p', 146, 'I', 'BER', 'I_WPM-Be', 'TI', 201701, NULL),
+(165, 'BTI7538a', 165, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(166, 'BTI7531a', 158, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(167, 'BTI7533', 160, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL),
+(168, 'BTX8504b', 168, 'I', 'BIE', 'I_WPM-Bi', 'TI', 201701, NULL);
 
 -- --------------------------------------------------------
 
@@ -686,7 +715,7 @@ CREATE TABLE IF NOT EXISTS `executionslot` (
   `dayofweek` int(11) DEFAULT NULL,
   `professor` varchar(45) DEFAULT NULL,
   `courseexecution_id` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Durchführungszeiten' AUTO_INCREMENT=209 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Durchführungszeiten' AUTO_INCREMENT=236 ;
 
 --
 -- RELATIONEN DER TABELLE `executionslot`:
@@ -905,7 +934,34 @@ INSERT INTO `executionslot` (`uid`, `room`, `start`, `end`, `dayofweek`, `profes
 (204, 'N.321', '14:25:00', '16:10:00', 3, 'HNR1', 65),
 (205, '302', '16:15:00', '17:50:00', 3, 'HDD1', 126),
 (206, 'N.421', '16:15:00', '17:50:00', 5, 'HIF1', 57),
-(208, '', '16:15:00', '17:50:00', 1, 'KET1', 140);
+(208, '', '16:15:00', '17:50:00', 1, 'KET1', 140),
+(209, NULL, '18:10:00', '19:45:00', 3, 'PSM2', 142),
+(210, NULL, '16:15:00', '17:50:00', 1, 'PGG1', 143),
+(211, NULL, '16:15:00', '17:50:00', 3, 'PGG1', 144),
+(212, NULL, '16:15:00', '17:50:00', 3, 'VUT1', 145),
+(213, NULL, '16:15:00', '17:50:00', 3, 'BRR3,HBD1', 146),
+(214, NULL, '19:55:00', '21:30:00', 3, 'BRR3,HBD1', 147),
+(215, NULL, '14:25:00', '16:10:00', 3, 'BRR3,HBD1', 148),
+(216, NULL, '18:10:00', '19:45:00', 3, 'BRR3,HBD1', 149),
+(217, NULL, '14:25:00', '16:10:00', 1, 'BGW1', 150),
+(218, NULL, '14:25:00', '16:10:00', 1, 'FGR2', 151),
+(219, NULL, '16:15:00', '17:50:00', 1, 'TEC1', 152),
+(220, NULL, '16:15:00', '17:50:00', 1, 'SWP1', 153),
+(221, NULL, '16:15:00', '17:50:00', 1, 'SAE5', 154),
+(222, NULL, '18:10:00', '19:45:00', 3, 'div', 155),
+(223, NULL, '16:15:00', '17:50:00', 2, 'VAR1', 156),
+(224, NULL, '18:10:00', '19:45:00', 2, 'SSA1', 157),
+(225, NULL, '19:55:00', '21:30:00', 2, 'WBC4', 158),
+(226, NULL, '08:20:00', '09:55:00', 3, 'BLK2', 159),
+(227, NULL, '10:20:00', '11:55:00', 3, 'BEO1', 160),
+(228, NULL, '12:45:00', '14:20:00', 3, 'HSM4', 161),
+(229, NULL, '14:25:00', '16:10:00', 3, 'HSM4', 162),
+(230, NULL, '18:10:00', '19:45:00', 3, 'ERJ1', 163),
+(231, NULL, '19:55:00', '21:30:00', 3, 'ERJ1', 164),
+(232, NULL, '08:20:00', '09:55:00', 4, 'HSM4,PRM1,SLC4', 165),
+(233, NULL, '10:20:00', '11:55:00', 4, 'PRM1', 166),
+(234, NULL, '12:45:00', '14:20:00', 4, 'DSA2', 167),
+(235, NULL, '14:25:00', '16:10:00', 3, 'LAM3', 168);
 
 -- --------------------------------------------------------
 
@@ -1105,7 +1161,7 @@ CREATE TABLE IF NOT EXISTS `plan` (
   `student_ID` int(11) NOT NULL,
   `semester` int(11) NOT NULL,
   `course_ID` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Planung, Planbuchungen' AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Planung, Planbuchungen' AUTO_INCREMENT=45 ;
 
 --
 -- RELATIONEN DER TABELLE `plan`:
@@ -1128,7 +1184,12 @@ INSERT INTO `plan` (`uid`, `student_ID`, `semester`, `course_ID`) VALUES
 (35, 3, 201701, 20),
 (36, 3, 201701, 17),
 (37, 3, 201701, 15),
-(38, 3, 201701, 58);
+(39, 3, 201701, 133),
+(40, 4, 201701, 5),
+(41, 4, 201801, 137),
+(42, 4, 201701, 137),
+(43, 4, 201701, 10),
+(44, 4, 201701, 15);
 
 -- --------------------------------------------------------
 
@@ -1293,9 +1354,11 @@ CREATE TABLE IF NOT EXISTS `student_courseexecution` (
 
 INSERT INTO `student_courseexecution` (`student_ID`, `courseexecution_ID`) VALUES
 (3, 5),
-(3, 25),
-(3, 37),
-(3, 108),
+(4, 5),
+(4, 23),
+(3, 26),
+(3, 43),
+(3, 48),
 (3, 140);
 
 -- --------------------------------------------------------
@@ -1496,7 +1559,7 @@ MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=200;
 -- AUTO_INCREMENT for table `courseexecution`
 --
 ALTER TABLE `courseexecution`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=142;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=169;
 --
 -- AUTO_INCREMENT for table `coursegroup`
 --
@@ -1526,7 +1589,7 @@ MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT for table `executionslot`
 --
 ALTER TABLE `executionslot`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=209;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=236;
 --
 -- AUTO_INCREMENT for table `lecturer`
 --
@@ -1536,7 +1599,7 @@ MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=330;
 -- AUTO_INCREMENT for table `plan`
 --
 ALTER TABLE `plan`
-MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
+MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `result`
 --
