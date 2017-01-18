@@ -19,7 +19,7 @@ import Endpoints from '../../rest/Endpoints';
 let Timetable = {
 
   /**
-   * @property {template} template: html for the timetable page.
+   * @property {template} template html for the timetable page.
    */
   template: require('./timetable.html'),
 
@@ -108,7 +108,7 @@ let Timetable = {
 
 
   /**
-   * @property {object} components: object that defines all components that are used inside this Vue component.
+   * @property {object} components object that defines all components that are used inside this Vue component.
    */
   components: {jQuery, FullCalendar, HttpConfig, Endpoints, ScaleLoader}
 };

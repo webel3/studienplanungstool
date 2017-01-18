@@ -23,8 +23,9 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 /**
- * Defines available routes of the application (and also a fallback route) and is also
- * responsible that the user is authenticated before using most of the routes.
+ * Defines available routes of the application (and a fallback route).
+ * The Router is also responsible that the user is authenticated before
+ * it is allowed to use routes that require an authentication.
  *
  * @name AppRouter
  * @class

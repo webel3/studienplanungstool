@@ -10,7 +10,7 @@ import HttpConfig from '../../rest/HttpConfig';
 let Login = {
 
   /**
-   * @property {template} template: html for the login page.
+   * @property {template} template html for the login page.
    */
   template: require('./login.html'),
 
@@ -40,7 +40,7 @@ let Login = {
 
 
   /**
-   * @property {object} computed: computed properties that are calculated once
+   * @property {object} computed computed properties that are calculated once
    * and just get recalculated when one (or more) of the view model properties change
    * on which a computed property depends.
    */
@@ -54,7 +54,7 @@ let Login = {
 
 
   /**
-   * @property {object} methods: object that contains all functions that are accessible from the view.
+   * @property {object} methods object that contains all functions that are accessible from the view.
    */
   methods: {
     login: function (event) {

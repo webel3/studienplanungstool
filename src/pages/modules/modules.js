@@ -23,7 +23,7 @@ import Endpoints from '../../rest/Endpoints';
 let Modules = {
 
   /**
-   * @property {template} template: html for the modules page.
+   * @property {template} template html for the modules page.
    */
   template: require('./modules.html'),
 
@@ -214,7 +214,7 @@ let Modules = {
 
 
   /**
-   * @property {object} computed: computed properties that are calculated once
+   * @property {object} computed computed properties that are calculated once
    * and just get recalculated when one (or more) of the view model properties change
    * on which a computed property depends.
    */
@@ -320,7 +320,7 @@ let Modules = {
 
 
   /**
-   * @property {object} methods: object that contains all functions that are accessible from the view.
+   * @property {object} methods object that contains all functions that are accessible from the view.
    */
   methods: {
     createRequestBody: function (execution) {
@@ -396,7 +396,7 @@ let Modules = {
 
 
   /**
-   * @property {object} components: object that defines all components that are used inside this Vue component.
+   * @property {object} components object that defines all components that are used inside this Vue component.
    */
   components: {ExecutionTile, jQuery, BootstrapSelect, ScaleLoader}
 };

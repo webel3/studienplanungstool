@@ -16,7 +16,7 @@ import Endpoints from '../../rest/Endpoints';
 let Results = {
 
   /**
-   * @property {template} template: html for the results page.
+   * @property {template} template html for the results page.
    */
   template: require('./results.html'),
 
@@ -70,7 +70,7 @@ let Results = {
 
 
   /**
-   * @property {object} methods: object that contains all functions that are accessible from the view.
+   * @property {object} methods object that contains all functions that are accessible from the view.
    */
   methods: {
     filterModules: function (group) {
@@ -92,7 +92,7 @@ let Results = {
 
 
   /**
-   * @property {object} components: object that defines all components that are used inside this Vue component.
+   * @property {object} components object that defines all components that are used inside this Vue component.
    */
   components: {ScaleLoader}
 };

@@ -7,7 +7,7 @@
 let UserHelper = {
 
   /**
-   * @property {string} KEYWORD_USER: keyword under with the user object is stored.
+   * @property {string} KEYWORD_USER keyword under with the user object is stored.
    */
   KEYWORD_USER: 'user',
 
@@ -25,7 +25,7 @@ let UserHelper = {
   /**
    * Serializes the given user object and writes it into the session storage.
    *
-   * @param {object} user: user object to store.
+   * @param {object} user user object to store.
    */
   setUser: function(user) {
     sessionStorage.setItem(this.KEYWORD_USER, JSON.stringify(user));

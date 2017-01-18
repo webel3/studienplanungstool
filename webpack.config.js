@@ -9,19 +9,29 @@ var path = require('path');
  */
 module.exports = {
 
-  // the entry point for the bundle
+  /**
+   * @property entry the entry point for the bundle.
+   */
   entry: './src/main.js',
 
-  // options for the output file of the bundling process.
+  /**
+   * @property output options for the output file of the bundling process.
+   */
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, 'target'),
     publicPath: 'target/'
   },
 
+  /**
+   * @property devtool generate a debuggable inline-source-map.
+   */
   devtool: 'inline-source-map',
 
-  // array of extensions that should be used to resolve modules
+  /**
+   * @property resolve object with accepted file endings and
+   * an array of extensions that should be used to resolve modules.
+   */
   resolve: {
     modules: [
       'node_modules', path.resolve(__dirname, 'src')
@@ -34,8 +44,11 @@ module.exports = {
     }
   },
 
+  /**
+   * @property module object that contains an array with all used loaders.
+   * They are used to process files of the matching type.
+   */
   module: {
-    // loaders are used to process files of the matching type.
     loaders: [{
         test: /\.(html|css)$/,
         use: 'raw-loader'
@@ -43,8 +56,10 @@ module.exports = {
     ]
   },
 
+  /**
+   * @property plugins array with plugins used during compilation process.
+   */
   plugins: [
-    // used to log the progress during compilation (useful in case of errors)
     new webpack.ProgressPlugin()
   ]
 };

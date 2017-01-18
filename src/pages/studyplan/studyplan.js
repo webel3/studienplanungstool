@@ -10,7 +10,7 @@ import UserHelper from '../../helpers/UserHelper';
 let StandardStudyPlan = {
 
   /**
-   * @property {template} template: html for the studyplan page.
+   * @property {template} template html for the studyplan page.
    */
   template: require('./studyplan.html'),
 
@@ -28,7 +28,7 @@ let StandardStudyPlan = {
 
 
   /**
-   * @property {object} computed: computed properties that are calculated once
+   * @property {object} computed computed properties that are calculated once
    * and just get recalculated when one (or more) of the view model properties change
    * on which a computed property depends.
    */

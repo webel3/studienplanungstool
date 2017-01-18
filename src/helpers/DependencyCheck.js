@@ -10,9 +10,9 @@ let DependencyCheck = {
    * Method checks for each execution if it requires previous executions and,
    * if that is the case, if they are completed or not.
    *
-   * @param {list} executionList: of execution objects
-   * @param {list} dependencyList: of dependency objects
-   * @param {list} resultList: of result objects
+   * @param {list} executionList list of execution objects
+   * @param {list} dependencyList list of dependency objects
+   * @param {list} resultList list of result objects
    */
   setBookingsAllowed: function(executionList, dependencyList, resultList) {
 

@@ -7,12 +7,12 @@
 let SemesterHelper = {
 
   /**
-   * @property {number} NOW_REFERENCE: semester-label of the upcoming semester.
+   * @property {number} NOW_REFERENCE semester-label of the upcoming semester.
    */
   NOW_REFERENCE: 201602,
 
   /**
-   * @property {object} FS: object with the configuration of a spring semester.
+   * @property {object} FS object with the configuration of a spring semester.
    */
   FS: {
     value: '01',
@@ -20,7 +20,7 @@ let SemesterHelper = {
   },
 
   /**
-   * @property {object} HS: object with configuration of an autumn semester.
+   * @property {object} HS object with configuration of an autumn semester.
    */
   HS: {
     value: '02',
@@ -30,7 +30,7 @@ let SemesterHelper = {
   /**
    * Generate the semester-label for the given semester-info object.
    *
-   * @param {object} info: information object for a semester.
+   * @param {object} info information object for a semester.
    * @returns {number} semester-label.
    */
   label: function(info) {
@@ -41,7 +41,7 @@ let SemesterHelper = {
   /**
    * Generate the semester-info object for the given semester-label.
    *
-   * @param {number} semesterLabel: semester-label to get information about.
+   * @param {number} semesterLabel semester-label to get information about.
    * @returns {object} semester-info object for the given semester-label.
    */
   split: function (semesterLabel) {
@@ -56,8 +56,8 @@ let SemesterHelper = {
    * Based on the given semester-label, add the given number of semesters
    * and return the calculated semester (which is in the future) as info-object.
    *
-   * @param {number} semesterLabel: semester-label used as starting point.
-   * @param {number} nr: number of semesters to go forwards.
+   * @param {number} semesterLabel semester-label used as starting point.
+   * @param {number} nr number of semesters to go forwards.
    * @returns {object} semester-info object for the calculated future semester.
    */
   add: function (semesterLabel, nr) {
@@ -81,8 +81,8 @@ let SemesterHelper = {
    * Based on the given semester-label, subtract the given number of semesters
    * and return the calculated semester (which is in the past) as info-object.
    *
-   * @param {number} semesterLabel: semester-label used as starting point.
-   * @param {number} nr: number of semesters to go backwards.
+   * @param {number} semesterLabel semester-label used as starting point.
+   * @param {number} nr number of semesters to go backwards.
    * @returns {object} semester-info object for the calculated past semester.
    */
   subtract: function (semesterLabel, nr) {
@@ -106,7 +106,7 @@ let SemesterHelper = {
    * Formats the given semester-label.
    * This function is assumed to be used for views only.
    *
-   * @param {number} semesterLabel: semester-label to format
+   * @param {number} semesterLabel semester-label to format
    * @returns {string} formatted label in the form: 'HS 2016'.
    */
   formatLabel: function(semesterLabel) {

@@ -9,7 +9,7 @@ import Vue from 'vue';
 let NavigationBar = Vue.component('navigation-bar', {
 
   /**
-   * @property {template} template: html for the navigation bar
+   * @property {template} template html for the navigation bar
    */
   template: require('./navigation-bar.html')
 });

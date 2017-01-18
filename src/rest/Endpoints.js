@@ -4,8 +4,8 @@
  * @class
  * @classdesc Endpoints is an Object indeed, but it is used like a class.
  *
- * @property {string} COURSE:                     endpoint for courses
- * @property {string} COURSE_GROUP:               endpoint for course-groups (A, B, C, D)
+ * @property {string} COURSE                      endpoint for courses
+ * @property {string} COURSE_GROUP                endpoint for course-groups (A, B, C, D)
  * @property {string} COURSE_EXECUTION            endpoint for executions
  * @property {string} COURSE_EXECUTION_VIEW       endpoint for a view that enriches executions with other information
  * @property {string} STUDENT                     endpoint for students

@@ -8,7 +8,7 @@
 let DayOfWeek = {
 
   /**
-   * @property {object} days: object that contains seven objects, one for each week day.
+   * @property {object} days object that contains seven objects, one for each week day.
    * Each of that objects knows its day's name and its week's day.
    */
   days: [{
@@ -37,7 +37,7 @@ let DayOfWeek = {
   /**
    * Get the day object for a given day of week.
    *
-   * @param {number} dayOfWeek: day of the week
+   * @param {number} dayOfWeek day of the week
    * @returns {object} day object that matches the given day of week.
    */
   getDay: function (dayOfWeek) {
@@ -54,8 +54,8 @@ let DayOfWeek = {
    * Get the matching date for a given day of week.
    * This function is used for the timetable view so that days can be assigned to a date.
    *
-   * @param {number} dayOfWeek: day of week for which the matching date is required.
-   * @param {string} time: string that contains the time, formatted as '15:45:00'.
+   * @param {number} dayOfWeek day of week for which the matching date is required.
+   * @param {string} time string that contains the time, formatted as '15:45:00'.
    * @returns {string} string for the matched date, formatted as '2017-01-31T15:45:00'.
    */
   getDeferenceDay: function(dayOfWeek, time) {
