@@ -1,6 +1,6 @@
 <div class="container-fluid">
 
-  <h3>Moduldurchführungen buchen</h3>
+  <!--<h3>Moduldurchführungen buchen</h3>-->
 
   <!-- show a loading spinner when data is not ready yet -->
   <scale-loader :loading="!ready" color="#64788b"></scale-loader>
@@ -126,12 +126,13 @@
       <!-- booked executions for semester after the next one (or a message if there aren't any yet) -->
       <div class="col-md-4" id="bookings-after-next">
 
-        <!-- show a message if there are no executions offered for the semester after the upcoming one. -->
+        <!-- show a message if there are no executions offered for the semester after the upcoming one.
         <div class="row" v-if="filteredExecutionsAfterNext.length === 0">
           <div class="alert alert-default" role="alert">
             <b>Es sind noch keine Moduldurchführungen für dieses Semester bekannt.</b>
           </div>
         </div>
+        -->
 
         <!-- show a message if there are no executions selected BUT some are offered. -->
         <div class="row" v-if="filteredBookingsAfterNext.length === 0 && filteredExecutionsAfterNext.length > 0">

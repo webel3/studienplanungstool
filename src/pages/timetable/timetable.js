@@ -43,7 +43,7 @@ let Timetable = {
    */
   mounted: function () {
     let _self = this;
-    let userFilterQuery = ['?filter=(student_id="', UserHelper.getUser().uid, '")'].join('');
+    let userFilterQuery = ['?filter=(student_ID=', UserHelper.getUser().uid, ')'].join('');
 
     this.$http.get(Endpoints.get(Endpoints.STUDENT_EXEC_SLOT_VIEW + userFilterQuery), HttpConfig).then((response) => {
 

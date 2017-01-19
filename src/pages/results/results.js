@@ -54,7 +54,11 @@ let Results = {
 
           // add some additional data to each group
           let ects = 0;
-          this.modules.filter(m => m.group === group.shortName).forEach(m => ects += m.ects);
+          this.modules.filter(m => m.group === group.shortName).forEach(m => {
+            if (m.grade.toUpperCase() !== 'F' && m.grade.toUpperCase() !== 'FX') {
+              ects += m.ects;
+            }
+          });
           group.summarizedEcts = ects;
           group.usableEcts = group.summarizedEcts < group.maxECTS ? group.summarizedEcts : group.maxECTS;
           group.sufficientEcts = group.usableEcts > group.minECTS;
