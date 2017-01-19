@@ -34,19 +34,20 @@ let Endpoints = {
 
   /**
    * Get the url for the given endpoint.
+   * Default destination is localhost. To use the DreamFactory remote backend,
+   * call 'sessionStorage.setItem("useRemote", true)' in the browser's console.
    *
    * @param endpoint name of the endpoint to use
    * @returns {string} url for the endpoint.
    */
   get: function(endpoint) {
-    let localhost = 'http://localhost';
-    let dfUri = 'http://ft-engek1.cl.dreamfactory.com';
     let apiPath = '/api/v2/studienplanungstool/_table/';
 
-    if (sessionStorage.getItem('useLocalhost') && JSON.parse(sessionStorage.getItem('useLocalhost')) === true) {
-      return encodeURI([localhost, apiPath, endpoint].join(''));
+    let useRemote = sessionStorage.getItem('useRemote');
+    if (useRemote && JSON.parse(useRemote) === true) {
+      return encodeURI(['http://ft-engek1.cl.dreamfactory.com', apiPath, endpoint].join(''));
     }
-    return encodeURI([dfUri, apiPath, endpoint].join(''));
+    return encodeURI(['http://localhost', apiPath, endpoint].join(''));
   }
 
 };
