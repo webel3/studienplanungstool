@@ -89,15 +89,18 @@
 
 /* stylings for the different types of modules */
 .list-group-item--completed {
-    background-color: lightgreen;
+    /*background-color: lightgreen;*/
+    background-color: rgba(144, 238, 144, 0.4); /* lightgreen */
 }
 
 .list-group-item--booked {
-    background-color: tan;
+    /*background-color: tan;*/
+    background-color: rgba(210, 180, 140, 0.4); /* tan */
 }
 
 .list-group-item--planned {
-    background-color: lightskyblue;
+    /*background-color: lightskyblue;*/
+    background-color: rgba(135, 206, 250, 0.4); /* lightblue */
 }
 
 .list-group-item--placeholder {
